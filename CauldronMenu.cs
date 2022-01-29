@@ -225,7 +225,6 @@ namespace CauldronOfChance
                 //??????????????????
                 if (Game1.activeClickableMenu != null && Game1.activeClickableMenu is ItemGrabMenu)
                 {
-                    //(Game1.activeClickableMenu as ItemGrabMenu).setSourceItem(this.sourceItem); //TODO: Just commented this out without thinkin
                     if (Game1.options.SnappyMenus)
                     {
                         (Game1.activeClickableMenu as ItemGrabMenu).currentlySnappedComponent = base.currentlySnappedComponent;
@@ -314,62 +313,10 @@ namespace CauldronOfChance
             {
                 if(ingredient1 != null || ingredient2 != null || ingredient3 != null)
                 {
-                    using (CauldronMagic cauldronMagic = new CauldronMagic())
-                    {
-                        cauldronMagic.UseCauldron(ingredient1, ingredient2, ingredient3);
-                    }
+                    new CauldronMagic(ingredient1, ingredient2, ingredient3);
                     Game1.exitActiveMenu();
                 }
-                else
-                {
-                    //TODO: emergency exit?
-                }
             }
-
-            #region copied from
-            //if (this.shippingBin && this.lastShippedHolder.containsPoint(x, y))
-            //{
-            //    if (Game1.getFarm().lastItemShipped == null)
-            //    {
-            //        return;
-            //    }
-            //    Game1.getFarm().getShippingBin(Game1.player).Remove(Game1.getFarm().lastItemShipped);
-            //    if (Game1.player.addItemToInventoryBool(Game1.getFarm().lastItemShipped))
-            //    {
-            //        Game1.playSound("coin");
-            //        Game1.getFarm().lastItemShipped = null;
-            //        if (Game1.player.ActiveObject != null)
-            //        {
-            //            Game1.player.showCarrying();
-            //            Game1.player.Halt();
-            //        }
-            //    }
-            //    else
-            //    {
-            //        Game1.getFarm().getShippingBin(Game1.player).Add(Game1.getFarm().lastItemShipped);
-            //    }
-            //    return;
-            //}
-
-            //else if ((this.reverseGrab || this.behaviorFunction != null) && this.isWithinBounds(x, y))
-            //{
-            //    this.behaviorFunction(base.heldItem, Game1.player);
-            //    if (Game1.activeClickableMenu != null && Game1.activeClickableMenu is ItemGrabMenu)
-            //    {
-            //        (Game1.activeClickableMenu as ItemGrabMenu).setSourceItem(this.sourceItem);
-            //        if (Game1.options.SnappyMenus)
-            //        {
-            //            (Game1.activeClickableMenu as ItemGrabMenu).currentlySnappedComponent = base.currentlySnappedComponent;
-            //            (Game1.activeClickableMenu as ItemGrabMenu).snapCursorToCurrentSnappedComponent();
-            //        }
-            //    }
-            //    if (this.destroyItemOnClick)
-            //    {
-            //        base.heldItem = null;
-            //        return;
-            //    }
-            //}
-            #endregion copied from
         }
 
         public void checkForOkButton()
