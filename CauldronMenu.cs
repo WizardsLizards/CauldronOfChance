@@ -2,11 +2,13 @@
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
+using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static StardewValley.Menus.InventoryMenu;
 using static StardewValley.Menus.ItemGrabMenu;
 
 namespace CauldronOfChance
@@ -62,6 +64,7 @@ namespace CauldronOfChance
         public string message = "Add items into the Cauldron...";
 
         public InventoryMenu ItemsToGrabMenu { get; set; }
+        public highlightThisItem highlightMethod { get; set; }
 
         //Animation on select? Could be cool
         private TemporaryAnimatedSprite poof { get; set; }
@@ -76,8 +79,10 @@ namespace CauldronOfChance
             //int yPositionOnScreen = base.yPositionOnScreen;
             int yPositionOnScreen = base.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + IClickableMenu.borderWidth + 192 - 16;
 
+            highlightMethod = highlightCauldronItems;
 
-            this.ItemsToGrabMenu = new InventoryMenu(xPositionOnScreen, yPositionOnScreen, playerInventory: false, null, InventoryMenu.highlightAllItems);
+            this.ItemsToGrabMenu = new InventoryMenu(xPositionOnScreen, yPositionOnScreen, playerInventory: false, null, highlightMethod);
+            ItemsToGrabMenu.highlightMethod = this.highlightMethod; //TODO: Why this not working? (Also not working for highlight non -> error in my draw method?)
 
             this.cauldronSlot1 = new ClickableTextureComponent("", new Rectangle(base.xPositionOnScreen + base.width / 2 - 48 - 92, base.yPositionOnScreen + base.height / 2 - 80 - 64, 96, 96), "", "", Game1.mouseCursors, new Rectangle(293, 360, 24, 24), 4f)
             {
@@ -162,7 +167,7 @@ namespace CauldronOfChance
                         continue;
                     }
                     if(slotNumber >= Game1.player.Items.Count
-                        || (Game1.player.Items[slotNumber] != null && !InventoryMenu.highlightAllItems(Game1.player.Items[slotNumber])) //TODO: Own hightlight method
+                        || (Game1.player.Items[slotNumber] != null && !highlightMethod(Game1.player.Items[slotNumber])) //TODO: Own hightlight method
                         || slotNumber >= Game1.player.Items.Count
                         || Game1.player.Items[slotNumber] == null
                         //|| Game1.player.Items[slotNumber] is Tool //TODO: needed with hightlight method?
@@ -180,8 +185,10 @@ namespace CauldronOfChance
                         //    })
                         )
                     {
-                        selectedItem.Stack = (int)Math.Ceiling((double)Game1.player.Items[slotNumber].Stack / 2.0);
-                        Game1.player.Items[slotNumber].Stack = Game1.player.Items[slotNumber].Stack / 2;
+                        //selectedItem.Stack = (int)Math.Ceiling((double)Game1.player.Items[slotNumber].Stack / 2.0);
+                        //Game1.player.Items[slotNumber].Stack = Game1.player.Items[slotNumber].Stack / 2;
+                        selectedItem.Stack = 1;
+                        Game1.player.Items[slotNumber].Stack = Game1.player.Items[slotNumber].Stack -1;
                     }
                     else if (Game1.player.Items[slotNumber].Stack == 1)
                     {
@@ -464,6 +471,21 @@ namespace CauldronOfChance
                 ingredient3 = null;
             }
             #endregion return items from the cauldron
+        }
+        public static bool highlightCauldronItems(Item item)
+        {
+            if (item is Tool
+                || item is Boots //Also stuff with hats for recipes?
+                || item is Clothing //Clothing could be interesting tho: Change colours?
+                || item is Hat //And hats?
+                || item is Ring //Ring could be interesting tho: Chance for enchantment
+                || item is SpecialItem
+                || item.isPlaceable()
+                )
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
