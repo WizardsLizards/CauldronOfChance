@@ -47,75 +47,165 @@ namespace CauldronOfChance
         #endregion
 
         #region generic buffs
-        public int farmingBuff1 { get; set; } = 0;
-        public int farmingBuff2 { get; set; } = 0;
-        public int farmingBuff3 { get; set; } = 0;
-        public int farmingDebuff1 { get; set; } = 0;
-        public int farmingDebuff2 { get; set; } = 0;
-        public int farmingDebuff3 { get; set; } = 0;
+        public List<int> buffList;
+        public enum buffs
+        {
+            farmingBuff1,
+            farmingBuff2,
+            farmingBuff3,
 
-        public int miningBuff1 { get; set; } = 0;
-        public int miningBuff2 { get; set; } = 0;
-        public int miningBuff3 { get; set; } = 0;
-        public int miningDebuff1 { get; set; } = 0;
-        public int miningDebuff2 { get; set; } = 0;
-        public int miningDebuff3 { get; set; } = 0;
+            miningBuff1,
+            miningBuff2,
+            miningBuff3,
 
-        public int fishingBuff1 { get; set; } = 0;
-        public int fishingBuff2 { get; set; } = 0;
-        public int fishingBuff3 { get; set; } = 0;
-        public int fishingDebuff1 { get; set; } = 0;
-        public int fishingDebuff2 { get; set; } = 0;
-        public int fishingDebuff3 { get; set; } = 0;
+            fishingBuff1,
+            fishingBuff2,
+            fishingBuff3,
 
-        public int foragingBuff1 { get; set; } = 0;
-        public int foragingBuff2 { get; set; } = 0;
-        public int foragingBuff3 { get; set; } = 0;
-        public int foragingDebuff1 { get; set; } = 0;
-        public int foragingDebuff2 { get; set; } = 0;
-        public int foragingDebuff3 { get; set; } = 0;
+            foragingBuff1,
+            foragingBuff2,
+            foragingBuff3,
 
-        public int attackBuff1 { get; set; } = 0;
-        public int attackBuff2 { get; set; } = 0;
-        public int attackBuff3 { get; set; } = 0;
-        public int attackDebuff1 { get; set; } = 0;
-        public int attackDebuff2 { get; set; } = 0;
-        public int attackDebuff3 { get; set; } = 0;
+            attackBuff1,
+            attackBuff2,
+            attackBuff3,
 
-        public int defenseBuff1 { get; set; } = 0;
-        public int defenseBuff2 { get; set; } = 0;
-        public int defenseBuff3 { get; set; } = 0;
-        public int defenseDebuff1 { get; set; } = 0;
-        public int defenseDebuff2 { get; set; } = 0;
-        public int defenseDebuff3 { get; set; } = 0;
+            defenseBuff1,
+            defenseBuff2,
+            defenseBuff3,
 
-        public int maxEnergyBuff1 { get; set; } = 0;
-        public int maxEnergyBuff2 { get; set; } = 0;
-        public int maxEnergyBuff3 { get; set; } = 0;
-        public int maxEnergyDebuff1 { get; set; } = 0;
-        public int maxEnergyDebuff2 { get; set; } = 0;
-        public int maxEnergyDebuff3 { get; set; } = 0;
+            maxEnergyBuff1,
+            maxEnergyBuff2,
+            maxEnergyBuff3,
 
-        public int luckBuff1 { get; set; } = 0;
-        public int luckBuff2 { get; set; } = 0;
-        public int luckBuff3 { get; set; } = 0;
-        public int luckDebuff1 { get; set; } = 0;
-        public int luckDebuff2 { get; set; } = 0;
-        public int luckDebuff3 { get; set; } = 0;
+            luckBuff1,
+            luckBuff2,
+            luckBuff3,
 
-        public int magneticRadiusBuff1 { get; set; } = 0;
-        public int magneticRadiusBuff2 { get; set; } = 0;
-        public int magneticRadiusBuff3 { get; set; } = 0;
-        public int magneticRadiusDebuff1 { get; set; } = 0;
-        public int magneticRadiusDebuff2 { get; set; } = 0;
-        public int magneticRadiusDebuff3 { get; set; } = 0;
+            magneticRadiusBuff1,
+            magneticRadiusBuff2,
+            magneticRadiusBuff3,
 
-        public int speedBuff1 { get; set; } = 0;
-        public int speedBuff2 { get; set; } = 0;
-        public int speedBuff3 { get; set; } = 0;
-        public int speedDebuff1 { get; set; } = 0;
-        public int speedDebuff2 { get; set; } = 0;
-        public int speedDebuff3 { get; set; } = 0;
+            speedBuff1,
+            speedBuff2,
+            speedBuff3
+        }
+
+        public List<int> debuffList;
+        public enum debuffs
+        {
+            farmingDebuff1,
+            farmingDebuff2,
+            farmingDebuff3,
+
+            miningDebuff1,
+            miningDebuff2,
+            miningDebuff3,
+
+            fishingDebuff1,
+            fishingDebuff2,
+            fishingDebuff3,
+
+            foragingDebuff1,
+            foragingDebuff2,
+            foragingDebuff3,
+
+            attackDebuff1,
+            attackDebuff2,
+            attackDebuff3,
+
+            defenseDebuff1,
+            defenseDebuff2,
+            defenseDebuff3,
+
+            maxEnergyDebuff1,
+            maxEnergyDebuff2,
+            maxEnergyDebuff3,
+
+            luckDebuff1,
+            luckDebuff2,
+            luckDebuff3,
+
+            magneticRadiusDebuff1,
+            magneticRadiusDebuff2,
+            magneticRadiusDebuff3,
+
+            speedDebuff1,
+            speedDebuff2,
+            speedDebuff3
+        }
+
+        #region old
+        //public int farmingBuff1 { get; set; } = 0;
+        //public int farmingBuff2 { get; set; } = 0;
+        //public int farmingBuff3 { get; set; } = 0;
+        //public int farmingDebuff1 { get; set; } = 0;
+        //public int farmingDebuff2 { get; set; } = 0;
+        //public int farmingDebuff3 { get; set; } = 0;
+
+        //public int miningBuff1 { get; set; } = 0;
+        //public int miningBuff2 { get; set; } = 0;
+        //public int miningBuff3 { get; set; } = 0;
+        //public int miningDebuff1 { get; set; } = 0;
+        //public int miningDebuff2 { get; set; } = 0;
+        //public int miningDebuff3 { get; set; } = 0;
+
+        //public int fishingBuff1 { get; set; } = 0;
+        //public int fishingBuff2 { get; set; } = 0;
+        //public int fishingBuff3 { get; set; } = 0;
+        //public int fishingDebuff1 { get; set; } = 0;
+        //public int fishingDebuff2 { get; set; } = 0;
+        //public int fishingDebuff3 { get; set; } = 0;
+
+        //public int foragingBuff1 { get; set; } = 0;
+        //public int foragingBuff2 { get; set; } = 0;
+        //public int foragingBuff3 { get; set; } = 0;
+        //public int foragingDebuff1 { get; set; } = 0;
+        //public int foragingDebuff2 { get; set; } = 0;
+        //public int foragingDebuff3 { get; set; } = 0;
+
+        //public int attackBuff1 { get; set; } = 0;
+        //public int attackBuff2 { get; set; } = 0;
+        //public int attackBuff3 { get; set; } = 0;
+        //public int attackDebuff1 { get; set; } = 0;
+        //public int attackDebuff2 { get; set; } = 0;
+        //public int attackDebuff3 { get; set; } = 0;
+
+        //public int defenseBuff1 { get; set; } = 0;
+        //public int defenseBuff2 { get; set; } = 0;
+        //public int defenseBuff3 { get; set; } = 0;
+        //public int defenseDebuff1 { get; set; } = 0;
+        //public int defenseDebuff2 { get; set; } = 0;
+        //public int defenseDebuff3 { get; set; } = 0;
+
+        //public int maxEnergyBuff1 { get; set; } = 0;
+        //public int maxEnergyBuff2 { get; set; } = 0;
+        //public int maxEnergyBuff3 { get; set; } = 0;
+        //public int maxEnergyDebuff1 { get; set; } = 0;
+        //public int maxEnergyDebuff2 { get; set; } = 0;
+        //public int maxEnergyDebuff3 { get; set; } = 0;
+
+        //public int luckBuff1 { get; set; } = 0;
+        //public int luckBuff2 { get; set; } = 0;
+        //public int luckBuff3 { get; set; } = 0;
+        //public int luckDebuff1 { get; set; } = 0;
+        //public int luckDebuff2 { get; set; } = 0;
+        //public int luckDebuff3 { get; set; } = 0;
+
+        //public int magneticRadiusBuff1 { get; set; } = 0;
+        //public int magneticRadiusBuff2 { get; set; } = 0;
+        //public int magneticRadiusBuff3 { get; set; } = 0;
+        //public int magneticRadiusDebuff1 { get; set; } = 0;
+        //public int magneticRadiusDebuff2 { get; set; } = 0;
+        //public int magneticRadiusDebuff3 { get; set; } = 0;
+
+        //public int speedBuff1 { get; set; } = 0;
+        //public int speedBuff2 { get; set; } = 0;
+        //public int speedBuff3 { get; set; } = 0;
+        //public int speedDebuff1 { get; set; } = 0;
+        //public int speedDebuff2 { get; set; } = 0;
+        //public int speedDebuff3 { get; set; } = 0;
+        #endregion old
         #endregion generic buffs
         #endregion chances
         #endregion properties
@@ -132,6 +222,17 @@ namespace CauldronOfChance
             resultingItem = new StardewValley.Object();
             randomGenerator = new Random();
             playerLuck = Game1.player.DailyLuck;
+
+            buffList = new List<int>();
+            foreach(int buffIndex in Enum.GetValues(typeof(buffs)))
+            {
+                buffList.Add(0);
+            }
+            debuffList = new List<int>();
+            foreach(int debuffIndex in Enum.GetValues(typeof(debuffs)))
+            {
+                debuffList.Add(0);
+            }
 
             UseCauldron();
         }
@@ -284,30 +385,26 @@ namespace CauldronOfChance
 
         public int getBuffChance()
         {
-            return farmingBuff1 + farmingBuff2 + farmingBuff3 +
-                miningBuff1 + miningBuff2 + miningBuff3 +
-                fishingBuff1 + fishingBuff2 + fishingBuff3 +
-                foragingBuff1 + foragingBuff2 + foragingBuff3 +
-                attackBuff1 + attackBuff2 + attackBuff3 +
-                defenseBuff1 + defenseBuff2 + defenseBuff3 +
-                maxEnergyBuff1 + maxEnergyBuff2 + maxEnergyBuff3 +
-                luckBuff1 + luckBuff2 + luckBuff3 +
-                magneticRadiusBuff1 + magneticRadiusBuff2 + magneticRadiusBuff3 +
-                speedBuff1 + speedBuff2 + speedBuff3;
+            int buffChance = 0;
+
+            foreach (int buffIndex in Enum.GetValues(typeof(buffs)))
+            {
+                buffChance += buffList[buffIndex];
+            }
+
+            return buffChance;
         }
 
         public int getDebuffChance()
         {
-            return farmingDebuff1 + farmingDebuff2 + farmingDebuff3 +
-                miningDebuff1 + miningDebuff2 + miningDebuff3 +
-                fishingDebuff1 + fishingDebuff2 + fishingDebuff3 +
-                foragingDebuff1 + foragingDebuff2 + foragingDebuff3 +
-                attackDebuff1 + attackDebuff2 + attackDebuff3 +
-                defenseDebuff1 + defenseDebuff2 + defenseDebuff3 +
-                maxEnergyDebuff1 + maxEnergyDebuff2 + maxEnergyDebuff3 +
-                luckDebuff1 + luckDebuff2 + luckDebuff3 +
-                magneticRadiusDebuff1 + magneticRadiusDebuff2 + magneticRadiusDebuff3 +
-                speedDebuff1 + speedDebuff2 + speedDebuff3;
+            int debuffChance = 0;
+
+            foreach (int debuffIndex in Enum.GetValues(typeof(debuffs)))
+            {
+                debuffChance += debuffList[debuffIndex];
+            }
+
+            return debuffChance;
         }
         #endregion chance determination
         #endregion helper
