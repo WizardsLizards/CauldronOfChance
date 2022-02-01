@@ -29,16 +29,6 @@ namespace CauldronOfChance
         #endregion ingredients
 
         #region chances
-        #region special events
-        public double butterflies { get; set; } = 0.01;
-        public double boom { get; set; } = 0.01;
-        #endregion special events
-
-        #region special buffs
-        public int garlicOil { get; set; } = 0;
-        public int monsterMusk { get; set; } = 0;
-        public int debuffImmunity { get; set; } = 0;
-        #endregion special buffs
 
         #region recipes
         public int crafting { get; set; } = 0;
@@ -396,30 +386,6 @@ namespace CauldronOfChance
                 //Debuff
 
             }
-        }
-
-        public int getBuffChance()
-        {
-            int buffChance = 0;
-
-            foreach (int buffIndex in Enum.GetValues(typeof(buffs)))
-            {
-                buffChance += buffList[buffIndex];
-            }
-
-            return buffChance;
-        }
-
-        public int getDebuffChance()
-        {
-            int debuffChance = 0;
-
-            foreach (int debuffIndex in Enum.GetValues(typeof(debuffs)))
-            {
-                debuffChance += debuffList[debuffIndex];
-            }
-
-            return debuffChance;
         }
         #endregion chance determination
         #endregion helper
