@@ -158,6 +158,25 @@ namespace CauldronOfChance
             addToCauldron(nameof(luck), luck);
             addToCauldron(nameof(magneticRadius), magneticRadius);
             addToCauldron(nameof(speed), speed);
+
+            addForCategory();
+            addForFoodBuffs();
+            addForQuality();
+        }
+
+        public void addForCategory()
+        {
+
+        }
+
+        public void addForFoodBuffs()
+        {
+
+        }
+
+        public void addForQuality()
+        {
+
         }
 
         public void addToCauldron(string name, int value)

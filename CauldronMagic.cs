@@ -23,9 +23,9 @@ namespace CauldronOfChance
         #endregion setup
 
         #region ingredients
-        public Item ingredient1 { get; set; }
-        public Item ingredient2 { get; set; }
-        public Item ingredient3 { get; set; }
+        public Ingredient ingredient1 { get; set; }
+        public Ingredient ingredient2 { get; set; }
+        public Ingredient ingredient3 { get; set; }
         #endregion ingredients
 
         #region chances
@@ -218,9 +218,9 @@ namespace CauldronOfChance
         #region constructors
         public CauldronMagic(Item ingredient1, Item ingredient2, Item ingredient3)
         {
-            this.ingredient1 = ingredient1;
-            this.ingredient2 = ingredient2;
-            this.ingredient3 = ingredient3;
+            this.ingredient1 = Cauldron.getIngredient(ingredient1);
+            this.ingredient2 = Cauldron.getIngredient(ingredient2);
+            this.ingredient3 = Cauldron.getIngredient(ingredient3);
 
             WizardHouse = Game1.locations.Where(x => x.Name.Equals("WizardHouse")).First();
             Wizard = Game1.getCharacterFromName("Wizard");
@@ -339,7 +339,7 @@ namespace CauldronOfChance
         #endregion recipes
 
         #region chance values
-        public void addChances(Item ingredient)
+        public void addChances(Ingredient ingredient)
         {
 
         }
@@ -354,13 +354,13 @@ namespace CauldronOfChance
         {
             double butterboomChance = randomGenerator.NextDouble();
             //Chance for butterflies
-            if (butterboomChance > 1 - butterflies - playerLuck)
+            if (butterboomChance > 1 - getButterflies() - playerLuck)
             {
                 effectType = 3;
                 return;
             }
             //Chance for boom
-            if (butterboomChance < boom - playerLuck)
+            if (butterboomChance < getBoom() - playerLuck)
             {
                 effectType = 4;
                 return;
@@ -386,6 +386,26 @@ namespace CauldronOfChance
                 //Debuff
 
             }
+        }
+
+        public int getBuffChance()
+        {
+            return ingredient1.getBuffChance() + ingredient2.getBuffChance() + ingredient3.getBuffChance();
+        }
+
+        public int getDebuffChance()
+        {
+            return ingredient1.getDebuffChance() + ingredient2.getDebuffChance() + ingredient3.getDebuffChance();
+        }
+
+        public double getButterflies()
+        {
+            return ingredient1.butterflies + ingredient2.butterflies + ingredient3.butterflies;
+        }
+
+        public double getBoom()
+        {
+            return ingredient1.boom + ingredient2.boom + ingredient3.boom;
         }
         #endregion chance determination
         #endregion helper
