@@ -47,94 +47,109 @@ namespace CauldronOfChance
         #endregion
 
         #region generic buffs
-        public List<int> buffList;
         public enum buffs
         {
-            farmingBuff1,
-            farmingBuff2,
-            farmingBuff3,
-
-            miningBuff1,
-            miningBuff2,
-            miningBuff3,
-
-            fishingBuff1,
-            fishingBuff2,
-            fishingBuff3,
-
-            foragingBuff1,
-            foragingBuff2,
-            foragingBuff3,
-
-            attackBuff1,
-            attackBuff2,
-            attackBuff3,
-
-            defenseBuff1,
-            defenseBuff2,
-            defenseBuff3,
-
-            maxEnergyBuff1,
-            maxEnergyBuff2,
-            maxEnergyBuff3,
-
-            luckBuff1,
-            luckBuff2,
-            luckBuff3,
-
-            magneticRadiusBuff1,
-            magneticRadiusBuff2,
-            magneticRadiusBuff3,
-
-            speedBuff1,
-            speedBuff2,
-            speedBuff3
+            farmingBuff,
+            miningBuff,
+            fishingBuff,
+            foragingBuff,
+            attackBuff,
+            defenseBuff,
+            maxEnergyBuff,
+            luckBuff,
+            magneticRadiusBuff,
+            speedBuff
         }
 
-        public List<int> debuffList;
-        public enum debuffs
-        {
-            farmingDebuff1,
-            farmingDebuff2,
-            farmingDebuff3,
+        #region old2
+        //public List<int> buffList;
+        //public enum buffs
+        //{
+        //    farmingBuff1,
+        //    farmingBuff2,
+        //    farmingBuff3,
 
-            miningDebuff1,
-            miningDebuff2,
-            miningDebuff3,
+        //    miningBuff1,
+        //    miningBuff2,
+        //    miningBuff3,
 
-            fishingDebuff1,
-            fishingDebuff2,
-            fishingDebuff3,
+        //    fishingBuff1,
+        //    fishingBuff2,
+        //    fishingBuff3,
 
-            foragingDebuff1,
-            foragingDebuff2,
-            foragingDebuff3,
+        //    foragingBuff1,
+        //    foragingBuff2,
+        //    foragingBuff3,
 
-            attackDebuff1,
-            attackDebuff2,
-            attackDebuff3,
+        //    attackBuff1,
+        //    attackBuff2,
+        //    attackBuff3,
 
-            defenseDebuff1,
-            defenseDebuff2,
-            defenseDebuff3,
+        //    defenseBuff1,
+        //    defenseBuff2,
+        //    defenseBuff3,
 
-            maxEnergyDebuff1,
-            maxEnergyDebuff2,
-            maxEnergyDebuff3,
+        //    maxEnergyBuff1,
+        //    maxEnergyBuff2,
+        //    maxEnergyBuff3,
 
-            luckDebuff1,
-            luckDebuff2,
-            luckDebuff3,
+        //    luckBuff1,
+        //    luckBuff2,
+        //    luckBuff3,
 
-            magneticRadiusDebuff1,
-            magneticRadiusDebuff2,
-            magneticRadiusDebuff3,
+        //    magneticRadiusBuff1,
+        //    magneticRadiusBuff2,
+        //    magneticRadiusBuff3,
 
-            speedDebuff1,
-            speedDebuff2,
-            speedDebuff3
-        }
+        //    speedBuff1,
+        //    speedBuff2,
+        //    speedBuff3
+        //}
 
+        //public List<int> debuffList;
+        //public enum debuffs
+        //{
+        //    farmingDebuff1,
+        //    farmingDebuff2,
+        //    farmingDebuff3,
+
+        //    miningDebuff1,
+        //    miningDebuff2,
+        //    miningDebuff3,
+
+        //    fishingDebuff1,
+        //    fishingDebuff2,
+        //    fishingDebuff3,
+
+        //    foragingDebuff1,
+        //    foragingDebuff2,
+        //    foragingDebuff3,
+
+        //    attackDebuff1,
+        //    attackDebuff2,
+        //    attackDebuff3,
+
+        //    defenseDebuff1,
+        //    defenseDebuff2,
+        //    defenseDebuff3,
+
+        //    maxEnergyDebuff1,
+        //    maxEnergyDebuff2,
+        //    maxEnergyDebuff3,
+
+        //    luckDebuff1,
+        //    luckDebuff2,
+        //    luckDebuff3,
+
+        //    magneticRadiusDebuff1,
+        //    magneticRadiusDebuff2,
+        //    magneticRadiusDebuff3,
+
+        //    speedDebuff1,
+        //    speedDebuff2,
+        //    speedDebuff3
+        //}
+        #endregion old2
         #region old
         //public int farmingBuff1 { get; set; } = 0;
         //public int farmingBuff2 { get; set; } = 0;
@@ -223,16 +238,16 @@ namespace CauldronOfChance
             randomGenerator = new Random();
             playerLuck = Game1.player.DailyLuck;
 
-            buffList = new List<int>();
-            foreach(int buffIndex in Enum.GetValues(typeof(buffs)))
-            {
-                buffList.Add(0);
-            }
-            debuffList = new List<int>();
-            foreach(int debuffIndex in Enum.GetValues(typeof(debuffs)))
-            {
-                debuffList.Add(0);
-            }
+            //buffList = new List<int>();
+            //foreach(int buffIndex in Enum.GetValues(typeof(buffs)))
+            //{
+            //    buffList.Add(0);
+            //}
+            //debuffList = new List<int>();
+            //foreach(int debuffIndex in Enum.GetValues(typeof(debuffs)))
+            //{
+            //    debuffList.Add(0);
+            //}
 
             UseCauldron();
         }
