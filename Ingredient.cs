@@ -113,7 +113,7 @@ namespace CauldronOfChance
         #endregion debuffs
 
         public Ingredient (Item item, int bufferfliesChance = 0, int boomChance = 0, int garlicOil = 0, int monsterMusk = 0, int debuffImmunity = 0,
-            int farming = 0, int mining = 0, int fishing = 0, int foraging = 0, int attack = 0, int defense = 0, int maxEnergy = 0, int luck = 0, int magneticRadius = 0, int speed = 0)
+            int farming = 0, int mining = 0, int fishing = 0, int foraging = 0, int attack = 0, int defense = 0, int maxEnergy = 0, int luck = 0, int magneticRadius = 0, int speed = 0, int cauldronLuck = 0)
         {
             buffList = new List<int>();
             foreach (int buffIndex in Enum.GetValues(typeof(buffs)))
@@ -136,6 +136,8 @@ namespace CauldronOfChance
             {
                 this.boom += 0.1 * boomChance;
             }
+
+            this.cauldronLuck += cauldronLuck * 0.1;
 
             addToCauldron(nameof(garlicOil), garlicOil);
             addToCauldron(nameof(monsterMusk), monsterMusk);
