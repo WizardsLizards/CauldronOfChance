@@ -12,8 +12,10 @@ namespace CauldronOfChance
         Item item;
 
         #region special events
-        public double butterflies { get; set; } = 0.01;
-        public double boom { get; set; } = 0.01;
+        public double butterflies { get; set; } = 0;
+        public double boom { get; set; } = 0;
+        public int cooking { get; set; } = 0;
+        public double cauldronLuck { get; set; } = 0;
         #endregion special events
 
         #region buffs
@@ -21,12 +23,8 @@ namespace CauldronOfChance
         public enum buffs
         {
             garlicOil1,
-            garlicOil2,
-            garlicOil3,
 
             debuffImmunity1,
-            debuffImmunity2,
-            debuffImmunity3,
 
             farmingBuff1,
             farmingBuff2,
@@ -75,8 +73,6 @@ namespace CauldronOfChance
         public enum debuffs
         {
             monsterMusk1,
-            monsterMusk2,
-            monsterMusk3,
 
             farmingDebuff1,
             farmingDebuff2,
@@ -110,10 +106,6 @@ namespace CauldronOfChance
             luckDebuff2,
             luckDebuff3,
 
-            magneticRadiusDebuff1,
-            magneticRadiusDebuff2,
-            magneticRadiusDebuff3,
-
             speedDebuff1,
             speedDebuff2,
             speedDebuff3
@@ -121,7 +113,7 @@ namespace CauldronOfChance
         #endregion debuffs
 
         public Ingredient (Item item, int bufferfliesChance = 0, int boomChance = 0, int garlicOil = 0, int monsterMusk = 0, int debuffImmunity = 0,
-            int farming = 0, int mining = 0, int fishing = 0, int foragin = 0, int attack = 0, int defense = 0, int maxEnergy = 0, int luck = 0, int magneticRadius = 0, int speed = 0)
+            int farming = 0, int mining = 0, int fishing = 0, int foraging = 0, int attack = 0, int defense = 0, int maxEnergy = 0, int luck = 0, int magneticRadius = 0, int speed = 0)
         {
             buffList = new List<int>();
             foreach (int buffIndex in Enum.GetValues(typeof(buffs)))
@@ -151,7 +143,7 @@ namespace CauldronOfChance
             addToCauldron(nameof(farming), farming);
             addToCauldron(nameof(mining), mining);
             addToCauldron(nameof(fishing), fishing);
-            addToCauldron(nameof(foragin), foragin);
+            addToCauldron(nameof(foraging), foraging);
             addToCauldron(nameof(attack), attack);
             addToCauldron(nameof(defense), defense);
             addToCauldron(nameof(maxEnergy), maxEnergy);
@@ -166,32 +158,137 @@ namespace CauldronOfChance
 
         public void addForCategory()
         {
-
+            switch (item.Category)
+            {
+                case StardewValley.Object.artisanGoodsCategory:
+                    addToCauldron("farming", 1);
+                    break;
+                case StardewValley.Object.baitCategory:
+                    addToCauldron("fishing", 1);
+                    break;
+                case StardewValley.Object.CookingCategory:
+                    addToCauldron("maxEnergy", 1);
+                    break;
+                case StardewValley.Object.CraftingCategory:
+                    addToCauldron("defense", 1);
+                    break;
+                case StardewValley.Object.EggCategory:
+                    addToCauldron("farming", 1);
+                    break;
+                case StardewValley.Object.fertilizerCategory:
+                    addToCauldron("farming", 1);
+                    break;
+                case StardewValley.Object.FishCategory:
+                    addToCauldron("fishing", 1);
+                    break;
+                case StardewValley.Object.flowersCategory:
+                    addToCauldron("foraging", 1);
+                    break;
+                case StardewValley.Object.FruitsCategory:
+                    addToCauldron("farming", 1);
+                    break;
+                case StardewValley.Object.GemCategory:
+                    addToCauldron("mining", 1);
+                    break;
+                case StardewValley.Object.GreensCategory:
+                    addToCauldron("foraging", 1);
+                    break;
+                case StardewValley.Object.ingredientsCategory:
+                    addToCauldron("maxEnergy", 1);
+                    break;
+                case StardewValley.Object.junkCategory:
+                    this.boom += 0.2;
+                    break;
+                case StardewValley.Object.MilkCategory:
+                    addToCauldron("farming", 1);
+                    break;
+                case StardewValley.Object.mineralsCategory:
+                    addToCauldron("mining", 1);
+                    break;
+                case StardewValley.Object.monsterLootCategory:
+                    addToCauldron("attack", 1);
+                    break;
+                case StardewValley.Object.SeedsCategory:
+                    addToCauldron("farming", 1);
+                    break;
+                case StardewValley.Object.syrupCategory:
+                    addToCauldron("farming", 1);
+                    break;
+                case StardewValley.Object.tackleCategory:
+                    addToCauldron("fishing", 1);
+                    break;
+                case StardewValley.Object.VegetableCategory:
+                    addToCauldron("farming", 1);
+                    break;
+            }
         }
 
         public void addForFoodBuffs()
         {
+            if(item is StardewValley.Object)
+            {
+                StardewValley.Object csObject = item as StardewValley.Object;
 
+                string[] objectDescription = Game1.objectInformation[csObject.ParentSheetIndex].Split('/');
+
+                if (Convert.ToInt32(objectDescription[2]) > 0)
+                {
+                    string[] whatToBuff = (string[])((objectDescription.Length > 7) ? ((object)objectDescription[7].Split(' ')) : ((object)new string[12]
+                    {
+                        "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+                        "0", "0"
+                    }));
+
+                    csObject.ModifyItemBuffs(whatToBuff);
+
+                    //Buff buff = new Buff(Convert.ToInt32(whatToBuff[0]), Convert.ToInt32(whatToBuff[1]), Convert.ToInt32(whatToBuff[2]), Convert.ToInt32(whatToBuff[3]), Convert.ToInt32(whatToBuff[4]), Convert.ToInt32(whatToBuff[5]), Convert.ToInt32(whatToBuff[6]), Convert.ToInt32(whatToBuff[7]), Convert.ToInt32(whatToBuff[8]), Convert.ToInt32(whatToBuff[9]), Convert.ToInt32(whatToBuff[10]), (whatToBuff.Length > 11) ? Convert.ToInt32(whatToBuff[11]) : 0, duration, objectDescription[0], objectDescription[4]);
+
+                    addToCauldron("farming", Convert.ToInt32(whatToBuff[0]));
+                    addToCauldron("mining", Convert.ToInt32(whatToBuff[2]));
+                    addToCauldron("fishing", Convert.ToInt32(whatToBuff[1]));
+                    addToCauldron("foraging", Convert.ToInt32(whatToBuff[5]));
+                    addToCauldron("attack", (whatToBuff.Length > 11) ? Convert.ToInt32(whatToBuff[11]) : 0);
+                    addToCauldron("defense", Convert.ToInt32(whatToBuff[10]));
+                    addToCauldron("maxEnergy", Convert.ToInt32(whatToBuff[7]) / 10);
+                    addToCauldron("luck", Convert.ToInt32(whatToBuff[4]));
+                    addToCauldron("magneticRadius", Convert.ToInt32(whatToBuff[8]) / 32);
+                    addToCauldron("speed", Convert.ToInt32(whatToBuff[9]));
+                }
+            }
         }
 
         public void addForQuality()
         {
+            if (item is StardewValley.Object)
+            {
+                StardewValley.Object csObject = item as StardewValley.Object;
 
+                cauldronLuck += csObject.Quality * 0.05;
+            }
+        }
+
+        public void addForCooking()
+        {
+            //TODO
         }
 
         public void addToCauldron(string name, int value)
         {
             if (name.Equals("garlicOil"))
             {
-                addToCauldron(name, "monsterMusk", value);
+                addToCauldron(name, "monsterMusk", value > 0 ? 1 : 0);
             }
             else if (name.Equals("monsterMusk"))
             {
-                addToCauldron("garlicOil", name, value);
+                addToCauldron("garlicOil", name, value > 0 ? 1 : 0);
             }
             else if (name.Equals("debuffImmunity"))
             {
-                addToCauldron(name, "", value);
+                addToCauldron(name, "", value > 0 ? 1 : 0);
+            }
+            else if (name.Equals("magneticRadius"))
+            {
+                addToCauldron(name + "Buff", "", value);
             }
             else
             {
@@ -211,14 +308,30 @@ namespace CauldronOfChance
             if(buff != null && buff.Equals("") == false)
             {
                 buffIndex1 = (int)Enum.Parse(typeof(buffs), buff + 1);
-                buffIndex2 = (int)Enum.Parse(typeof(buffs), buff + 2);
-                buffIndex3 = (int)Enum.Parse(typeof(buffs), buff + 3);
+
+                if(value >= 2)
+                {
+                    buffIndex2 = (int)Enum.Parse(typeof(buffs), buff + 2);
+                }
+
+                if(value >= 3)
+                {
+                    buffIndex3 = (int)Enum.Parse(typeof(buffs), buff + 3);
+                }
             }
             if(debuff != null && debuff.Equals("") == false)
             {
-                debuffIndex1 = (int)Enum.Parse(typeof(buffs), debuff + 1);
-                debuffIndex2 = (int)Enum.Parse(typeof(buffs), debuff + 2);
-                debuffIndex3 = (int)Enum.Parse(typeof(buffs), debuff + 3);
+                debuffIndex1 = (int)Enum.Parse(typeof(debuffs), debuff + 1);
+
+                if (value >= 2)
+                {
+                    debuffIndex2 = (int)Enum.Parse(typeof(debuffs), debuff + 2);
+                }
+
+                if (value >= 3)
+                {
+                    debuffIndex3 = (int)Enum.Parse(typeof(debuffs), debuff + 3);
+                }
             }
 
             if (value >= 3)

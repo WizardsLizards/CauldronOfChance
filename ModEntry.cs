@@ -43,7 +43,7 @@ namespace CauldronOfChance
                 //Game1.addHUDMessage(new HUDMessage("Tile: X: " + e.Cursor.Tile.X + "Y: " + e.Cursor.Tile.Y));
                 //Game1.addHUDMessage(new HUDMessage("ScreenPixels: X: " + e.Cursor.ScreenPixels.X + "Y: " + e.Cursor.ScreenPixels.Y));
                 //Game1.addHUDMessage(new HUDMessage("AbsolutePixels: X: " + e.Cursor.AbsolutePixels.X + "Y: " + e.Cursor.AbsolutePixels.Y));
-                Game1.addHUDMessage(new HUDMessage(Game1.player.DailyLuck.ToString()));
+                //Game1.addHUDMessage(new HUDMessage(Game1.player.DailyLuck.ToString()));
             }
         }
 

@@ -29,189 +29,11 @@ namespace CauldronOfChance
         #endregion ingredients
 
         #region chances
-
         #region recipes
         public int crafting { get; set; } = 0;
         public int cooking { get; set; } = 0;
         public int randomItem { get; set; } = 0;
         #endregion
-
-        #region generic buffs
-        public enum buffs
-        {
-            farmingBuff,
-            miningBuff,
-            fishingBuff,
-            foragingBuff,
-            attackBuff,
-            defenseBuff,
-            maxEnergyBuff,
-            luckBuff,
-            magneticRadiusBuff,
-            speedBuff
-        }
-
-        #region old2
-        //public List<int> buffList;
-        //public enum buffs
-        //{
-        //    farmingBuff1,
-        //    farmingBuff2,
-        //    farmingBuff3,
-
-        //    miningBuff1,
-        //    miningBuff2,
-        //    miningBuff3,
-
-        //    fishingBuff1,
-        //    fishingBuff2,
-        //    fishingBuff3,
-
-        //    foragingBuff1,
-        //    foragingBuff2,
-        //    foragingBuff3,
-
-        //    attackBuff1,
-        //    attackBuff2,
-        //    attackBuff3,
-
-        //    defenseBuff1,
-        //    defenseBuff2,
-        //    defenseBuff3,
-
-        //    maxEnergyBuff1,
-        //    maxEnergyBuff2,
-        //    maxEnergyBuff3,
-
-        //    luckBuff1,
-        //    luckBuff2,
-        //    luckBuff3,
-
-        //    magneticRadiusBuff1,
-        //    magneticRadiusBuff2,
-        //    magneticRadiusBuff3,
-
-        //    speedBuff1,
-        //    speedBuff2,
-        //    speedBuff3
-        //}
-
-        //public List<int> debuffList;
-        //public enum debuffs
-        //{
-        //    farmingDebuff1,
-        //    farmingDebuff2,
-        //    farmingDebuff3,
-
-        //    miningDebuff1,
-        //    miningDebuff2,
-        //    miningDebuff3,
-
-        //    fishingDebuff1,
-        //    fishingDebuff2,
-        //    fishingDebuff3,
-
-        //    foragingDebuff1,
-        //    foragingDebuff2,
-        //    foragingDebuff3,
-
-        //    attackDebuff1,
-        //    attackDebuff2,
-        //    attackDebuff3,
-
-        //    defenseDebuff1,
-        //    defenseDebuff2,
-        //    defenseDebuff3,
-
-        //    maxEnergyDebuff1,
-        //    maxEnergyDebuff2,
-        //    maxEnergyDebuff3,
-
-        //    luckDebuff1,
-        //    luckDebuff2,
-        //    luckDebuff3,
-
-        //    magneticRadiusDebuff1,
-        //    magneticRadiusDebuff2,
-        //    magneticRadiusDebuff3,
-
-        //    speedDebuff1,
-        //    speedDebuff2,
-        //    speedDebuff3
-        //}
-        #endregion old2
-        #region old
-        //public int farmingBuff1 { get; set; } = 0;
-        //public int farmingBuff2 { get; set; } = 0;
-        //public int farmingBuff3 { get; set; } = 0;
-        //public int farmingDebuff1 { get; set; } = 0;
-        //public int farmingDebuff2 { get; set; } = 0;
-        //public int farmingDebuff3 { get; set; } = 0;
-
-        //public int miningBuff1 { get; set; } = 0;
-        //public int miningBuff2 { get; set; } = 0;
-        //public int miningBuff3 { get; set; } = 0;
-        //public int miningDebuff1 { get; set; } = 0;
-        //public int miningDebuff2 { get; set; } = 0;
-        //public int miningDebuff3 { get; set; } = 0;
-
-        //public int fishingBuff1 { get; set; } = 0;
-        //public int fishingBuff2 { get; set; } = 0;
-        //public int fishingBuff3 { get; set; } = 0;
-        //public int fishingDebuff1 { get; set; } = 0;
-        //public int fishingDebuff2 { get; set; } = 0;
-        //public int fishingDebuff3 { get; set; } = 0;
-
-        //public int foragingBuff1 { get; set; } = 0;
-        //public int foragingBuff2 { get; set; } = 0;
-        //public int foragingBuff3 { get; set; } = 0;
-        //public int foragingDebuff1 { get; set; } = 0;
-        //public int foragingDebuff2 { get; set; } = 0;
-        //public int foragingDebuff3 { get; set; } = 0;
-
-        //public int attackBuff1 { get; set; } = 0;
-        //public int attackBuff2 { get; set; } = 0;
-        //public int attackBuff3 { get; set; } = 0;
-        //public int attackDebuff1 { get; set; } = 0;
-        //public int attackDebuff2 { get; set; } = 0;
-        //public int attackDebuff3 { get; set; } = 0;
-
-        //public int defenseBuff1 { get; set; } = 0;
-        //public int defenseBuff2 { get; set; } = 0;
-        //public int defenseBuff3 { get; set; } = 0;
-        //public int defenseDebuff1 { get; set; } = 0;
-        //public int defenseDebuff2 { get; set; } = 0;
-        //public int defenseDebuff3 { get; set; } = 0;
-
-        //public int maxEnergyBuff1 { get; set; } = 0;
-        //public int maxEnergyBuff2 { get; set; } = 0;
-        //public int maxEnergyBuff3 { get; set; } = 0;
-        //public int maxEnergyDebuff1 { get; set; } = 0;
-        //public int maxEnergyDebuff2 { get; set; } = 0;
-        //public int maxEnergyDebuff3 { get; set; } = 0;
-
-        //public int luckBuff1 { get; set; } = 0;
-        //public int luckBuff2 { get; set; } = 0;
-        //public int luckBuff3 { get; set; } = 0;
-        //public int luckDebuff1 { get; set; } = 0;
-        //public int luckDebuff2 { get; set; } = 0;
-        //public int luckDebuff3 { get; set; } = 0;
-
-        //public int magneticRadiusBuff1 { get; set; } = 0;
-        //public int magneticRadiusBuff2 { get; set; } = 0;
-        //public int magneticRadiusBuff3 { get; set; } = 0;
-        //public int magneticRadiusDebuff1 { get; set; } = 0;
-        //public int magneticRadiusDebuff2 { get; set; } = 0;
-        //public int magneticRadiusDebuff3 { get; set; } = 0;
-
-        //public int speedBuff1 { get; set; } = 0;
-        //public int speedBuff2 { get; set; } = 0;
-        //public int speedBuff3 { get; set; } = 0;
-        //public int speedDebuff1 { get; set; } = 0;
-        //public int speedDebuff2 { get; set; } = 0;
-        //public int speedDebuff3 { get; set; } = 0;
-        #endregion old
-        #endregion generic buffs
         #endregion chances
         #endregion properties
 
@@ -226,7 +48,7 @@ namespace CauldronOfChance
             Wizard = Game1.getCharacterFromName("Wizard");
             resultingItem = new StardewValley.Object();
             randomGenerator = new Random();
-            playerLuck = Game1.player.DailyLuck;
+            playerLuck = Game1.player.DailyLuck + getCauldronLuck();
 
             //buffList = new List<int>();
             //foreach(int buffIndex in Enum.GetValues(typeof(buffs)))
@@ -247,15 +69,14 @@ namespace CauldronOfChance
         public void UseCauldron()
         {
             #region determine effects
-            addChances(ingredient1);
-            addChances(ingredient2);
-            addChances(ingredient3);
             findCombinations();
             #endregion determine effects
 
             #region determine actual effect
             determineResult();
             #endregion determine actual effect
+
+            //For buffs: energy *10, magnetic *32(?)
 
             #region take effect
             //Drink
@@ -339,10 +160,6 @@ namespace CauldronOfChance
         #endregion recipes
 
         #region chance values
-        public void addChances(Ingredient ingredient)
-        {
-
-        }
         public void findCombinations()
         {
 
@@ -367,25 +184,421 @@ namespace CauldronOfChance
             }
 
             //Check for crafting recipes (Drop)
+            if (false)
+            {
+                effectType = 2;
+                return;
+            }
 
             //Check for cooking recipes (Drink)
+            if (false)
+            {
+                effectType = 1;
+                return;
+            }
 
             //Check for other item drops? (Drop)
+            if (false)
+            {
+                effectType = 2;
+                return;
+            }
 
             //Check for other buffs (Drink)
             int buffChance = (int)(getBuffChance() + getBuffChance() * playerLuck);
             int debuffChance = (int)(getDebuffChance() - getDebuffChance() * playerLuck);
+
+            if(buffChance < 1)
+            {
+                buffChance = 1;
+            }
+            if(debuffChance < 1)
+            {
+                debuffChance = 1;
+            }
+
             int buffRandom = randomGenerator.Next(1, buffChance + debuffChance);
+
+            int farming = 0;
+            int fishing = 0;
+            int mining = 0;
+            int digging = 0;
+            int luck = 0;
+            int foraging = 0;
+            int crafting = 0;
+            int maxStamina = 0;
+            int magneticRadius = 0;
+            int speed = 0;
+            int defense = 0;
+            int attack = 0;
+
+            int defaultBuff = -1;
+
+            int minutesDuration = 20 * 60; //20 hours
+            string source = "CauldronOfChance";
+            string displaySource = "Cauldron";
+            //TODO: Hints instead of buff display? ("You dont feel like fishing, you feel like farming, etc.),
+            string description = "The magic of the Cauldron flows through you. "; //TODO: Change for debuff/special buffs?
+            //string description = "You're feeling "; //TODO: Change for debuff/special buffs?
+
+            effectType = 1;
+
             if (buffRandom <= buffChance)
             {
                 //Buff
+                int maxBuffs = getBuffChance();
 
+                if (getDebuffChance() < 5)
+                {
+                    maxBuffs += Enum.GetValues(typeof(Ingredient.buffs)).Length;
+                }
+
+                int buffRandomCounter = randomGenerator.Next(1, maxBuffs);
+
+                List<int> buffs = getAllBuffs();
+
+                int finalBuffIndex = -1;
+
+                foreach (int buffIndex in Enum.GetValues(typeof(Ingredient.buffs)))
+                {
+                    if (buffs[buffIndex] > 0)
+                    {
+                        buffRandomCounter -= buffs[buffIndex];
+
+                        if(buffRandomCounter < 0)
+                        {
+                            finalBuffIndex = buffIndex;
+                            break;
+                        }
+                    }
+                }
+
+                if(finalBuffIndex != -1)
+                {
+                    switch (finalBuffIndex)
+                    {
+                        case (int)Ingredient.buffs.garlicOil1: //TODO: Re-add 2 and 3 with the same effect for more chances / higher value tho?
+                            //description = "You've started to smell... weird.";
+                            description += "(Garlic Oil)";
+                            defaultBuff = 23;
+                            break;
+                        case (int)Ingredient.buffs.debuffImmunity1:
+                            //description = "You feel as if nothing can slow you down.";
+                            description += "(Debuff Immunity)";
+                            defaultBuff = 28;
+                            break;
+                        case (int)Ingredient.buffs.farmingBuff1:
+                            description += "(Farming +1)";
+                            farming = 1;
+                            break;
+                        case (int)Ingredient.buffs.farmingBuff2:
+                            description += "(Farming +2)";
+                            farming = 2;
+                            break;
+                        case (int)Ingredient.buffs.farmingBuff3:
+                            description += "(Farming +3)";
+                            farming = 3;
+                            break;
+                        case (int)Ingredient.buffs.miningBuff1:
+                            description += "(Mining +1)";
+                            mining = 1;
+                            break;
+                        case (int)Ingredient.buffs.miningBuff2:
+                            description += "(Mining +2)";
+                            mining = 2;
+                            break;
+                        case (int)Ingredient.buffs.miningBuff3:
+                            description += "(Mining +3)";
+                            mining = 3;
+                            break;
+                        case (int)Ingredient.buffs.fishingBuff1:
+                            description += "(Fishing +1)";
+                            fishing = 1;
+                            break;
+                        case (int)Ingredient.buffs.fishingBuff2:
+                            description += "(Fishing +2)";
+                            fishing = 2;
+                            break;
+                        case (int)Ingredient.buffs.fishingBuff3:
+                            description += "(Fishing +3)";
+                            fishing = 3;
+                            break;
+                        case (int)Ingredient.buffs.foragingBuff1:
+                            description += "(Foraging +1)";
+                            foraging = 1;
+                            break;
+                        case (int)Ingredient.buffs.foragingBuff2:
+                            description += "(Foraging +2)";
+                            foraging = 2;
+                            break;
+                        case (int)Ingredient.buffs.foragingBuff3:
+                            description += "(Foraging +3)";
+                            foraging = 3;
+                            break;
+                        case (int)Ingredient.buffs.attackBuff1:
+                            description += "(Attack +1)";
+                            attack = 1;
+                            break;
+                        case (int)Ingredient.buffs.attackBuff2:
+                            description += "(Attack +2)";
+                            attack = 2;
+                            break;
+                        case (int)Ingredient.buffs.attackBuff3:
+                            description += "(Attack +3)";
+                            attack = 3;
+                            break;
+                        case (int)Ingredient.buffs.defenseBuff1:
+                            description += "(Defense +1)";
+                            defense = 1;
+                            break;
+                        case (int)Ingredient.buffs.defenseBuff2:
+                            description += "(Defense +2)";
+                            defense = 2;
+                            break;
+                        case (int)Ingredient.buffs.defenseBuff3:
+                            description += "(Defense +3)";
+                            defense = 3;
+                            break;
+                        case (int)Ingredient.buffs.maxEnergyBuff1:
+                            description += "(Max Stamina +10)";
+                            maxStamina = 1 * 10;
+                            break;
+                        case (int)Ingredient.buffs.maxEnergyBuff2:
+                            description += "(Max Stamina +20)";
+                            maxStamina = 2 * 10;
+                            break;
+                        case (int)Ingredient.buffs.maxEnergyBuff3:
+                            description += "(Max Stamina +30)";
+                            maxStamina = 3 * 10;
+                            break;
+                        case (int)Ingredient.buffs.luckBuff1:
+                            description += "(Luck +1)";
+                            luck = 1;
+                            break;
+                        case (int)Ingredient.buffs.luckBuff2:
+                            description += "(Luck +2)";
+                            luck = 2;
+                            break;
+                        case (int)Ingredient.buffs.luckBuff3:
+                            description += "(Luck +3)";
+                            luck = 3;
+                            break;
+                        case (int)Ingredient.buffs.magneticRadiusBuff1: //TODO: TOO MUCH?
+                            description += "(Magnetic Radius +32)";
+                            magneticRadius = 1 * 32;
+                            break;
+                        case (int)Ingredient.buffs.magneticRadiusBuff2:
+                            description += "(Magnetic Radius +64)";
+                            magneticRadius = 2 * 32;
+                            break;
+                        case (int)Ingredient.buffs.magneticRadiusBuff3:
+                            description += "(Magnetic Radius + 96)";
+                            magneticRadius = 3 * 32;
+                            break;
+                        case (int)Ingredient.buffs.speedBuff1:
+                            description += "(Speed +1)";
+                            speed = 1;
+                            break;
+                        case (int)Ingredient.buffs.speedBuff2:
+                            description += "(Speed +2)";
+                            speed = 2;
+                            break;
+                        case (int)Ingredient.buffs.speedBuff3:
+                            description += "(Speed +3)";
+                            speed = 3;
+                            break;
+                    }
+                }
             }
             else
             {
                 //Debuff
+                int maxDebuffs = getDebuffChance();
 
+                if(getBuffChance() < 5)
+                {
+                    maxDebuffs += Enum.GetValues(typeof(Ingredient.debuffs)).Length;
+                }
+
+                int debuffRandomCounter = randomGenerator.Next(1, maxDebuffs);
+
+                List<int> debuffs = getAllDebuffs();
+
+                int finalDebuffIndex = -1;
+
+                foreach (int debuffIndex in Enum.GetValues(typeof(Ingredient.debuffs)))
+                {
+                    if (debuffs[debuffIndex] > 0)
+                    {
+                        debuffRandomCounter -= debuffs[debuffIndex];
+
+                        if (debuffRandomCounter < 0)
+                        {
+                            finalDebuffIndex = debuffIndex;
+                            break;
+                        }
+                    }
+                }
+
+                if(finalDebuffIndex != -1)
+                {
+                    switch (finalDebuffIndex)
+                    {
+                        case (int)Ingredient.debuffs.monsterMusk1:
+                            description += "(Monster Musk)";
+                            defaultBuff = 24;
+                            break;
+                        case (int)Ingredient.debuffs.farmingDebuff1:
+                            description += "(Farming -1)";
+                            farming = -1;
+                            break;
+                        case (int)Ingredient.debuffs.farmingDebuff2:
+                            description += "(Farming -2)";
+                            farming = -2;
+                            break;
+                        case (int)Ingredient.debuffs.farmingDebuff3:
+                            description += "(Farming -3)";
+                            farming = -3;
+                            break;
+                        case (int)Ingredient.debuffs.miningDebuff1:
+                            description += "(Mining -1)";
+                            mining = -1;
+                            break;
+                        case (int)Ingredient.debuffs.miningDebuff2:
+                            description += "(Mining -2)";
+                            mining = -2;
+                            break;
+                        case (int)Ingredient.debuffs.miningDebuff3:
+                            description += "(Mining -3)";
+                            mining = -3;
+                            break;
+                        case (int)Ingredient.debuffs.fishingDebuff1:
+                            description += "(Fishing -1)";
+                            fishing = -1;
+                            break;
+                        case (int)Ingredient.debuffs.fishingDebuff2:
+                            description += "(Fishing -2)";
+                            fishing = -2;
+                            break;
+                        case (int)Ingredient.debuffs.fishingDebuff3:
+                            description += "(Fishing -3)";
+                            fishing = -3;
+                            break;
+                        case (int)Ingredient.debuffs.foragingDebuff1:
+                            description += "(Foraging -1)";
+                            foraging = -1;
+                            break;
+                        case (int)Ingredient.debuffs.foragingDebuff2:
+                            description += "(Foraging -2)";
+                            foraging = -2;
+                            break;
+                        case (int)Ingredient.debuffs.foragingDebuff3:
+                            description += "(Foraging -3)";
+                            foraging = -3;
+                            break;
+                        case (int)Ingredient.debuffs.attackDebuff1:
+                            description += "(Attack -1)";
+                            attack = -1;
+                            break;
+                        case (int)Ingredient.debuffs.attackDebuff2:
+                            description += "(Attack -2)";
+                            attack = -2;
+                            break;
+                        case (int)Ingredient.debuffs.attackDebuff3:
+                            description += "(Attack -3)";
+                            attack = -3;
+                            break;
+                        case (int)Ingredient.debuffs.defenseDebuff1:
+                            description += "(Defense -1)";
+                            defense = -1;
+                            break;
+                        case (int)Ingredient.debuffs.defenseDebuff2:
+                            description += "(Defense -2)";
+                            defense = -2;
+                            break;
+                        case (int)Ingredient.debuffs.defenseDebuff3:
+                            description += "(Defense -3)";
+                            defense = -3;
+                            break;
+                        case (int)Ingredient.debuffs.maxEnergyDebuff1:
+                            description += "(Max Stamina -10)";
+                            maxStamina = -1 * 10;
+                            break;
+                        case (int)Ingredient.debuffs.maxEnergyDebuff2:
+                            description += "(Max Stamina -20)";
+                            maxStamina = -2 * 10;
+                            break;
+                        case (int)Ingredient.debuffs.maxEnergyDebuff3:
+                            description += "(Max Stamina -30)";
+                            maxStamina = -3 * 10;
+                            break;
+                        case (int)Ingredient.debuffs.luckDebuff1:
+                            description += "(Luck -1)";
+                            luck = -1;
+                            break;
+                        case (int)Ingredient.debuffs.luckDebuff2:
+                            description += "(Luck -2)";
+                            luck = -2;
+                            break;
+                        case (int)Ingredient.debuffs.luckDebuff3:
+                            description += "(Luck -3)";
+                            luck = -3;
+                            break;
+                        case (int)Ingredient.debuffs.speedDebuff1:
+                            description += "(Speed -1)";
+                            speed = -1;
+                            break;
+                        case (int)Ingredient.debuffs.speedDebuff2:
+                            description += "(Speed -2)";
+                            speed = -2;
+                            break;
+                        case (int)Ingredient.debuffs.speedDebuff3:
+                            description += "(Speed -3)";
+                            speed = -3;
+                            break;
+                    }
+                }
             }
+
+            //Game1.buffsDisplay.addOtherBuff(
+            //    new(0,
+            //        0,
+            //        0,
+            //        0,
+            //        0,
+            //        0,
+            //        0,
+            //        0,
+            //        0,
+            //        0,
+            //        0,
+            //        0,
+            //        minutesDuration: 1,
+            //        source: "<internal buff name>",
+            //        displaySource: ModEntry.ModHelper.Translation.Get("<what should appear in game as the source>"))
+            //    {
+            //        which = myBuffId,
+            //        sheetIndex = < index of the buff icon >,
+            //        glow = <if player should glow set to something other than Color.White >,
+            //        millisecondsDuration = < here you set the actual duration >,
+            //        description = ModEntry.ModHelper.Translation.Get("<should appear in game as the description>")
+            //    }
+            //);
+
+            Buff buff = new Buff(farming, fishing, mining, digging, luck, foraging, crafting, maxStamina, magneticRadius, speed, defense, attack, minutesDuration, source, displaySource)
+            {
+                sheetIndex = 17,
+                //millisecondsDuration = < here you set the actual duration >,
+                description = description
+            };
+
+            if(defaultBuff != -1)
+            {
+                buff.which = defaultBuff;
+            }
+            
+
+            Game1.buffsDisplay.addOtherBuff(buff);
         }
 
         public int getBuffChance()
@@ -400,12 +613,51 @@ namespace CauldronOfChance
 
         public double getButterflies()
         {
-            return ingredient1.butterflies + ingredient2.butterflies + ingredient3.butterflies;
+            return ingredient1.butterflies + ingredient2.butterflies + ingredient3.butterflies + 0.01;
         }
 
         public double getBoom()
         {
-            return ingredient1.boom + ingredient2.boom + ingredient3.boom;
+            return ingredient1.boom + ingredient2.boom + ingredient3.boom + 0.01;
+        }
+
+        public double getCauldronLuck()
+        {
+            return ingredient1.cauldronLuck + ingredient2.cauldronLuck + ingredient3.cauldronLuck;
+        }
+
+        public List<int> getAllBuffs()
+        {
+            int defaultAdder = 0;
+
+            if(getDebuffChance() < 5)
+            {
+                defaultAdder = 1;
+            }
+
+            List<int> buffList = new List<int>();
+            foreach (int buffIndex in Enum.GetValues(typeof(Ingredient.buffs)))
+            {
+                buffList.Add(ingredient1.buffList[buffIndex] + ingredient2.buffList[buffIndex] + ingredient3.buffList[buffIndex] + defaultAdder);
+            }
+            return buffList;
+        }
+
+        public List<int> getAllDebuffs()
+        {
+            int defaultAdder = 0;
+
+            if (getBuffChance() < 5)
+            {
+                defaultAdder = 1;
+            }
+
+            List<int> debuffList = new List<int>();
+            foreach (int debuffIndex in Enum.GetValues(typeof(Ingredient.debuffs)))
+            {
+                debuffList.Add(ingredient1.debuffList[debuffIndex] + ingredient2.debuffList[debuffIndex] + ingredient3.debuffList[debuffIndex] + defaultAdder);
+            }
+            return debuffList;
         }
         #endregion chance determination
         #endregion helper

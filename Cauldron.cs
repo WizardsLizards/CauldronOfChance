@@ -12,6 +12,7 @@ namespace CauldronOfChance
         public static Ingredient getIngredient(Item item)
         {
             return new Ingredient(item);
+            //return new Ingredient(item, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
         }
     }
 }
