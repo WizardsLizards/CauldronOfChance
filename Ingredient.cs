@@ -154,6 +154,9 @@ namespace CauldronOfChance
             addForCategory();
             addForFoodBuffs();
             addForQuality();
+            addForEdibility();
+            addForMoneyValue();
+            addForCooking();
         }
 
         public void addForCategory()
@@ -265,6 +268,24 @@ namespace CauldronOfChance
 
                 cauldronLuck += csObject.Quality * 0.05;
             }
+        }
+
+        public void addForEdibility()
+        {
+            if (item is StardewValley.Object)
+            {
+                StardewValley.Object csObject = item as StardewValley.Object;
+
+                if(csObject.Edibility > -300)
+                {
+                    cauldronLuck += (csObject.Edibility / 100) * 0.05;
+                }
+            }
+        }
+        
+        public void addForMoneyValue()
+        {
+            cauldronLuck += (item.salePrice() / 1000) * 0.02;
         }
 
         public void addForCooking()

@@ -428,6 +428,8 @@ namespace CauldronOfChance
                 || item is Ring //Ring could be interesting tho: Chance for enchantment
                 || item is SpecialItem
                 || item.isPlaceable()
+                || item.salePrice() < 0
+                || item.canBeGivenAsGift() == false
                 )
             {
                 return false;

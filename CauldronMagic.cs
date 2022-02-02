@@ -79,7 +79,7 @@ namespace CauldronOfChance
             //For buffs: energy *10, magnetic *32(?)
 
             #region take effect
-            //Drink
+            //Drink buff
             if (effectType == 1)
             {
                 Game1.player.canMove = false;
@@ -88,24 +88,30 @@ namespace CauldronOfChance
                 DelayedAction.delayedBehavior onDrink = delegate
                 {
                     Game1.player.canMove = true;
-                    Game1.activeClickableMenu = new DialogueBox("You drink the potion and... suddenly you think that Expl0 is the coolest!!"); //TODO: Better text
+                    Game1.activeClickableMenu = new DialogueBox("The magic of the Cauldron flows through you...");
                 };
 
                 DelayedAction.functionAfterDelay(onDrink, 1000);
             }
-            //Get item
+            //Drink debuff
             else if (effectType == 2)
             {
-                resultingItem = new StardewValley.Object(373, 1);
-                Game1.player.currentLocation.debris.Add(new Debris(resultingItem, new Microsoft.Xna.Framework.Vector2(3 * 64f, 20 * 64f)));
-
                 Game1.player.canMove = false;
-                DelayedAction.delayedBehavior onDrop = delegate
+                ObjectPatches.IModHelper.Reflection.GetMethod(Game1.player, "performDrinkAnimation").Invoke(resultingItem);
+
+                DelayedAction.delayedBehavior afterDrink = delegate
                 {
                     Game1.player.canMove = true;
-                    Game1.activeClickableMenu = new DialogueBox($"A {resultingItem.DisplayName} emerges from the depths of the Cauldron.");
+                    Game1.activeClickableMenu = new DialogueBox("An aweful taste fills your mouth...");
                 };
-                DelayedAction.functionAfterDelay(onDrop, 100);
+
+                DelayedAction.delayedBehavior onDrink = delegate
+                {
+                    Game1.player.performPlayerEmote("sick");
+                    DelayedAction.functionAfterDelay(afterDrink, 1000);
+                };
+
+                DelayedAction.functionAfterDelay(onDrink, 1500);
             }
             //Butterflies!!!
             else if (effectType == 3)
@@ -127,7 +133,7 @@ namespace CauldronOfChance
                 DelayedAction.functionAfterDelay(onButterflies, 100);
             }
             //BOOOM!!!!
-            else
+            else if (effectType == 4)
             {
                 WizardHouse.explode(new Microsoft.Xna.Framework.Vector2(3, 20), 3, Game1.player);
                 Game1.player.changeFriendship(-222, Wizard);
@@ -140,6 +146,20 @@ namespace CauldronOfChance
                     Game1.activeClickableMenu = new DialogueBox("A vile stench fills the air...");
                 };
                 DelayedAction.functionAfterDelay(onExplosion, 100);
+            }
+            //Get item
+            else if (effectType == 5)
+            {
+                resultingItem = new StardewValley.Object(373, 1);
+                Game1.player.currentLocation.debris.Add(new Debris(resultingItem, new Microsoft.Xna.Framework.Vector2(3 * 64f, 20 * 64f)));
+
+                Game1.player.canMove = false;
+                DelayedAction.delayedBehavior onDrop = delegate
+                {
+                    Game1.player.canMove = true;
+                    Game1.activeClickableMenu = new DialogueBox($"A {resultingItem.DisplayName} emerges from the depths of the Cauldron.");
+                };
+                DelayedAction.functionAfterDelay(onDrop, 100);
             }
             #endregion take effect
 
@@ -186,7 +206,7 @@ namespace CauldronOfChance
             //Check for crafting recipes (Drop)
             if (false)
             {
-                effectType = 2;
+                effectType = 5;
                 return;
             }
 
@@ -200,7 +220,7 @@ namespace CauldronOfChance
             //Check for other item drops? (Drop)
             if (false)
             {
-                effectType = 2;
+                effectType = 5;
                 return;
             }
 
@@ -234,18 +254,18 @@ namespace CauldronOfChance
 
             int defaultBuff = -1;
 
-            int minutesDuration = 20 * 60; //20 hours
+            int minutesDuration = 20 * 60; //20 hours //TODO: Random duration? (5-20 min?)
             string source = "CauldronOfChance";
             string displaySource = "Cauldron";
             //TODO: Hints instead of buff display? ("You dont feel like fishing, you feel like farming, etc.),
             string description = "The magic of the Cauldron flows through you. "; //TODO: Change for debuff/special buffs?
             //string description = "You're feeling "; //TODO: Change for debuff/special buffs?
 
-            effectType = 1;
-
             if (buffRandom <= buffChance)
             {
                 //Buff
+                effectType = 1;
+
                 int maxBuffs = getBuffChance();
 
                 if (getDebuffChance() < 5)
@@ -413,6 +433,8 @@ namespace CauldronOfChance
             else
             {
                 //Debuff
+                effectType = 2;
+
                 int maxDebuffs = getDebuffChance();
 
                 if(getBuffChance() < 5)
