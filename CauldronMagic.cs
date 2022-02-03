@@ -38,99 +38,8 @@ namespace CauldronOfChance
         public double cauldronLuck { get; set; } = 0;
         #endregion
 
-        #region buffs
         public List<int> buffList;
-        public enum buffs
-        {
-            garlicOil1,
-
-            debuffImmunity1,
-
-            farmingBuff1,
-            farmingBuff2,
-            farmingBuff3,
-
-            miningBuff1,
-            miningBuff2,
-            miningBuff3,
-
-            fishingBuff1,
-            fishingBuff2,
-            fishingBuff3,
-
-            foragingBuff1,
-            foragingBuff2,
-            foragingBuff3,
-
-            attackBuff1,
-            attackBuff2,
-            attackBuff3,
-
-            defenseBuff1,
-            defenseBuff2,
-            defenseBuff3,
-
-            maxEnergyBuff1,
-            maxEnergyBuff2,
-            maxEnergyBuff3,
-
-            luckBuff1,
-            luckBuff2,
-            luckBuff3,
-
-            magneticRadiusBuff1,
-            magneticRadiusBuff2,
-            magneticRadiusBuff3,
-
-            speedBuff1,
-            speedBuff2,
-            speedBuff3
-        }
-        #endregion buffs
-
-        #region debuffs
         public List<int> debuffList;
-        public enum debuffs
-        {
-            monsterMusk1,
-
-            farmingDebuff1,
-            farmingDebuff2,
-            farmingDebuff3,
-
-            miningDebuff1,
-            miningDebuff2,
-            miningDebuff3,
-
-            fishingDebuff1,
-            fishingDebuff2,
-            fishingDebuff3,
-
-            foragingDebuff1,
-            foragingDebuff2,
-            foragingDebuff3,
-
-            attackDebuff1,
-            attackDebuff2,
-            attackDebuff3,
-
-            defenseDebuff1,
-            defenseDebuff2,
-            defenseDebuff3,
-
-            maxEnergyDebuff1,
-            maxEnergyDebuff2,
-            maxEnergyDebuff3,
-
-            luckDebuff1,
-            luckDebuff2,
-            luckDebuff3,
-
-            speedDebuff1,
-            speedDebuff2,
-            speedDebuff3
-        }
-        #endregion debuffs
         #endregion chances
         #endregion properties
 
@@ -150,12 +59,12 @@ namespace CauldronOfChance
                 playerLuck = Game1.player.DailyLuck + getCauldronLuck();
 
                 buffList = new List<int>();
-                foreach (int buffIndex in Enum.GetValues(typeof(buffs)))
+                foreach (int buffIndex in Enum.GetValues(typeof(Cauldron.buffs)))
                 {
                     buffList.Add(0);
                 }
                 debuffList = new List<int>();
-                foreach (int debuffIndex in Enum.GetValues(typeof(debuffs)))
+                foreach (int debuffIndex in Enum.GetValues(typeof(Cauldron.debuffs)))
                 {
                     debuffList.Add(0);
                 }
@@ -396,7 +305,7 @@ namespace CauldronOfChance
 
                 if (getDebuffChance() < 5)
                 {
-                    maxBuffs += Enum.GetValues(typeof(Ingredient.buffs)).Length;
+                    maxBuffs += Enum.GetValues(typeof(Cauldron.buffs)).Length;
                 }
 
                 int buffRandomCounter = randomGenerator.Next(1, maxBuffs);
@@ -405,7 +314,7 @@ namespace CauldronOfChance
 
                 int finalBuffIndex = -1;
 
-                foreach (int buffIndex in Enum.GetValues(typeof(Ingredient.buffs)))
+                foreach (int buffIndex in Enum.GetValues(typeof(Cauldron.buffs)))
                 {
                     if (buffs[buffIndex] > 0)
                     {
@@ -423,222 +332,240 @@ namespace CauldronOfChance
                 {
                     switch (finalBuffIndex)
                     {
-                        case (int)Ingredient.buffs.garlicOil1: //TODO: Re-add 2 and 3 with the same effect for more chances / higher value tho?
-                            //description = "You've started to smell... weird.";
+                        case (int)Cauldron.buffs.garlicOil1:
                             description += "(Garlic Oil)";
                             deBuff = "You've started to smell like... garlic?";
                             defaultBuff = 23;
                             break;
-                        case (int)Ingredient.buffs.debuffImmunity1:
-                            //description = "You feel as if nothing can slow you down.";
+                        case (int)Cauldron.buffs.garlicOil2:
+                            description += "(Garlic Oil)";
+                            deBuff = "You've started to smell like... garlic?";
+                            defaultBuff = 23;
+                            break;
+                        case (int)Cauldron.buffs.garlicOil3:
+                            description += "(Garlic Oil)";
+                            deBuff = "You've started to smell like... garlic?";
+                            defaultBuff = 23;
+                            break;
+                        case (int)Cauldron.buffs.debuffImmunity1:
                             description += "(Debuff Immunity)";
                             deBuff = "You feel like nothing can slow you down today!";
                             defaultBuff = 28;
                             break;
-                        case (int)Ingredient.buffs.farmingBuff1:
+                        case (int)Cauldron.buffs.debuffImmunity2:
+                            description += "(Debuff Immunity)";
+                            deBuff = "You feel like nothing can slow you down today!";
+                            defaultBuff = 28;
+                            break;
+                        case (int)Cauldron.buffs.debuffImmunity3:
+                            description += "(Debuff Immunity)";
+                            deBuff = "You feel like nothing can slow you down today!";
+                            defaultBuff = 28;
+                            break;
+                        case (int)Cauldron.buffs.farmingBuff1:
                             description += "(Farming +1)";
                             deBuff = "farming";
                             type = 1;
                             value = 1;
                             farming = 1;
                             break;
-                        case (int)Ingredient.buffs.farmingBuff2:
+                        case (int)Cauldron.buffs.farmingBuff2:
                             description += "(Farming +2)";
                             deBuff = "farming";
                             type = 1;
                             value = 2;
                             farming = 2;
                             break;
-                        case (int)Ingredient.buffs.farmingBuff3:
+                        case (int)Cauldron.buffs.farmingBuff3:
                             description += "(Farming +3)";
                             deBuff = "farming";
                             type = 1;
                             value = 3;
                             farming = 3;
                             break;
-                        case (int)Ingredient.buffs.miningBuff1:
+                        case (int)Cauldron.buffs.miningBuff1:
                             description += "(Mining +1)";
                             deBuff = "mining";
                             type = 1;
                             value = 1;
                             mining = 1;
                             break;
-                        case (int)Ingredient.buffs.miningBuff2:
+                        case (int)Cauldron.buffs.miningBuff2:
                             description += "(Mining +2)";
                             deBuff = "mining";
                             type = 1;
                             value = 2;
                             mining = 2;
                             break;
-                        case (int)Ingredient.buffs.miningBuff3:
+                        case (int)Cauldron.buffs.miningBuff3:
                             description += "(Mining +3)";
                             deBuff = "mining";
                             type = 1;
                             value = 3;
                             mining = 3;
                             break;
-                        case (int)Ingredient.buffs.fishingBuff1:
+                        case (int)Cauldron.buffs.fishingBuff1:
                             description += "(Fishing +1)";
                             deBuff = "fishing";
                             type = 1;
                             value = 1;
                             fishing = 1;
                             break;
-                        case (int)Ingredient.buffs.fishingBuff2:
+                        case (int)Cauldron.buffs.fishingBuff2:
                             description += "(Fishing +2)";
                             deBuff = "fishing";
                             type = 1;
                             value = 2;
                             fishing = 2;
                             break;
-                        case (int)Ingredient.buffs.fishingBuff3:
+                        case (int)Cauldron.buffs.fishingBuff3:
                             description += "(Fishing +3)";
                             deBuff = "fishing";
                             type = 1;
                             value = 3;
                             fishing = 3;
                             break;
-                        case (int)Ingredient.buffs.foragingBuff1:
+                        case (int)Cauldron.buffs.foragingBuff1:
                             description += "(Foraging +1)";
                             deBuff = "foraging";
                             type = 1;
                             value = 1;
                             foraging = 1;
                             break;
-                        case (int)Ingredient.buffs.foragingBuff2:
+                        case (int)Cauldron.buffs.foragingBuff2:
                             description += "(Foraging +2)";
                             deBuff = "foraging";
                             type = 1;
                             value = 2;
                             foraging = 2;
                             break;
-                        case (int)Ingredient.buffs.foragingBuff3:
+                        case (int)Cauldron.buffs.foragingBuff3:
                             description += "(Foraging +3)";
                             deBuff = "foraging";
                             type = 1;
                             value = 3;
                             foraging = 3;
                             break;
-                        case (int)Ingredient.buffs.attackBuff1:
+                        case (int)Cauldron.buffs.attackBuff1:
                             description += "(Attack +1)";
                             deBuff = "strong";
                             type = 2;
                             value = 1;
                             attack = 1;
                             break;
-                        case (int)Ingredient.buffs.attackBuff2:
+                        case (int)Cauldron.buffs.attackBuff2:
                             description += "(Attack +2)";
                             deBuff = "strong";
                             type = 2;
                             value = 2;
                             attack = 2;
                             break;
-                        case (int)Ingredient.buffs.attackBuff3:
+                        case (int)Cauldron.buffs.attackBuff3:
                             description += "(Attack +3)";
                             deBuff = "strong";
                             type = 2;
                             value = 3;
                             attack = 3;
                             break;
-                        case (int)Ingredient.buffs.defenseBuff1:
+                        case (int)Cauldron.buffs.defenseBuff1:
                             description += "(Defense +1)";
                             deBuff = "resilient";
                             type = 2;
                             value = 1;
                             defense = 1;
                             break;
-                        case (int)Ingredient.buffs.defenseBuff2:
+                        case (int)Cauldron.buffs.defenseBuff2:
                             description += "(Defense +2)";
                             deBuff = "resilient";
                             type = 2;
                             value = 2;
                             defense = 2;
                             break;
-                        case (int)Ingredient.buffs.defenseBuff3:
+                        case (int)Cauldron.buffs.defenseBuff3:
                             description += "(Defense +3)";
                             deBuff = "resilient";
                             type = 2;
                             value = 3;
                             defense = 3;
                             break;
-                        case (int)Ingredient.buffs.maxEnergyBuff1:
+                        case (int)Cauldron.buffs.maxEnergyBuff1:
                             description += "(Max Stamina +10)";
                             deBuff = "vigorous";
                             type = 2;
                             value = 1;
                             maxStamina = 1;
                             break;
-                        case (int)Ingredient.buffs.maxEnergyBuff2:
+                        case (int)Cauldron.buffs.maxEnergyBuff2:
                             description += "(Max Stamina +20)";
                             deBuff = "vigorous";
                             type = 2;
                             value = 2;
                             maxStamina = 2;
                             break;
-                        case (int)Ingredient.buffs.maxEnergyBuff3:
+                        case (int)Cauldron.buffs.maxEnergyBuff3:
                             description += "(Max Stamina +30)";
                             deBuff = "vigorous";
                             type = 2;
                             value = 3;
                             maxStamina = 3;
                             break;
-                        case (int)Ingredient.buffs.luckBuff1:
+                        case (int)Cauldron.buffs.luckBuff1:
                             description += "(Luck +1)";
                             deBuff = "lucky";
                             type = 2;
                             value = 1;
                             luck = 1;
                             break;
-                        case (int)Ingredient.buffs.luckBuff2:
+                        case (int)Cauldron.buffs.luckBuff2:
                             description += "(Luck +2)";
                             deBuff = "lucky";
                             type = 2;
                             value = 2;
                             luck = 2;
                             break;
-                        case (int)Ingredient.buffs.luckBuff3:
+                        case (int)Cauldron.buffs.luckBuff3:
                             description += "(Luck +3)";
                             deBuff = "lucky";
                             type = 2;
                             value = 3;
                             luck = 3;
                             break;
-                        case (int)Ingredient.buffs.magneticRadiusBuff1: //TODO: TOO MUCH?
+                        case (int)Cauldron.buffs.magneticRadiusBuff1: //TODO: TOO MUCH?
                             description += "(Magnetic Radius +32)";
                             deBuff = "magnetic";
                             type = 2;
                             value = 1;
                             magneticRadius = 1;
                             break;
-                        case (int)Ingredient.buffs.magneticRadiusBuff2:
+                        case (int)Cauldron.buffs.magneticRadiusBuff2:
                             description += "(Magnetic Radius +64)";
                             deBuff = "magnetic";
                             type = 2;
                             value = 2;
                             magneticRadius = 2;
                             break;
-                        case (int)Ingredient.buffs.magneticRadiusBuff3:
+                        case (int)Cauldron.buffs.magneticRadiusBuff3:
                             description += "(Magnetic Radius + 96)";
                             deBuff = "magnetic";
                             type = 2;
                             value = 3;
                             magneticRadius = 3;
                             break;
-                        case (int)Ingredient.buffs.speedBuff1:
+                        case (int)Cauldron.buffs.speedBuff1:
                             description += "(Speed +1)";
                             deBuff = "fast";
                             type = 2;
                             value = 1;
                             speed = 1;
                             break;
-                        case (int)Ingredient.buffs.speedBuff2:
+                        case (int)Cauldron.buffs.speedBuff2:
                             description += "(Speed +2)";
                             deBuff = "fast";
                             type = 2;
                             value = 2;
                             speed = 2;
                             break;
-                        case (int)Ingredient.buffs.speedBuff3:
+                        case (int)Cauldron.buffs.speedBuff3:
                             description += "(Speed +3)";
                             deBuff = "fast";
                             type = 2;
@@ -657,7 +584,7 @@ namespace CauldronOfChance
 
                 if(getBuffChance() < 5)
                 {
-                    maxDebuffs += Enum.GetValues(typeof(Ingredient.debuffs)).Length;
+                    maxDebuffs += Enum.GetValues(typeof(Cauldron.debuffs)).Length;
                 }
 
                 int debuffRandomCounter = randomGenerator.Next(1, maxDebuffs);
@@ -666,7 +593,7 @@ namespace CauldronOfChance
 
                 int finalDebuffIndex = -1;
 
-                foreach (int debuffIndex in Enum.GetValues(typeof(Ingredient.debuffs)))
+                foreach (int debuffIndex in Enum.GetValues(typeof(Cauldron.debuffs)))
                 {
                     if (debuffs[debuffIndex] > 0)
                     {
@@ -684,194 +611,204 @@ namespace CauldronOfChance
                 {
                     switch (finalDebuffIndex)
                     {
-                        case (int)Ingredient.debuffs.monsterMusk1:
+                        case (int)Cauldron.debuffs.monsterMusk1:
                             description += "(Monster Musk)";
                             deBuff = "A sweet stench emnates from you...";
                             defaultBuff = 24;
                             break;
-                        case (int)Ingredient.debuffs.farmingDebuff1:
+                        case (int)Cauldron.debuffs.monsterMusk2:
+                            description += "(Monster Musk)";
+                            deBuff = "A sweet stench emnates from you...";
+                            defaultBuff = 24;
+                            break;
+                        case (int)Cauldron.debuffs.monsterMusk3:
+                            description += "(Monster Musk)";
+                            deBuff = "A sweet stench emnates from you...";
+                            defaultBuff = 24;
+                            break;
+                        case (int)Cauldron.debuffs.farmingDebuff1:
                             description += "(Farming -1)";
                             deBuff = "farming";
                             type = 1;
                             value = 1;
                             farming = -1;
                             break;
-                        case (int)Ingredient.debuffs.farmingDebuff2:
+                        case (int)Cauldron.debuffs.farmingDebuff2:
                             description += "(Farming -2)";
                             deBuff = "farming";
                             type = 1;
                             value = 2;
                             farming = -2;
                             break;
-                        case (int)Ingredient.debuffs.farmingDebuff3:
+                        case (int)Cauldron.debuffs.farmingDebuff3:
                             description += "(Farming -3)";
                             deBuff = "farming";
                             type = 1;
                             value = 3;
                             farming = -3;
                             break;
-                        case (int)Ingredient.debuffs.miningDebuff1:
+                        case (int)Cauldron.debuffs.miningDebuff1:
                             description += "(Mining -1)";
                             deBuff = "mining";
                             type = 1;
                             value = 1;
                             mining = -1;
                             break;
-                        case (int)Ingredient.debuffs.miningDebuff2:
+                        case (int)Cauldron.debuffs.miningDebuff2:
                             description += "(Mining -2)";
                             deBuff = "mining";
                             type = 1;
                             value = 2;
                             mining = -2;
                             break;
-                        case (int)Ingredient.debuffs.miningDebuff3:
+                        case (int)Cauldron.debuffs.miningDebuff3:
                             description += "(Mining -3)";
                             deBuff = "mining";
                             type = 1;
                             value = 3;
                             mining = -3;
                             break;
-                        case (int)Ingredient.debuffs.fishingDebuff1:
+                        case (int)Cauldron.debuffs.fishingDebuff1:
                             description += "(Fishing -1)";
                             deBuff = "fishing";
                             type = 1;
                             value = 1;
                             fishing = -1;
                             break;
-                        case (int)Ingredient.debuffs.fishingDebuff2:
+                        case (int)Cauldron.debuffs.fishingDebuff2:
                             description += "(Fishing -2)";
                             deBuff = "fishing";
                             type = 1;
                             value = 2;
                             fishing = -2;
                             break;
-                        case (int)Ingredient.debuffs.fishingDebuff3:
+                        case (int)Cauldron.debuffs.fishingDebuff3:
                             description += "(Fishing -3)";
                             deBuff = "fishing";
                             type = 1;
                             value = 3;
                             fishing = -3;
                             break;
-                        case (int)Ingredient.debuffs.foragingDebuff1:
+                        case (int)Cauldron.debuffs.foragingDebuff1:
                             description += "(Foraging -1)";
                             deBuff = "foraging";
                             type = 1;
                             value = 1;
                             foraging = -1;
                             break;
-                        case (int)Ingredient.debuffs.foragingDebuff2:
+                        case (int)Cauldron.debuffs.foragingDebuff2:
                             description += "(Foraging -2)";
                             deBuff = "foraging";
                             type = 1;
                             value = 2;
                             foraging = -2;
                             break;
-                        case (int)Ingredient.debuffs.foragingDebuff3:
+                        case (int)Cauldron.debuffs.foragingDebuff3:
                             description += "(Foraging -3)";
                             deBuff = "foraging";
                             type = 1;
                             value = 3;
                             foraging = -3;
                             break;
-                        case (int)Ingredient.debuffs.attackDebuff1:
+                        case (int)Cauldron.debuffs.attackDebuff1:
                             description += "(Attack -1)";
                             deBuff = "strong";
                             type = 2;
                             value = 1;
                             attack = -1;
                             break;
-                        case (int)Ingredient.debuffs.attackDebuff2:
+                        case (int)Cauldron.debuffs.attackDebuff2:
                             description += "(Attack -2)";
                             deBuff = "strong";
                             type = 2;
                             value = 2;
                             attack = -2;
                             break;
-                        case (int)Ingredient.debuffs.attackDebuff3:
+                        case (int)Cauldron.debuffs.attackDebuff3:
                             description += "(Attack -3)";
                             deBuff = "strong";
                             type = 2;
                             value = 3;
                             attack = -3;
                             break;
-                        case (int)Ingredient.debuffs.defenseDebuff1:
+                        case (int)Cauldron.debuffs.defenseDebuff1:
                             description += "(Defense -1)";
                             deBuff = "resilient";
                             type = 2;
                             value = 1;
                             defense = -1;
                             break;
-                        case (int)Ingredient.debuffs.defenseDebuff2:
+                        case (int)Cauldron.debuffs.defenseDebuff2:
                             description += "(Defense -2)";
                             deBuff = "resilient";
                             type = 2;
                             value = 2;
                             defense = -2;
                             break;
-                        case (int)Ingredient.debuffs.defenseDebuff3:
+                        case (int)Cauldron.debuffs.defenseDebuff3:
                             description += "(Defense -3)";
                             deBuff = "resilient";
                             type = 2;
                             value = 3;
                             defense = -3;
                             break;
-                        case (int)Ingredient.debuffs.maxEnergyDebuff1:
+                        case (int)Cauldron.debuffs.maxEnergyDebuff1:
                             description += "(Max Stamina -10)";
                             deBuff = "vigorous";
                             type = 2;
                             value = 1;
                             maxStamina = -1 * 10;
                             break;
-                        case (int)Ingredient.debuffs.maxEnergyDebuff2:
+                        case (int)Cauldron.debuffs.maxEnergyDebuff2:
                             description += "(Max Stamina -20)";
                             deBuff = "vigorous";
                             type = 2;
                             value = 2;
                             maxStamina = -2 * 10;
                             break;
-                        case (int)Ingredient.debuffs.maxEnergyDebuff3:
+                        case (int)Cauldron.debuffs.maxEnergyDebuff3:
                             description += "(Max Stamina -30)";
                             deBuff = "vigorous";
                             type = 2;
                             value = 3;
                             maxStamina = -3 * 10;
                             break;
-                        case (int)Ingredient.debuffs.luckDebuff1:
+                        case (int)Cauldron.debuffs.luckDebuff1:
                             description += "(Luck -1)";
                             deBuff = "lucky";
                             type = 2;
                             value = 1;
                             luck = -1;
                             break;
-                        case (int)Ingredient.debuffs.luckDebuff2:
+                        case (int)Cauldron.debuffs.luckDebuff2:
                             description += "(Luck -2)";
                             deBuff = "lucky";
                             type = 2;
                             value = 2;
                             luck = -2;
                             break;
-                        case (int)Ingredient.debuffs.luckDebuff3:
+                        case (int)Cauldron.debuffs.luckDebuff3:
                             description += "(Luck -3)";
                             deBuff = "lucky";
                             type = 2;
                             value = 3;
                             luck = -3;
                             break;
-                        case (int)Ingredient.debuffs.speedDebuff1:
+                        case (int)Cauldron.debuffs.speedDebuff1:
                             description += "(Speed -1)";
                             deBuff = "fast";
                             type = 2;
                             value = 1;
                             speed = -1;
                             break;
-                        case (int)Ingredient.debuffs.speedDebuff2:
+                        case (int)Cauldron.debuffs.speedDebuff2:
                             description += "(Speed -2)";
                             deBuff = "fast";
                             type = 2;
                             value = 2;
                             speed = -2;
                             break;
-                        case (int)Ingredient.debuffs.speedDebuff3:
+                        case (int)Cauldron.debuffs.speedDebuff3:
                             description += "(Speed -3)";
                             deBuff = "fast";
                             type = 2;
@@ -975,7 +912,21 @@ namespace CauldronOfChance
 
         public void CheckForBuffCombinations(Cauldron Cauldron)
         {
+            List<string> ingredients = new List<string>() { ingredient1.item.Name, ingredient2.item.Name, ingredient3.item.Name }.Distinct().ToList();
 
+            foreach ((string Type, int Match2, int Match3, List<string> Items) buffCombination in Cauldron.buffCombinations)
+            {
+                int matches = ingredients.Intersect(buffCombination.Items).Count();
+
+                if(matches == 2)
+                {
+                    Cauldron.addToCauldron(buffCombination.Type, buffCombination.Match2);
+                }
+                else if (matches >= 3)
+                {
+                    Cauldron.addToCauldron(buffCombination.Type, buffCombination.Match3);
+                }
+            }
         }
 
         public double CheckForRecipes(Cauldron Cauldron)
@@ -1122,7 +1073,7 @@ namespace CauldronOfChance
             }
 
             List<int> buffList = new List<int>();
-            foreach (int buffIndex in Enum.GetValues(typeof(Ingredient.buffs)))
+            foreach (int buffIndex in Enum.GetValues(typeof(Cauldron.buffs)))
             {
                 buffList.Add(ingredient1.buffList[buffIndex] + ingredient2.buffList[buffIndex] + ingredient3.buffList[buffIndex] + defaultAdder);
             }
@@ -1139,7 +1090,7 @@ namespace CauldronOfChance
             }
 
             List<int> debuffList = new List<int>();
-            foreach (int debuffIndex in Enum.GetValues(typeof(Ingredient.debuffs)))
+            foreach (int debuffIndex in Enum.GetValues(typeof(Cauldron.debuffs)))
             {
                 debuffList.Add(ingredient1.debuffList[debuffIndex] + ingredient2.debuffList[debuffIndex] + ingredient3.debuffList[debuffIndex] + defaultAdder);
             }

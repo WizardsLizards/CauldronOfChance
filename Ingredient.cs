@@ -18,110 +18,19 @@ namespace CauldronOfChance
         public double cauldronLuck { get; set; } = 0;
         #endregion special events
 
-        #region buffs
         public List<int> buffList;
-        public enum buffs
-        {
-            garlicOil1,
-
-            debuffImmunity1,
-
-            farmingBuff1,
-            farmingBuff2,
-            farmingBuff3,
-
-            miningBuff1,
-            miningBuff2,
-            miningBuff3,
-
-            fishingBuff1,
-            fishingBuff2,
-            fishingBuff3,
-
-            foragingBuff1,
-            foragingBuff2,
-            foragingBuff3,
-
-            attackBuff1,
-            attackBuff2,
-            attackBuff3,
-
-            defenseBuff1,
-            defenseBuff2,
-            defenseBuff3,
-
-            maxEnergyBuff1,
-            maxEnergyBuff2,
-            maxEnergyBuff3,
-
-            luckBuff1,
-            luckBuff2,
-            luckBuff3,
-
-            magneticRadiusBuff1,
-            magneticRadiusBuff2,
-            magneticRadiusBuff3,
-
-            speedBuff1,
-            speedBuff2,
-            speedBuff3
-        }
-        #endregion buffs
-
-        #region debuffs
         public List<int> debuffList;
-        public enum debuffs
-        {
-            monsterMusk1,
-
-            farmingDebuff1,
-            farmingDebuff2,
-            farmingDebuff3,
-
-            miningDebuff1,
-            miningDebuff2,
-            miningDebuff3,
-
-            fishingDebuff1,
-            fishingDebuff2,
-            fishingDebuff3,
-
-            foragingDebuff1,
-            foragingDebuff2,
-            foragingDebuff3,
-
-            attackDebuff1,
-            attackDebuff2,
-            attackDebuff3,
-
-            defenseDebuff1,
-            defenseDebuff2,
-            defenseDebuff3,
-
-            maxEnergyDebuff1,
-            maxEnergyDebuff2,
-            maxEnergyDebuff3,
-
-            luckDebuff1,
-            luckDebuff2,
-            luckDebuff3,
-
-            speedDebuff1,
-            speedDebuff2,
-            speedDebuff3
-        }
-        #endregion debuffs
 
         public Ingredient (Item item, int bufferfliesChance = 0, int boomChance = 0, int garlicOil = 0, int monsterMusk = 0, int debuffImmunity = 0,
             int farming = 0, int mining = 0, int fishing = 0, int foraging = 0, int attack = 0, int defense = 0, int maxEnergy = 0, int luck = 0, int magneticRadius = 0, int speed = 0, int cauldronLuck = 0)
         {
             buffList = new List<int>();
-            foreach (int buffIndex in Enum.GetValues(typeof(buffs)))
+            foreach (int buffIndex in Enum.GetValues(typeof(Cauldron.buffs)))
             {
                 buffList.Add(0);
             }
             debuffList = new List<int>();
-            foreach (int debuffIndex in Enum.GetValues(typeof(debuffs)))
+            foreach (int debuffIndex in Enum.GetValues(typeof(Cauldron.debuffs)))
             {
                 debuffList.Add(0);
             }
@@ -156,7 +65,7 @@ namespace CauldronOfChance
                 Cauldron.addToCauldron(nameof(speed), speed);
 
                 addForCategory(Cauldron);
-                addForFoodBuffs();
+                addForFoodBuffs(Cauldron);
                 addForQuality();
                 addForEdibility();
                 addForMoneyValue();
@@ -231,7 +140,7 @@ namespace CauldronOfChance
             }
         }
 
-        public void addForFoodBuffs()
+        public void addForFoodBuffs(Cauldron Cauldron)
         {
             if(item is StardewValley.Object)
             {
@@ -251,16 +160,16 @@ namespace CauldronOfChance
 
                     //Buff buff = new Buff(Convert.ToInt32(whatToBuff[0]), Convert.ToInt32(whatToBuff[1]), Convert.ToInt32(whatToBuff[2]), Convert.ToInt32(whatToBuff[3]), Convert.ToInt32(whatToBuff[4]), Convert.ToInt32(whatToBuff[5]), Convert.ToInt32(whatToBuff[6]), Convert.ToInt32(whatToBuff[7]), Convert.ToInt32(whatToBuff[8]), Convert.ToInt32(whatToBuff[9]), Convert.ToInt32(whatToBuff[10]), (whatToBuff.Length > 11) ? Convert.ToInt32(whatToBuff[11]) : 0, duration, objectDescription[0], objectDescription[4]);
 
-                    addToCauldron("farming", Convert.ToInt32(whatToBuff[0]));
-                    addToCauldron("mining", Convert.ToInt32(whatToBuff[2]));
-                    addToCauldron("fishing", Convert.ToInt32(whatToBuff[1]));
-                    addToCauldron("foraging", Convert.ToInt32(whatToBuff[5]));
-                    addToCauldron("attack", (whatToBuff.Length > 11) ? Convert.ToInt32(whatToBuff[11]) : 0);
-                    addToCauldron("defense", Convert.ToInt32(whatToBuff[10]));
-                    addToCauldron("maxEnergy", Convert.ToInt32(whatToBuff[7]) / 10);
-                    addToCauldron("luck", Convert.ToInt32(whatToBuff[4]));
-                    addToCauldron("magneticRadius", Convert.ToInt32(whatToBuff[8]) / 32);
-                    addToCauldron("speed", Convert.ToInt32(whatToBuff[9]));
+                    Cauldron.addToCauldron("farming", Convert.ToInt32(whatToBuff[0]));
+                    Cauldron.addToCauldron("mining", Convert.ToInt32(whatToBuff[2]));
+                    Cauldron.addToCauldron("fishing", Convert.ToInt32(whatToBuff[1]));
+                    Cauldron.addToCauldron("foraging", Convert.ToInt32(whatToBuff[5]));
+                    Cauldron.addToCauldron("attack", (whatToBuff.Length > 11) ? Convert.ToInt32(whatToBuff[11]) : 0);
+                    Cauldron.addToCauldron("defense", Convert.ToInt32(whatToBuff[10]));
+                    Cauldron.addToCauldron("maxEnergy", Convert.ToInt32(whatToBuff[7]) / 10);
+                    Cauldron.addToCauldron("luck", Convert.ToInt32(whatToBuff[4]));
+                    Cauldron.addToCauldron("magneticRadius", Convert.ToInt32(whatToBuff[8]) / 32);
+                    Cauldron.addToCauldron("speed", Convert.ToInt32(whatToBuff[9]));
                 }
             }
         }
@@ -303,7 +212,7 @@ namespace CauldronOfChance
         {
             int buffChance = 0;
 
-            foreach (int buffIndex in Enum.GetValues(typeof(buffs)))
+            foreach (int buffIndex in Enum.GetValues(typeof(Cauldron.buffs)))
             {
                 buffChance += buffList[buffIndex];
             }
@@ -315,7 +224,7 @@ namespace CauldronOfChance
         {
             int debuffChance = 0;
 
-            foreach (int debuffIndex in Enum.GetValues(typeof(debuffs)))
+            foreach (int debuffIndex in Enum.GetValues(typeof(Cauldron.debuffs)))
             {
                 debuffChance += debuffList[debuffIndex];
             }

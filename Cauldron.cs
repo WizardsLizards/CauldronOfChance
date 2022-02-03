@@ -12,6 +12,106 @@ namespace CauldronOfChance
     /// </summary>
     public class Cauldron : IDisposable
     {
+        #region buffs
+        public List<int> buffList;
+        public enum buffs
+        {
+            garlicOil1,
+            garlicOil2,
+            garlicOil3,
+
+            debuffImmunity1,
+            debuffImmunity2,
+            debuffImmunity3,
+
+            farmingBuff1,
+            farmingBuff2,
+            farmingBuff3,
+
+            miningBuff1,
+            miningBuff2,
+            miningBuff3,
+
+            fishingBuff1,
+            fishingBuff2,
+            fishingBuff3,
+
+            foragingBuff1,
+            foragingBuff2,
+            foragingBuff3,
+
+            attackBuff1,
+            attackBuff2,
+            attackBuff3,
+
+            defenseBuff1,
+            defenseBuff2,
+            defenseBuff3,
+
+            maxEnergyBuff1,
+            maxEnergyBuff2,
+            maxEnergyBuff3,
+
+            luckBuff1,
+            luckBuff2,
+            luckBuff3,
+
+            magneticRadiusBuff1,
+            magneticRadiusBuff2,
+            magneticRadiusBuff3,
+
+            speedBuff1,
+            speedBuff2,
+            speedBuff3
+        }
+        #endregion buffs
+
+        #region debuffs
+        public List<int> debuffList;
+        public enum debuffs
+        {
+            monsterMusk1,
+            monsterMusk2,
+            monsterMusk3,
+
+            farmingDebuff1,
+            farmingDebuff2,
+            farmingDebuff3,
+
+            miningDebuff1,
+            miningDebuff2,
+            miningDebuff3,
+
+            fishingDebuff1,
+            fishingDebuff2,
+            fishingDebuff3,
+
+            foragingDebuff1,
+            foragingDebuff2,
+            foragingDebuff3,
+
+            attackDebuff1,
+            attackDebuff2,
+            attackDebuff3,
+
+            defenseDebuff1,
+            defenseDebuff2,
+            defenseDebuff3,
+
+            maxEnergyDebuff1,
+            maxEnergyDebuff2,
+            maxEnergyDebuff3,
+
+            luckDebuff1,
+            luckDebuff2,
+            luckDebuff3,
+
+            speedDebuff1,
+            speedDebuff2,
+            speedDebuff3
+        }
+        #endregion debuffs
+
         //List 1: Holds all combinations. Tuple: Type - Buff to add on to, Match2 - Value for 2 matches, Match3 - Value for 3 matches, Items - List of possible match items (Distinct)
         public List<(string Type, int Match2, int Match3, List<string> Items)> buffCombinations { get; set; }
 
@@ -58,15 +158,15 @@ namespace CauldronOfChance
         {
             if (name.Equals("garlicOil"))
             {
-                addToCauldron(name, "monsterMusk", value > 0 ? 1 : 0);
+                addToCauldron(name, "monsterMusk", value);
             }
             else if (name.Equals("monsterMusk"))
             {
-                addToCauldron("garlicOil", name, value > 0 ? 1 : 0);
+                addToCauldron("garlicOil", name, value);
             }
             else if (name.Equals("debuffImmunity"))
             {
-                addToCauldron(name, "", value > 0 ? 1 : 0);
+                addToCauldron(name, "", value);
             }
             else if (name.Equals("magneticRadius"))
             {
@@ -87,78 +187,33 @@ namespace CauldronOfChance
             int debuffIndex2 = -1;
             int debuffIndex3 = -1;
 
+            if (buff != null && buff.Equals("") == false)
+            {
+                buffIndex1 = (int)Enum.Parse(typeof(buffs), buff + 1);
+                buffIndex2 = (int)Enum.Parse(typeof(buffs), buff + 2);
+                buffIndex3 = (int)Enum.Parse(typeof(buffs), buff + 3);
+            }
+            if (debuff != null && debuff.Equals("") == false)
+            {
+                debuffIndex1 = (int)Enum.Parse(typeof(debuffs), debuff + 1);
+                debuffIndex2 = (int)Enum.Parse(typeof(debuffs), debuff + 2);
+                debuffIndex3 = (int)Enum.Parse(typeof(debuffs), debuff + 3);
+            }
+
             List<int> BuffList = new List<int>();
             List<int> DebuffList = new List<int>();
 
-            if(Caller is CauldronMagic)
+            if (Caller is CauldronMagic)
             {
                 CauldronMagic cauldronMagic = Caller as CauldronMagic;
                 BuffList = cauldronMagic.buffList;
                 DebuffList = cauldronMagic.debuffList;
-
-                if (buff != null && buff.Equals("") == false)
-                {
-                    buffIndex1 = (int)Enum.Parse(typeof(CauldronMagic.buffs), buff + 1);
-
-                    if (value >= 2)
-                    {
-                        buffIndex2 = (int)Enum.Parse(typeof(CauldronMagic.buffs), buff + 2);
-                    }
-
-                    if (value >= 3)
-                    {
-                        buffIndex3 = (int)Enum.Parse(typeof(CauldronMagic.buffs), buff + 3);
-                    }
-                }
-                if (debuff != null && debuff.Equals("") == false)
-                {
-                    debuffIndex1 = (int)Enum.Parse(typeof(CauldronMagic.debuffs), debuff + 1);
-
-                    if (value >= 2)
-                    {
-                        debuffIndex2 = (int)Enum.Parse(typeof(CauldronMagic.debuffs), debuff + 2);
-                    }
-
-                    if (value >= 3)
-                    {
-                        debuffIndex3 = (int)Enum.Parse(typeof(CauldronMagic.debuffs), debuff + 3);
-                    }
-                }
             }
             else if (Caller is Ingredient)
             {
                 Ingredient ingredient = Caller as Ingredient;
                 BuffList = ingredient.buffList;
                 DebuffList = ingredient.debuffList;
-
-                if (buff != null && buff.Equals("") == false)
-                {
-                    buffIndex1 = (int)Enum.Parse(typeof(Ingredient.buffs), buff + 1);
-
-                    if (value >= 2)
-                    {
-                        buffIndex2 = (int)Enum.Parse(typeof(Ingredient.buffs), buff + 2);
-                    }
-
-                    if (value >= 3)
-                    {
-                        buffIndex3 = (int)Enum.Parse(typeof(Ingredient.buffs), buff + 3);
-                    }
-                }
-                if (debuff != null && debuff.Equals("") == false)
-                {
-                    debuffIndex1 = (int)Enum.Parse(typeof(Ingredient.debuffs), debuff + 1);
-
-                    if (value >= 2)
-                    {
-                        debuffIndex2 = (int)Enum.Parse(typeof(Ingredient.debuffs), debuff + 2);
-                    }
-
-                    if (value >= 3)
-                    {
-                        debuffIndex3 = (int)Enum.Parse(typeof(Ingredient.debuffs), debuff + 3);
-                    }
-                }
             }
 
             if (value >= 3)
