@@ -12,8 +12,8 @@ namespace CauldronOfChance
     /// </summary>
     public class Cauldron : IDisposable
     {
-        #region buffs
-        public List<int> buffList;
+        public const double multiplierConst = 0.1;
+
         public enum buffs
         {
             garlicOil1,
@@ -64,10 +64,6 @@ namespace CauldronOfChance
             speedBuff2,
             speedBuff3
         }
-        #endregion buffs
-
-        #region debuffs
-        public List<int> debuffList;
         public enum debuffs
         {
             monsterMusk1,
@@ -110,7 +106,6 @@ namespace CauldronOfChance
             speedDebuff2,
             speedDebuff3
         }
-        #endregion debuffs
 
         //List 1: Holds all combinations. Tuple: Type - Buff to add on to, Match2 - Value for 2 matches, Match3 - Value for 3 matches, Items - List of possible match items (Distinct)
         public List<(string Type, int Match2, int Match3, List<string> Items)> buffCombinations { get; set; }

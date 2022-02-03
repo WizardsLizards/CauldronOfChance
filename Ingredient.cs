@@ -39,14 +39,14 @@ namespace CauldronOfChance
 
             if (bufferfliesChance > 0)
             {
-                this.butterflies += 0.1 * bufferfliesChance;
+                this.butterflies += bufferfliesChance * Cauldron.multiplierConst;
             }
             if (boomChance > 0)
             {
-                this.boom += 0.1 * boomChance;
+                this.boom += boomChance * Cauldron.multiplierConst;
             }
 
-            this.cauldronLuck += cauldronLuck * 0.1;
+            this.cauldronLuck += cauldronLuck * Cauldron.multiplierConst;
 
             using (Cauldron Cauldron = new Cauldron(this))
             {

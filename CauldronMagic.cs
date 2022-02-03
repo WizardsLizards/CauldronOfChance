@@ -19,7 +19,7 @@ namespace CauldronOfChance
         NPC Wizard { get; set; }
         StardewValley.Item resultingItem { get; set; }
         Random randomGenerator { get; set; }
-        double playerLuck { get; set; }
+        double playerLuck { get => Game1.player.DailyLuck + ingredient1.cauldronLuck + ingredient2.cauldronLuck + ingredient3.cauldronLuck + this.cauldronLuck; }
         #endregion setup
 
         #region ingredients
@@ -30,9 +30,6 @@ namespace CauldronOfChance
 
         #region chances
         #region special
-        public int crafting { get; set; } = 0;
-        public int cooking { get; set; } = 0;
-        public int randomItem { get; set; } = 0;
         public double butterflies { get; set; } = 0;
         public double boom { get; set; } = 0;
         public double cauldronLuck { get; set; } = 0;
@@ -56,7 +53,6 @@ namespace CauldronOfChance
                 Wizard = Game1.getCharacterFromName("Wizard");
                 resultingItem = new StardewValley.Object();
                 randomGenerator = new Random();
-                playerLuck = Game1.player.DailyLuck + getCauldronLuck();
 
                 buffList = new List<int>();
                 foreach (int buffIndex in Enum.GetValues(typeof(Cauldron.buffs)))
@@ -216,15 +212,16 @@ namespace CauldronOfChance
         #region chance determination
         public void determineResult(Cauldron Cauldron)
         {
+            CheckForBuffCombinations(Cauldron);
             double butterboomChance = randomGenerator.NextDouble();
             //Chance for butterflies
-            if (butterboomChance > 1 - getButterflies() - playerLuck)
+            if (butterboomChance > 1 - getButterflies() - (getButterflies() * playerLuck))
             {
                 effectType = 3;
                 return;
             }
             //Chance for boom
-            if (butterboomChance < getBoom() - playerLuck)
+            if (butterboomChance < getBoom() - (getBoom() * playerLuck))
             {
                 effectType = 4;
                 return;
@@ -232,7 +229,8 @@ namespace CauldronOfChance
 
             //Check for crafting recipes (Drop)
             double recipeChance = CheckForRecipes(Cauldron);
-            if (false)
+            double randomRecipeChance = randomGenerator.NextDouble();
+            if (randomRecipeChance < recipeChance + (recipeChance * playerLuck))
             {
                 effectType = 5;
                 return;
@@ -240,25 +238,25 @@ namespace CauldronOfChance
 
             //Check for other item drops? (Drop)
             double itemChance = CheckForItemCombinations(Cauldron);
-            if (false)
+            double randomItemChance = randomGenerator.NextDouble();
+            if (randomItemChance < itemChance + (itemChance * playerLuck))
             {
                 effectType = 5;
                 return;
             }
 
+            //TODO
             //Check for cooking recipes (Drink)
             if (false)
             {
-                effectType = 1;
                 //Other text in the end (other buff building too tho...?)
+                effectType = 1;
                 return;
             }
 
             //Check for other buffs (Drink)
-            CheckForBuffCombinations(Cauldron);
-
-            int buffChance = (int)(getBuffChance() + getBuffChance() * playerLuck);
-            int debuffChance = (int)(getDebuffChance() - getDebuffChance() * playerLuck);
+            int buffChance = (int)(getCombinedBuffChance() + (getCombinedBuffChance() * playerLuck));
+            int debuffChance = (int)(getCombinedDebuffChance() - (getCombinedDebuffChance() * playerLuck));
 
             if(buffChance < 1)
             {
@@ -301,9 +299,9 @@ namespace CauldronOfChance
                 //Buff
                 effectType = 1;
 
-                int maxBuffs = getBuffChance();
+                int maxBuffs = getCombinedBuffChance();
 
-                if (getDebuffChance() < 5)
+                if (getCombinedDebuffChance() < 5)
                 {
                     maxBuffs += Enum.GetValues(typeof(Cauldron.buffs)).Length;
                 }
@@ -580,9 +578,9 @@ namespace CauldronOfChance
                 //Debuff
                 effectType = 2;
 
-                int maxDebuffs = getDebuffChance();
+                int maxDebuffs = getCombinedDebuffChance();
 
-                if(getBuffChance() < 5)
+                if(getCombinedBuffChance() < 5)
                 {
                     maxDebuffs += Enum.GetValues(typeof(Cauldron.debuffs)).Length;
                 }
@@ -918,13 +916,31 @@ namespace CauldronOfChance
             {
                 int matches = ingredients.Intersect(buffCombination.Items).Count();
 
+                int value = 0;
+
                 if(matches == 2)
                 {
-                    Cauldron.addToCauldron(buffCombination.Type, buffCombination.Match2);
+                    value = buffCombination.Match2;
                 }
                 else if (matches >= 3)
                 {
-                    Cauldron.addToCauldron(buffCombination.Type, buffCombination.Match3);
+                    value = buffCombination.Match3;
+                }
+
+                switch (buffCombination.Type)
+                {
+                    case "bufferfliesChance":
+                        butterflies += value * Cauldron.multiplierConst;
+                        break;
+                    case "boomChance":
+                        boom += value * Cauldron.multiplierConst;
+                        break;
+                    case "cauldronLuck":
+                        cauldronLuck += value * Cauldron.multiplierConst;
+                        break;
+                    default:
+                        Cauldron.addToCauldron(buffCombination.Type, value);
+                        break;
                 }
             }
         }
@@ -1038,36 +1054,54 @@ namespace CauldronOfChance
             return 0;
         }
 
+        public int getCombinedBuffChance()
+        {
+            return ingredient1.getBuffChance() + ingredient2.getBuffChance() + ingredient3.getBuffChance() + this.getBuffChance();
+        }
+
+        public int getCombinedDebuffChance()
+        {
+            return ingredient1.getDebuffChance() + ingredient2.getDebuffChance() + ingredient3.getDebuffChance() + this.getBuffChance();
+        }
         public int getBuffChance()
         {
-            return ingredient1.getBuffChance() + ingredient2.getBuffChance() + ingredient3.getBuffChance();
+            int buffChance = 0;
+
+            foreach (int buffIndex in Enum.GetValues(typeof(Cauldron.buffs)))
+            {
+                buffChance += buffList[buffIndex];
+            }
+
+            return buffChance;
         }
 
         public int getDebuffChance()
         {
-            return ingredient1.getDebuffChance() + ingredient2.getDebuffChance() + ingredient3.getDebuffChance();
+            int debuffChance = 0;
+
+            foreach (int debuffIndex in Enum.GetValues(typeof(Cauldron.debuffs)))
+            {
+                debuffChance += debuffList[debuffIndex];
+            }
+
+            return debuffChance;
         }
 
         public double getButterflies()
         {
-            return ingredient1.butterflies + ingredient2.butterflies + ingredient3.butterflies + 0.01;
+            return ingredient1.butterflies + ingredient2.butterflies + ingredient3.butterflies + this.butterflies + 0.01;
         }
 
         public double getBoom()
         {
-            return ingredient1.boom + ingredient2.boom + ingredient3.boom + 0.01;
-        }
-
-        public double getCauldronLuck()
-        {
-            return ingredient1.cauldronLuck + ingredient2.cauldronLuck + ingredient3.cauldronLuck;
+            return ingredient1.boom + ingredient2.boom + ingredient3.boom + this.boom + 0.01;
         }
 
         public List<int> getAllBuffs()
         {
             int defaultAdder = 0;
 
-            if(getDebuffChance() < 5)
+            if(getCombinedDebuffChance() < 5)
             {
                 defaultAdder = 1;
             }
@@ -1084,7 +1118,7 @@ namespace CauldronOfChance
         {
             int defaultAdder = 0;
 
-            if (getBuffChance() < 5)
+            if (getCombinedBuffChance() < 5)
             {
                 defaultAdder = 1;
             }
