@@ -9,7 +9,7 @@ namespace CauldronOfChance
 {
     public class Ingredient
     {
-        Item item;
+        public Item item;
 
         #region special events
         public double butterflies { get; set; } = 0;
@@ -139,91 +139,94 @@ namespace CauldronOfChance
 
             this.cauldronLuck += cauldronLuck * 0.1;
 
-            addToCauldron(nameof(garlicOil), garlicOil);
-            addToCauldron(nameof(monsterMusk), monsterMusk);
-            addToCauldron(nameof(debuffImmunity), debuffImmunity);
-            addToCauldron(nameof(farming), farming);
-            addToCauldron(nameof(mining), mining);
-            addToCauldron(nameof(fishing), fishing);
-            addToCauldron(nameof(foraging), foraging);
-            addToCauldron(nameof(attack), attack);
-            addToCauldron(nameof(defense), defense);
-            addToCauldron(nameof(maxEnergy), maxEnergy);
-            addToCauldron(nameof(luck), luck);
-            addToCauldron(nameof(magneticRadius), magneticRadius);
-            addToCauldron(nameof(speed), speed);
+            using (Cauldron Cauldron = new Cauldron(this))
+            {
+                Cauldron.addToCauldron(nameof(garlicOil), garlicOil);
+                Cauldron.addToCauldron(nameof(monsterMusk), monsterMusk);
+                Cauldron.addToCauldron(nameof(debuffImmunity), debuffImmunity);
+                Cauldron.addToCauldron(nameof(farming), farming);
+                Cauldron.addToCauldron(nameof(mining), mining);
+                Cauldron.addToCauldron(nameof(fishing), fishing);
+                Cauldron.addToCauldron(nameof(foraging), foraging);
+                Cauldron.addToCauldron(nameof(attack), attack);
+                Cauldron.addToCauldron(nameof(defense), defense);
+                Cauldron.addToCauldron(nameof(maxEnergy), maxEnergy);
+                Cauldron.addToCauldron(nameof(luck), luck);
+                Cauldron.addToCauldron(nameof(magneticRadius), magneticRadius);
+                Cauldron.addToCauldron(nameof(speed), speed);
 
-            addForCategory();
-            addForFoodBuffs();
-            addForQuality();
-            addForEdibility();
-            addForMoneyValue();
-            addForCooking();
+                addForCategory(Cauldron);
+                addForFoodBuffs();
+                addForQuality();
+                addForEdibility();
+                addForMoneyValue();
+                addForCooking();
+            }
         }
 
-        public void addForCategory()
+        public void addForCategory(Cauldron Cauldron)
         {
             switch (item.Category)
             {
                 case StardewValley.Object.artisanGoodsCategory:
-                    addToCauldron("farming", 1);
+                    Cauldron.addToCauldron("farming", 1);
                     break;
                 case StardewValley.Object.baitCategory:
-                    addToCauldron("fishing", 1);
+                    Cauldron.addToCauldron("fishing", 1);
                     break;
                 case StardewValley.Object.CookingCategory:
-                    addToCauldron("maxEnergy", 1);
+                    Cauldron.addToCauldron("maxEnergy", 1);
                     break;
                 case StardewValley.Object.CraftingCategory:
-                    addToCauldron("defense", 1);
+                    Cauldron.addToCauldron("defense", 1);
                     break;
                 case StardewValley.Object.EggCategory:
-                    addToCauldron("farming", 1);
+                    Cauldron.addToCauldron("farming", 1);
                     break;
                 case StardewValley.Object.fertilizerCategory:
-                    addToCauldron("farming", 1);
+                    Cauldron.addToCauldron("farming", 1);
                     break;
                 case StardewValley.Object.FishCategory:
-                    addToCauldron("fishing", 1);
+                    Cauldron.addToCauldron("fishing", 1);
                     break;
                 case StardewValley.Object.flowersCategory:
-                    addToCauldron("foraging", 1);
+                    Cauldron.addToCauldron("foraging", 1);
                     break;
                 case StardewValley.Object.FruitsCategory:
-                    addToCauldron("farming", 1);
+                    Cauldron.addToCauldron("farming", 1);
                     break;
                 case StardewValley.Object.GemCategory:
-                    addToCauldron("mining", 1);
+                    Cauldron.addToCauldron("mining", 1);
                     break;
                 case StardewValley.Object.GreensCategory:
-                    addToCauldron("foraging", 1);
+                    Cauldron.addToCauldron("foraging", 1);
                     break;
                 case StardewValley.Object.ingredientsCategory:
-                    addToCauldron("maxEnergy", 1);
+                    Cauldron.addToCauldron("maxEnergy", 1);
                     break;
                 case StardewValley.Object.junkCategory:
                     this.boom += 0.2;
                     break;
                 case StardewValley.Object.MilkCategory:
-                    addToCauldron("farming", 1);
+                    Cauldron.addToCauldron("farming", 1);
                     break;
                 case StardewValley.Object.mineralsCategory:
-                    addToCauldron("mining", 1);
+                    Cauldron.addToCauldron("mining", 1);
                     break;
                 case StardewValley.Object.monsterLootCategory:
-                    addToCauldron("attack", 1);
+                    Cauldron.addToCauldron("attack", 1);
                     break;
                 case StardewValley.Object.SeedsCategory:
-                    addToCauldron("farming", 1);
+                    Cauldron.addToCauldron("farming", 1);
                     break;
                 case StardewValley.Object.syrupCategory:
-                    addToCauldron("farming", 1);
+                    Cauldron.addToCauldron("farming", 1);
                     break;
                 case StardewValley.Object.tackleCategory:
-                    addToCauldron("fishing", 1);
+                    Cauldron.addToCauldron("fishing", 1);
                     break;
                 case StardewValley.Object.VegetableCategory:
-                    addToCauldron("farming", 1);
+                    Cauldron.addToCauldron("farming", 1);
                     break;
             }
         }
@@ -295,149 +298,6 @@ namespace CauldronOfChance
             //TODO
         }
 
-        public void addToCauldron(string name, int value)
-        {
-            if (name.Equals("garlicOil"))
-            {
-                addToCauldron(name, "monsterMusk", value > 0 ? 1 : 0);
-            }
-            else if (name.Equals("monsterMusk"))
-            {
-                addToCauldron("garlicOil", name, value > 0 ? 1 : 0);
-            }
-            else if (name.Equals("debuffImmunity"))
-            {
-                addToCauldron(name, "", value > 0 ? 1 : 0);
-            }
-            else if (name.Equals("magneticRadius"))
-            {
-                addToCauldron(name + "Buff", "", value);
-            }
-            else
-            {
-                addToCauldron(name + "Buff", name + "Debuff", value);
-            }
-        }
-
-        public void addToCauldron(string buff, string debuff, int value)
-        {
-            int buffIndex1 = -1;
-            int buffIndex2 = -1;
-            int buffIndex3 = -1;
-            int debuffIndex1 = -1;
-            int debuffIndex2 = -1;
-            int debuffIndex3 = -1;
-
-            if(buff != null && buff.Equals("") == false)
-            {
-                buffIndex1 = (int)Enum.Parse(typeof(buffs), buff + 1);
-
-                if(value >= 2)
-                {
-                    buffIndex2 = (int)Enum.Parse(typeof(buffs), buff + 2);
-                }
-
-                if(value >= 3)
-                {
-                    buffIndex3 = (int)Enum.Parse(typeof(buffs), buff + 3);
-                }
-            }
-            if(debuff != null && debuff.Equals("") == false)
-            {
-                debuffIndex1 = (int)Enum.Parse(typeof(debuffs), debuff + 1);
-
-                if (value >= 2)
-                {
-                    debuffIndex2 = (int)Enum.Parse(typeof(debuffs), debuff + 2);
-                }
-
-                if (value >= 3)
-                {
-                    debuffIndex3 = (int)Enum.Parse(typeof(debuffs), debuff + 3);
-                }
-            }
-
-            if (value >= 3)
-            {
-                if (buff != null && buff.Equals("") == false)
-                {
-                    buffList[buffIndex3] += 3;
-                    buffList[buffIndex2] += 2;
-                    buffList[buffIndex1] += 1;
-                }
-
-                if (debuff != null && debuff.Equals("") == false)
-                {
-                    debuffList[debuffIndex2] += 1;
-                    debuffList[debuffIndex1] += 1;
-                }
-            }
-            else if (value == 2)
-            {
-                if (buff != null && buff.Equals("") == false)
-                {
-                    buffList[buffIndex2] += 3;
-                    buffList[buffIndex1] += 2;
-                }
-
-                if (debuff != null && debuff.Equals("") == false)
-                {
-                    debuffList[debuffIndex1] += 1;
-                }
-            }
-            else if (value == 1)
-            {
-                if (buff != null && buff.Equals("") == false)
-                {
-                    buffList[buffIndex1] += 3;
-                }
-
-                if (debuff != null && debuff.Equals("") == false)
-                {
-                    debuffList[debuffIndex1] += 1;
-                }
-            }
-            else if (value == -1)
-            {
-                if (debuff != null && debuff.Equals("") == false)
-                {
-                    debuffList[debuffIndex1] += 3;
-                }
-
-                if (buff != null && buff.Equals("") == false)
-                {
-                    buffList[buffIndex1] += 1;
-                }
-            }
-            else if (value == -2)
-            {
-                if (debuff != null && debuff.Equals("") == false)
-                {
-                    debuffList[debuffIndex2] += 3;
-                    debuffList[debuffIndex1] += 2;
-                }
-
-                if (buff != null && buff.Equals("") == false)
-                {
-                    buffList[buffIndex1] += 1;
-                }
-            }
-            else if (value <= -3)
-            {
-                if (debuff != null && debuff.Equals("") == false)
-                {
-                    debuffList[debuffIndex3] += 3;
-                    debuffList[debuffIndex2] += 2;
-                    debuffList[debuffIndex1] += 1;
-                }
-
-                if (buff != null && buff.Equals("") == false)
-                {
-                    buffList[buffIndex2] += 1;
-                    buffList[buffIndex1] += 1;
-                }
-            }
-        }
 
         public int getBuffChance()
         {

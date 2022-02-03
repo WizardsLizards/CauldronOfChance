@@ -7,9 +7,218 @@ using System.Threading.Tasks;
 
 namespace CauldronOfChance
 {
-    class Cauldron
+    public class Cauldron : IDisposable
     {
-        public static Ingredient getIngredient(Item item)
+
+        //List 1: Holds all combinations. List 2: Type - Buff to add on to, Match2 - Value for 2 matches, Match3 - Value for 3 matches, Items - List of possible match items
+        public List<(string Type, int Match2, int Match3, List<string> Items)> combinations { get; set; }
+
+        object Caller { get; set; }
+
+        public Cauldron(object caller)
+        {
+            this.Caller = caller;
+
+            initializeCombinations();
+        }
+
+        public void initializeCombinations()
+        {
+            combinations = new List<(string, int, int, List<string>)>();
+
+            //TODO: => Add combinations here (e.g. all fish. Boni apply for: 2 matches, 3 matches. 3 matches give bigger boni)
+        }
+
+        public void addToCauldron(string name, int value)
+        {
+            if (name.Equals("garlicOil"))
+            {
+                addToCauldron(name, "monsterMusk", value > 0 ? 1 : 0);
+            }
+            else if (name.Equals("monsterMusk"))
+            {
+                addToCauldron("garlicOil", name, value > 0 ? 1 : 0);
+            }
+            else if (name.Equals("debuffImmunity"))
+            {
+                addToCauldron(name, "", value > 0 ? 1 : 0);
+            }
+            else if (name.Equals("magneticRadius"))
+            {
+                addToCauldron(name + "Buff", "", value);
+            }
+            else
+            {
+                addToCauldron(name + "Buff", name + "Debuff", value);
+            }
+        }
+
+        public void addToCauldron(string buff, string debuff, int value)
+        {
+            int buffIndex1 = -1;
+            int buffIndex2 = -1;
+            int buffIndex3 = -1;
+            int debuffIndex1 = -1;
+            int debuffIndex2 = -1;
+            int debuffIndex3 = -1;
+
+            List<int> BuffList = new List<int>();
+            List<int> DebuffList = new List<int>();
+
+            if(Caller is CauldronMagic)
+            {
+                CauldronMagic cauldronMagic = Caller as CauldronMagic;
+                BuffList = cauldronMagic.buffList;
+                DebuffList = cauldronMagic.debuffList;
+
+                if (buff != null && buff.Equals("") == false)
+                {
+                    buffIndex1 = (int)Enum.Parse(typeof(CauldronMagic.buffs), buff + 1);
+
+                    if (value >= 2)
+                    {
+                        buffIndex2 = (int)Enum.Parse(typeof(CauldronMagic.buffs), buff + 2);
+                    }
+
+                    if (value >= 3)
+                    {
+                        buffIndex3 = (int)Enum.Parse(typeof(CauldronMagic.buffs), buff + 3);
+                    }
+                }
+                if (debuff != null && debuff.Equals("") == false)
+                {
+                    debuffIndex1 = (int)Enum.Parse(typeof(CauldronMagic.debuffs), debuff + 1);
+
+                    if (value >= 2)
+                    {
+                        debuffIndex2 = (int)Enum.Parse(typeof(CauldronMagic.debuffs), debuff + 2);
+                    }
+
+                    if (value >= 3)
+                    {
+                        debuffIndex3 = (int)Enum.Parse(typeof(CauldronMagic.debuffs), debuff + 3);
+                    }
+                }
+            }
+            else if (Caller is Ingredient)
+            {
+                Ingredient ingredient = Caller as Ingredient;
+                BuffList = ingredient.buffList;
+                DebuffList = ingredient.debuffList;
+
+                if (buff != null && buff.Equals("") == false)
+                {
+                    buffIndex1 = (int)Enum.Parse(typeof(Ingredient.buffs), buff + 1);
+
+                    if (value >= 2)
+                    {
+                        buffIndex2 = (int)Enum.Parse(typeof(Ingredient.buffs), buff + 2);
+                    }
+
+                    if (value >= 3)
+                    {
+                        buffIndex3 = (int)Enum.Parse(typeof(Ingredient.buffs), buff + 3);
+                    }
+                }
+                if (debuff != null && debuff.Equals("") == false)
+                {
+                    debuffIndex1 = (int)Enum.Parse(typeof(Ingredient.debuffs), debuff + 1);
+
+                    if (value >= 2)
+                    {
+                        debuffIndex2 = (int)Enum.Parse(typeof(Ingredient.debuffs), debuff + 2);
+                    }
+
+                    if (value >= 3)
+                    {
+                        debuffIndex3 = (int)Enum.Parse(typeof(Ingredient.debuffs), debuff + 3);
+                    }
+                }
+            }
+
+            if (value >= 3)
+            {
+                if (buff != null && buff.Equals("") == false)
+                {
+                    BuffList[buffIndex3] += 3;
+                    BuffList[buffIndex2] += 2;
+                    BuffList[buffIndex1] += 1;
+                }
+
+                if (debuff != null && debuff.Equals("") == false)
+                {
+                    DebuffList[debuffIndex2] += 1;
+                    DebuffList[debuffIndex1] += 1;
+                }
+            }
+            else if (value == 2)
+            {
+                if (buff != null && buff.Equals("") == false)
+                {
+                    BuffList[buffIndex2] += 3;
+                    BuffList[buffIndex1] += 2;
+                }
+
+                if (debuff != null && debuff.Equals("") == false)
+                {
+                    DebuffList[debuffIndex1] += 1;
+                }
+            }
+            else if (value == 1)
+            {
+                if (buff != null && buff.Equals("") == false)
+                {
+                    BuffList[buffIndex1] += 3;
+                }
+
+                if (debuff != null && debuff.Equals("") == false)
+                {
+                    DebuffList[debuffIndex1] += 1;
+                }
+            }
+            else if (value == -1)
+            {
+                if (debuff != null && debuff.Equals("") == false)
+                {
+                    DebuffList[debuffIndex1] += 3;
+                }
+
+                if (buff != null && buff.Equals("") == false)
+                {
+                    BuffList[buffIndex1] += 1;
+                }
+            }
+            else if (value == -2)
+            {
+                if (debuff != null && debuff.Equals("") == false)
+                {
+                    DebuffList[debuffIndex2] += 3;
+                    DebuffList[debuffIndex1] += 2;
+                }
+
+                if (buff != null && buff.Equals("") == false)
+                {
+                    BuffList[buffIndex1] += 1;
+                }
+            }
+            else if (value <= -3)
+            {
+                if (debuff != null && debuff.Equals("") == false)
+                {
+                    DebuffList[debuffIndex3] += 3;
+                    DebuffList[debuffIndex2] += 2;
+                    DebuffList[debuffIndex1] += 1;
+                }
+
+                if (buff != null && buff.Equals("") == false)
+                {
+                    BuffList[buffIndex2] += 1;
+                    BuffList[buffIndex1] += 1;
+                }
+            }
+        }
+
+        public Ingredient getIngredient(Item item)
         {
             Ingredient Item;
 
@@ -1565,5 +1774,38 @@ namespace CauldronOfChance
             return Item;
             //return new Ingredient(item, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
         }
+
+        #region disposeable support
+        private bool disposedValue;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~Cauldron()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion disposeable support
     }
 }

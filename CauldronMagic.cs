@@ -29,36 +29,147 @@ namespace CauldronOfChance
         #endregion ingredients
 
         #region chances
-        #region recipes
+        #region special
         public int crafting { get; set; } = 0;
         public int cooking { get; set; } = 0;
         public int randomItem { get; set; } = 0;
+        public double butterflies { get; set; } = 0;
+        public double boom { get; set; } = 0;
+        public double cauldronLuck { get; set; } = 0;
         #endregion
+
+        #region buffs
+        public List<int> buffList;
+        public enum buffs
+        {
+            garlicOil1,
+
+            debuffImmunity1,
+
+            farmingBuff1,
+            farmingBuff2,
+            farmingBuff3,
+
+            miningBuff1,
+            miningBuff2,
+            miningBuff3,
+
+            fishingBuff1,
+            fishingBuff2,
+            fishingBuff3,
+
+            foragingBuff1,
+            foragingBuff2,
+            foragingBuff3,
+
+            attackBuff1,
+            attackBuff2,
+            attackBuff3,
+
+            defenseBuff1,
+            defenseBuff2,
+            defenseBuff3,
+
+            maxEnergyBuff1,
+            maxEnergyBuff2,
+            maxEnergyBuff3,
+
+            luckBuff1,
+            luckBuff2,
+            luckBuff3,
+
+            magneticRadiusBuff1,
+            magneticRadiusBuff2,
+            magneticRadiusBuff3,
+
+            speedBuff1,
+            speedBuff2,
+            speedBuff3
+        }
+        #endregion buffs
+
+        #region debuffs
+        public List<int> debuffList;
+        public enum debuffs
+        {
+            monsterMusk1,
+
+            farmingDebuff1,
+            farmingDebuff2,
+            farmingDebuff3,
+
+            miningDebuff1,
+            miningDebuff2,
+            miningDebuff3,
+
+            fishingDebuff1,
+            fishingDebuff2,
+            fishingDebuff3,
+
+            foragingDebuff1,
+            foragingDebuff2,
+            foragingDebuff3,
+
+            attackDebuff1,
+            attackDebuff2,
+            attackDebuff3,
+
+            defenseDebuff1,
+            defenseDebuff2,
+            defenseDebuff3,
+
+            maxEnergyDebuff1,
+            maxEnergyDebuff2,
+            maxEnergyDebuff3,
+
+            luckDebuff1,
+            luckDebuff2,
+            luckDebuff3,
+
+            speedDebuff1,
+            speedDebuff2,
+            speedDebuff3
+        }
+        #endregion debuffs
         #endregion chances
         #endregion properties
 
         #region constructors
         public CauldronMagic(Item ingredient1, Item ingredient2, Item ingredient3)
         {
-            this.ingredient1 = Cauldron.getIngredient(ingredient1);
-            this.ingredient2 = Cauldron.getIngredient(ingredient2);
-            this.ingredient3 = Cauldron.getIngredient(ingredient3);
+            using (Cauldron Cauldron = new Cauldron(this))
+            {
+                this.ingredient1 = Cauldron.getIngredient(ingredient1);
+                this.ingredient2 = Cauldron.getIngredient(ingredient2);
+                this.ingredient3 = Cauldron.getIngredient(ingredient3);
 
-            WizardHouse = Game1.locations.Where(x => x.Name.Equals("WizardHouse")).First();
-            Wizard = Game1.getCharacterFromName("Wizard");
-            resultingItem = new StardewValley.Object();
-            randomGenerator = new Random();
-            playerLuck = Game1.player.DailyLuck + getCauldronLuck();
+                WizardHouse = Game1.locations.Where(x => x.Name.Equals("WizardHouse")).First();
+                Wizard = Game1.getCharacterFromName("Wizard");
+                resultingItem = new StardewValley.Object();
+                randomGenerator = new Random();
+                playerLuck = Game1.player.DailyLuck + getCauldronLuck();
 
-            UseCauldron();
+                buffList = new List<int>();
+                foreach (int buffIndex in Enum.GetValues(typeof(buffs)))
+                {
+                    buffList.Add(0);
+                }
+                debuffList = new List<int>();
+                foreach (int debuffIndex in Enum.GetValues(typeof(debuffs)))
+                {
+                    debuffList.Add(0);
+                }
+
+                UseCauldron(Cauldron);
+            }
         }
         #endregion constructors
 
         #region functions
-        public void UseCauldron()
+        public void UseCauldron(Cauldron Cauldron)
         {
             #region determine effects
-            findCombinations();
+            findCombinations(Cauldron);
             #endregion determine effects
 
             #region determine actual effect
@@ -167,9 +278,29 @@ namespace CauldronOfChance
         #endregion recipes
 
         #region chance values
-        public void findCombinations()
+        public void findCombinations(Cauldron Cauldron)
         {
+            List<string> itemNames = new List<string>()
+            {
+                ingredient1.item.Name,
+                ingredient2.item.Name,
+                ingredient3.item.Name
+            }
+            .Distinct().ToList();
 
+            foreach((string Type, int Match2, int Match3, List<string> Items) tuple in Cauldron.combinations)
+            {
+                int matches = itemNames.Intersect(tuple.Items).Count();
+
+                if(matches == 2)
+                {
+                    Cauldron.addToCauldron(tuple.Type, tuple.Match2);
+                }
+                else if (matches >= 3)
+                {
+                    Cauldron.addToCauldron(tuple.Type, tuple.Match3);
+                }
+            }
         }
         #endregion chance values
 
