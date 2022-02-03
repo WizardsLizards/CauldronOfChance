@@ -17,7 +17,7 @@ namespace CauldronOfChance
         #region setup
         GameLocation WizardHouse { get; set; }
         NPC Wizard { get; set; }
-        StardewValley.Object resultingItem { get; set; }
+        StardewValley.Item resultingItem { get; set; }
         Random randomGenerator { get; set; }
         double playerLuck { get; set; }
         #endregion setup
@@ -173,7 +173,7 @@ namespace CauldronOfChance
             #endregion determine effects
 
             #region determine actual effect
-            determineResult();
+            determineResult(Cauldron);
             #endregion determine actual effect
 
             #region take effect
@@ -288,7 +288,7 @@ namespace CauldronOfChance
             }
             .Distinct().ToList();
 
-            foreach((string Type, int Match2, int Match3, List<string> Items) tuple in Cauldron.combinations)
+            foreach((string Type, int Match2, int Match3, List<string> Items) tuple in Cauldron.buffCombinations)
             {
                 int matches = itemNames.Intersect(tuple.Items).Count();
 
@@ -305,7 +305,7 @@ namespace CauldronOfChance
         #endregion chance values
 
         #region chance determination
-        public void determineResult()
+        public void determineResult(Cauldron Cauldron)
         {
             double butterboomChance = randomGenerator.NextDouble();
             //Chance for butterflies
@@ -322,6 +322,15 @@ namespace CauldronOfChance
             }
 
             //Check for crafting recipes (Drop)
+            double recipeChance = CheckForRecipes(Cauldron);
+            if (false)
+            {
+                effectType = 5;
+                return;
+            }
+
+            //Check for other item drops? (Drop)
+            double itemChance = CheckForItemCombinations(Cauldron);
             if (false)
             {
                 effectType = 5;
@@ -332,17 +341,13 @@ namespace CauldronOfChance
             if (false)
             {
                 effectType = 1;
-                return;
-            }
-
-            //Check for other item drops? (Drop)
-            if (false)
-            {
-                effectType = 5;
+                //Other text in the end (other buff building too tho...?)
                 return;
             }
 
             //Check for other buffs (Drink)
+            CheckForBuffCombinations(Cauldron);
+
             int buffChance = (int)(getBuffChance() + getBuffChance() * playerLuck);
             int debuffChance = (int)(getDebuffChance() - getDebuffChance() * playerLuck);
 
@@ -904,6 +909,7 @@ namespace CauldronOfChance
             //);
             #endregion template
 
+            #region create buff
             string modifier = "";
             string modifierEnd = ".";
             string debuffModifier = "";
@@ -964,6 +970,121 @@ namespace CauldronOfChance
             
 
             Game1.buffsDisplay.addOtherBuff(buff);
+            #endregion create buff
+        }
+
+        public void CheckForBuffCombinations(Cauldron Cauldron)
+        {
+
+        }
+
+        public double CheckForRecipes(Cauldron Cauldron)
+        {
+            //0-1/3 Parts: 0% Chance. 2/3 Parts: 25% Chance. 3/3 Parts: 75% Chance (Always top down. If full match always that. if no full match but multiple 25%: Same chance for everything)
+            List<string> fullMatches = new List<string>();
+            List<string> halfMatches = new List<string>();
+
+            foreach((string Result, List<string> Items) recipe in Cauldron.recipes)
+            {
+                List<string> ingredients = new List<string>() { ingredient1.item.Name, ingredient2.item.Name, ingredient3.item.Name };
+                int matches = 0;
+
+                foreach(string Item in recipe.Items)
+                {
+                    if (ingredients.Contains(Item))
+                    {
+                        matches += 1;
+                        ingredients.Remove(Item);
+                    }
+                }
+
+                if(matches == 2)
+                {
+                    halfMatches.Add(recipe.Result);
+                }
+                else if (matches >= 3)
+                {
+                    fullMatches.Add(recipe.Result);
+                }
+            }
+
+            if (fullMatches.Count > 0)
+            {
+                //Get item
+                int index = randomGenerator.Next(0, fullMatches.Count - 1);
+
+                resultingItem = Utility.fuzzyItemSearch(fullMatches[index]);
+
+                return 0.75;
+            }
+            else if (halfMatches.Count > 0)
+            {
+                //Get item
+                int index = randomGenerator.Next(0, halfMatches.Count - 1);
+
+                resultingItem = Utility.fuzzyItemSearch(halfMatches[index]);
+
+                return 0.25;
+            }
+
+            return 0;
+        }
+
+        public double CheckForItemCombinations(Cauldron Cauldron)
+        {
+            //2 Items Match: 5% Chance. 3 Items Match: 10% Chance (Does 3-Item match override 2-Item match tho? (Even a possibility?))
+            // => Decide on item by chance: 10% items are added 3x to the pool, 5% items once. Once decided: can be 10% chance even for a 5% chance item, if theres a match
+            double chance = 0;
+
+            List<string> match2 = new List<string>();
+            List<string> match3 = new List<string>();
+            List<string> ingredients = new List<string>() { ingredient1.item.Name, ingredient2.item.Name, ingredient3.item.Name }.Distinct().ToList();
+
+            foreach ((string Result, List<string> Items) itemCombination in Cauldron.itemCombinations)
+            {
+                int matches = ingredients.Intersect(itemCombination.Items).Count();
+
+                if(matches == 2)
+                {
+                    match2.Add(itemCombination.Result);
+
+                    if(chance < 0.05)
+                    {
+                        chance = 0.05;
+                    }
+                }
+                else if (matches >= 3)
+                {
+                    match3.Add(itemCombination.Result);
+
+                    if(chance < 0.1)
+                    {
+                        chance = 0.1;
+                    }
+                }
+            }
+
+            List<string> possibilities = new List<string>();
+
+            foreach(string match in match2)
+            {
+                possibilities.Add(match);
+            }
+            foreach(string match in match3)
+            {
+                possibilities.Add(match);
+                possibilities.Add(match);
+                possibilities.Add(match);
+            }
+
+            if(possibilities.Count() > 0)
+            {
+                int index = randomGenerator.Next(0, possibilities.Count() - 1);
+
+                resultingItem = Utility.fuzzyItemSearch(possibilities[index]);
+            }
+
+            return 0;
         }
 
         public int getBuffChance()

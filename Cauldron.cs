@@ -7,11 +7,19 @@ using System.Threading.Tasks;
 
 namespace CauldronOfChance
 {
+    /// <summary>
+    /// Holds all items/recipes/combinations
+    /// </summary>
     public class Cauldron : IDisposable
     {
+        //List 1: Holds all combinations. Tuple: Type - Buff to add on to, Match2 - Value for 2 matches, Match3 - Value for 3 matches, Items - List of possible match items (Distinct)
+        public List<(string Type, int Match2, int Match3, List<string> Items)> buffCombinations { get; set; }
 
-        //List 1: Holds all combinations. List 2: Type - Buff to add on to, Match2 - Value for 2 matches, Match3 - Value for 3 matches, Items - List of possible match items
-        public List<(string Type, int Match2, int Match3, List<string> Items)> combinations { get; set; }
+        //List 1: Holds all the combinations. Tuple: Result - Resulting item, Items - 3 Items needed to create this recipe (at full chance)(Not Distinct)
+        public List<(string Result, List<string> Items)> recipes { get; set; }
+
+        //List 1: Holds all item combinatins. Tuple: Result - Resulting item, Items - List of possible match items (Distinct)
+        public List<(string Result, List<string> Items)> itemCombinations { get; set; }
 
         object Caller { get; set; }
 
@@ -19,14 +27,31 @@ namespace CauldronOfChance
         {
             this.Caller = caller;
 
-            initializeCombinations();
+            initializeBuffCombinations();
+            initializeRecipes();
+            initializeItemCombinations();
         }
 
-        public void initializeCombinations()
+        public void initializeBuffCombinations()
         {
-            combinations = new List<(string, int, int, List<string>)>();
+            buffCombinations = new List<(string Type, int Match2, int Match3, List<string> Items)>();
 
             //TODO: => Add combinations here (e.g. all fish. Boni apply for: 2 matches, 3 matches. 3 matches give bigger boni)
+        }
+
+        public void initializeRecipes()
+        {
+            recipes = new List<(string Result, List<string> Items)>(); //TODO: Or add recipes with lower match3 (higher match1 tho) chance but more ingredients? => Combinations for items? Or handle that in a third list?
+
+            //TODO: Add recipes here. 1 part recipe: 1% chance, 2 part recipe: 25% chance, full recipe: 75% chance? -> Set flag so only one check regardless of all possible recipes (decide if event happens)
+        }
+
+        //Prio 1 (After Other checks): Recipes. Prio 2: These Combinations (Same check as in recipes? Prolly its own tho). Check 3: Combinations => Drink Buff / Debuff
+        public void initializeItemCombinations()
+        {
+            itemCombinations = new List<(string Result, List<string> Items)>();
+
+            //TODO: Add item combinations here. 2 matches: 5% chance. 3 matches: 10% chance?
         }
 
         public void addToCauldron(string name, int value)
