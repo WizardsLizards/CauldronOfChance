@@ -30,10 +30,23 @@ namespace CauldronOfChance
                     string property = Game1.currentLocation.doesTileHaveProperty(tileLocation.X, tileLocation.Y, "Action", "Buildings");
                     if (property != null && property.Equals("CauldronOfChance"))
                     {
-                        //TODO: Check that player hasnt already used cauldron today
-                        //Game1.activeClickableMenu = new ItemGrabMenu(null, reverseGrab: true, showReceivingMenu: false, Utility.highlightLuauSoupItems, clickToAddItemToLuauSoup, Game1.content.LoadString("Strings\\StringsFromCSFiles:Event.cs.1719"), null, snapToBottom: false, canBeExitedWithKey: true, playRightClickSound: true, allowRightClick: true, showOrganizeButton: false, 0, null, -1, this);
-                        Game1.activeClickableMenu = new CauldronMenu();
-                        return false;
+                        if (Game1.player.eventsSeen.Contains(ModEntry.eventId) == false)
+                        {
+                            Game1.activeClickableMenu = new DialogueBox("A gigantic cauldron. It smells like the forest after a rainy day.");
+                            return false;
+                        }
+                        //TODO: Check that player hasnt already used cauldron today (and reset list at each new day)
+                        else if (ModEntry.userIds.Contains(Game1.player.UniqueMultiplayerID))
+                        {
+                            Game1.activeClickableMenu = new DialogueBox("The cauldron is bubbling with the ingredients you added today.");
+                            return false;
+                        }
+                        else
+                        {
+                            ModEntry.userIds.Add(Game1.player.UniqueMultiplayerID);
+                            Game1.activeClickableMenu = new CauldronMenu();
+                            return false;
+                        }
                     }
                 }
                 return true;

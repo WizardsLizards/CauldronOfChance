@@ -127,28 +127,6 @@ namespace CauldronOfChance
             initializeItemCombinations();
         }
 
-        public void initializeBuffCombinations()
-        {
-            buffCombinations = new List<(string Type, int Match2, int Match3, List<string> Items)>();
-
-            //TODO: => Add combinations here (e.g. all fish. Boni apply for: 2 matches, 3 matches. 3 matches give bigger boni)
-        }
-
-        public void initializeRecipes()
-        {
-            recipes = new List<(string Result, List<string> Items)>(); //TODO: Or add recipes with lower match3 (higher match1 tho) chance but more ingredients? => Combinations for items? Or handle that in a third list?
-
-            //TODO: Add recipes here. 1 part recipe: 1% chance, 2 part recipe: 25% chance, full recipe: 75% chance? -> Set flag so only one check regardless of all possible recipes (decide if event happens)
-        }
-
-        //Prio 1 (After Other checks): Recipes. Prio 2: These Combinations (Same check as in recipes? Prolly its own tho). Check 3: Combinations => Drink Buff / Debuff
-        public void initializeItemCombinations()
-        {
-            itemCombinations = new List<(string Result, List<string> Items)>();
-
-            //TODO: Add item combinations here. 2 matches: 5% chance. 3 matches: 10% chance?
-        }
-
         public void addToCauldron(string name, int value)
         {
             if (name.Equals("garlicOil"))
@@ -291,6 +269,29 @@ namespace CauldronOfChance
                     BuffList[buffIndex1] += 1;
                 }
             }
+        }
+
+        public void initializeBuffCombinations()
+        {
+            buffCombinations = new List<(string Type, int Match2, int Match3, List<string> Items)>();
+
+            //TODO: => Add combinations here (e.g. all fish. Boni apply for: 2 matches, 3 matches. 3 matches give bigger boni)
+        }
+
+        public void initializeRecipes()
+        {
+            recipes = new List<(string Result, List<string> Items)>(); //TODO: Or add recipes with lower match3 (higher match1 tho) chance but more ingredients? => Combinations for items? Or handle that in a third list?
+
+            //TODO: Add recipes here. 1 part recipe: 1% chance, 2 part recipe: 25% chance, full recipe: 75% chance? -> Set flag so only one check regardless of all possible recipes (decide if event happens)
+        }
+
+        //TODO: Multiple results? => choose 1 by random then?
+        //Prio 1 (After Other checks): Recipes. Prio 2: These Combinations (Same check as in recipes? Prolly its own tho). Check 3: Combinations => Drink Buff / Debuff
+        public void initializeItemCombinations()
+        {
+            itemCombinations = new List<(string Result, List<string> Items)>();
+
+            //TODO: Add item combinations here. 2 matches: 5% chance. 3 matches: 10% chance?
         }
 
         public Ingredient getIngredient(Item item)
@@ -1847,7 +1848,6 @@ namespace CauldronOfChance
                     break;
             }
             return Item;
-            //return new Ingredient(item, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
         }
 
         #region disposeable support

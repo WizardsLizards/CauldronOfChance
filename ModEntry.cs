@@ -3,12 +3,17 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CauldronOfChance
 {
-    public class ModEntry : StardewModdingAPI.Mod
+    public class ModEntry : StardewModdingAPI.Mod, IAssetEditor
     {
+        public const int eventId = 21474836;
+
+        public static List<long> userIds { get; set; }
+
         //TODO: Once per day
         public override void Entry(IModHelper IHelper)
         {
@@ -16,6 +21,8 @@ namespace CauldronOfChance
             var csHarmony = new Harmony(this.ModManifest.UniqueID);
 
             ObjectPatches.Initialize(this.Monitor, IHelper);
+
+            userIds = new List<long>();
             #endregion Setup
 
             #region Harmony Patches
@@ -62,6 +69,81 @@ namespace CauldronOfChance
             catch (Exception ex)
             {
                 this.Monitor.Log($"Could not add TileProperties to the Wizards Cauldron:\n{ex}", LogLevel.Error);
+            }
+        }
+
+        /// <summary>Get whether this instance can edit the given asset.</summary>
+        /// <param name="asset">Basic metadata about the asset being loaded.</param>
+        public bool CanEdit<T>(IAssetInfo asset)
+        {
+            if (asset.AssetNameEquals("Data/Events/WizardHouse"))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>Edit a matched asset.</summary>
+        /// <param name="asset">A helper which encapsulates metadata about an asset and enables changes to it.</param>
+        public void Edit<T>(IAssetData asset)
+        {
+            if (asset.AssetNameEquals("Data/Events/WizardHouse"))
+            {
+                IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+
+                data[eventId + "/f Wizard 500/p Wizard"] = String.Join("/", new string[]
+                {
+                    "WizardSong",
+                    "-1000 -1000",
+                    "farmer 8 24 0 Wizard 3 19 2",
+                    "skippable",
+                    //Add same day conversation topic
+                    "showFrame Wizard 20",
+                    "viewport 8 18 true",
+                    "move farmer 0 -2 0",
+                    "emote Wizard 56",
+                    "pause 1000",
+                    "animate Wizard false false 100 20 21 22 0",
+                    "move Wizard 0 0 2 false",
+                    //"playSound dwop",
+                    //"pause 1000",
+                    "pause 500",
+                    "stopAnimation Wizard",
+                    //Change Wizard sprite there (or skip the animation there?)
+                    "emote Wizard 8",
+                    "pause 1000",
+                    "speak Wizard \"Young @...\"",
+                    "speak Wizard \"Come in...\"",
+                    "move Wizard 3 0 2 false",
+                    "move Wizard 0 1 2 false",
+                    "pause 1000",
+                    "speak Wizard \"I was just brewing something in my Cauldron.\"",
+                    "pause 1000",
+                    "emote Wizard 40",
+                    "pause 1500",
+                    "speak Wizard \"Say, have you ever considered dabbling in the mystical arts?\"",
+                    "pause 500",
+                    "emote farmer 28",
+                    "pause 500",
+                    "speak Wizard \"Its really simple, on a basic level.\"",
+                    "speak Wizard \"Just throw a few ingredients into the cauldron and see what happens.\"",
+                    "speak Wizard \"Experimenting is the key...\"",
+                    "pause 500",
+                    "quickQuestion #\"I'll try it out!\"#\"I don't think this kinda stuff is for me...\""
+                    + "(break)emote Wizard 56\\pause 500\\emote farmer 56\\pause 500\\move Wizard 0 -1 0\\move Wizard -3 0 2\\speak Wizard \"I'm curious to see what you will discover...\""
+                    //Add days-after conversation topic (What have you found?)?(something something arcane?)
+                    + "(break)emote Wizard 28\\pause 500\\speak Wizard \"Well, if you ever change your mind...\"\\move Wizard 0 -1 0\\move Wizard -3 0 2",
+                    //Add days-after conversation topic (So did you come around?)
+                    "globalFade .008",
+                    "viewport -1000 -1000",
+                    "playMusic none",
+                    "pause 2000",
+                    "playSound reward",
+                    "pause 300",
+                    "message \"You can now use the wizards cauldron.\"",
+                    "end",
+                });
             }
         }
     }
