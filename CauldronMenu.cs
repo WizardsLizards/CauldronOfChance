@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
@@ -74,37 +75,44 @@ namespace CauldronOfChance
         public CauldronMenu()
             : base(okButton : false, trashCan : false)
         {
-            //int xPositionOnScreen = base.xPositionOnScreen + 32;
-            int xPositionOnScreen = base.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + IClickableMenu.borderWidth / 2;
-            //int yPositionOnScreen = base.yPositionOnScreen;
-            int yPositionOnScreen = base.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + IClickableMenu.borderWidth + 192 - 16;
-
-            highlightMethod = highlightCauldronItems;
-
-            this.ItemsToGrabMenu = new InventoryMenu(xPositionOnScreen, yPositionOnScreen, playerInventory: false, null, highlightMethod);
-            ItemsToGrabMenu.highlightMethod = this.highlightMethod;
-            base.inventory = this.ItemsToGrabMenu;
-
-            this.cauldronSlot1 = new ClickableTextureComponent("", new Rectangle(base.xPositionOnScreen + base.width / 2 - 48 - 92, base.yPositionOnScreen + base.height / 2 - 80 - 64, 96, 96), "", "", Game1.mouseCursors, new Rectangle(293, 360, 24, 24), 4f)
+            try
             {
-                myID = 12598,
-                region = 12598
-            };
-            this.cauldronSlot2 = new ClickableTextureComponent("", new Rectangle(base.xPositionOnScreen + base.width / 2 - 48, base.yPositionOnScreen + base.height / 2 - 80 - 64, 96, 96), "", "", Game1.mouseCursors, new Rectangle(293, 360, 24, 24), 4f)
-            {
-                myID = 12599,
-                region = 12599
-            };
-            this.cauldronSlot3 = new ClickableTextureComponent("", new Rectangle(base.xPositionOnScreen + base.width / 2 - 48 + 92, base.yPositionOnScreen + base.height / 2 - 80 - 64, 96, 96), "", "", Game1.mouseCursors, new Rectangle(293, 360, 24, 24), 4f)
-            {
-                myID = 12600,
-                region = 12600
-            };
+                //int xPositionOnScreen = base.xPositionOnScreen + 32;
+                int xPositionOnScreen = base.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + IClickableMenu.borderWidth / 2;
+                //int yPositionOnScreen = base.yPositionOnScreen;
+                int yPositionOnScreen = base.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + IClickableMenu.borderWidth + 192 - 16;
 
-            exitFunction = delegate
+                highlightMethod = highlightCauldronItems;
+
+                this.ItemsToGrabMenu = new InventoryMenu(xPositionOnScreen, yPositionOnScreen, playerInventory: false, null, highlightMethod);
+                ItemsToGrabMenu.highlightMethod = this.highlightMethod;
+                base.inventory = this.ItemsToGrabMenu;
+
+                this.cauldronSlot1 = new ClickableTextureComponent("", new Rectangle(base.xPositionOnScreen + base.width / 2 - 48 - 92, base.yPositionOnScreen + base.height / 2 - 80 - 64, 96, 96), "", "", Game1.mouseCursors, new Rectangle(293, 360, 24, 24), 4f)
+                {
+                    myID = 12598,
+                    region = 12598
+                };
+                this.cauldronSlot2 = new ClickableTextureComponent("", new Rectangle(base.xPositionOnScreen + base.width / 2 - 48, base.yPositionOnScreen + base.height / 2 - 80 - 64, 96, 96), "", "", Game1.mouseCursors, new Rectangle(293, 360, 24, 24), 4f)
+                {
+                    myID = 12599,
+                    region = 12599
+                };
+                this.cauldronSlot3 = new ClickableTextureComponent("", new Rectangle(base.xPositionOnScreen + base.width / 2 - 48 + 92, base.yPositionOnScreen + base.height / 2 - 80 - 64, 96, 96), "", "", Game1.mouseCursors, new Rectangle(293, 360, 24, 24), 4f)
+                {
+                    myID = 12600,
+                    region = 12600
+                };
+
+                exitFunction = delegate
+                {
+                    cleanupCauldron();
+                };
+            }
+            catch (Exception ex)
             {
-                cleanupCauldron();
-            };
+                ObjectPatches.IMonitor.Log($"Failed in Cauldron Menu with Error Code:\n {ex}", LogLevel.Error);
+            }            
         }
 
         public override void draw(SpriteBatch spriteBatch)
@@ -158,7 +166,6 @@ namespace CauldronOfChance
             if (this.isWithinBounds(x, y) && (ingredient1 == null || ingredient2 == null || ingredient3 == null))
             {
                 Item selectedItem = null;
-                //TODO: Get item & remove 1 from inventory
 
                 foreach (ClickableComponent item in ItemsToGrabMenu.inventory)
                 {
@@ -168,10 +175,9 @@ namespace CauldronOfChance
                         continue;
                     }
                     if(slotNumber >= Game1.player.Items.Count
-                        || (Game1.player.Items[slotNumber] != null && !highlightMethod(Game1.player.Items[slotNumber])) //TODO: Own hightlight method
+                        || (Game1.player.Items[slotNumber] != null && !highlightMethod(Game1.player.Items[slotNumber]))
                         || slotNumber >= Game1.player.Items.Count
                         || Game1.player.Items[slotNumber] == null
-                        //|| Game1.player.Items[slotNumber] is Tool //TODO: needed with hightlight method?
                         )
                     {
                         continue;
@@ -438,11 +444,12 @@ namespace CauldronOfChance
             return true;
         }
 
-        public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds) //TODO: This right?
-        {
-            base.gameWindowSizeChanged(oldBounds, newBounds);
-            int yPositionForInventory = base.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + IClickableMenu.borderWidth + 192 - 16 + 128 + 4;
-            base.inventory = new InventoryMenu(base.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + IClickableMenu.borderWidth / 2 + 12, yPositionForInventory, playerInventory: false, null, base.inventory.highlightMethod);
-        }
+        //TODO: Fix
+        //public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds)
+        //{
+        //    base.gameWindowSizeChanged(oldBounds, newBounds);
+        //    int yPositionForInventory = base.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + IClickableMenu.borderWidth + 192 - 16 + 128 + 4;
+        //    base.inventory = new InventoryMenu(base.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + IClickableMenu.borderWidth / 2 + 12, yPositionForInventory, playerInventory: false, null, base.inventory.highlightMethod);
+        //}
     }
 }

@@ -30,13 +30,14 @@ namespace CauldronOfChance
                     string property = Game1.currentLocation.doesTileHaveProperty(tileLocation.X, tileLocation.Y, "Action", "Buildings");
                     if (property != null && property.Equals("CauldronOfChance"))
                     {
+                        Game1.locations.Where(x => x.Name.Equals("WizardHouse")).First().localSound("bubbles");
+
                         if (Game1.player.eventsSeen.Contains(ModEntry.eventId) == false)
                         {
                             CauldronMagic.errorMessageProgress = "Event not seen";
                             Game1.activeClickableMenu = new DialogueBox("A gigantic cauldron. It smells like the forest after a rainy day.");
                             return false;
                         }
-                        //TODO: Check that player hasnt already used cauldron today (and reset list at each new day)
                         else if (ModEntry.userIds.Contains(Game1.player.UniqueMultiplayerID))
                         {
                             CauldronMagic.errorMessageProgress = "Event already seen today";

@@ -72,7 +72,6 @@ namespace CauldronOfChance
                 addForQuality();
                 addForEdibility();
                 addForMoneyValue();
-                addForCooking();
             }
         }
 
@@ -203,11 +202,6 @@ namespace CauldronOfChance
         public void addForMoneyValue()
         {
             cauldronLuck += (item.salePrice() / 1000) * 0.02;
-        }
-
-        public void addForCooking()
-        {
-            //TODO
         }
 
 

@@ -14,7 +14,6 @@ namespace CauldronOfChance
 
         public static List<long> userIds { get; set; }
 
-        //TODO: Once per day
         public override void Entry(IModHelper IHelper)
         {
             #region Setup
@@ -33,17 +32,17 @@ namespace CauldronOfChance
             #endregion Harmony Patches
 
             #region Events
+            //IHelper.Events.Input.ButtonPressed += onButtonPressed;
             IHelper.Events.GameLoop.SaveLoaded += onSaveLoaded;
-            IHelper.Events.Input.ButtonPressed += onButtonPressed;
             #endregion Events
         }
 
         private void onButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (Game1.currentLocation != null && Game1.currentLocation.Name.Equals("WizardHouse"))
-            {
-                var x = Game1.currentLocation;
-            }
+            //if (Game1.currentLocation != null && Game1.currentLocation.Name.Equals("WizardHouse"))
+            //{
+            //    var x = Game1.currentLocation;
+            //}
 
             if (e.Button.IsActionButton())
             {
@@ -98,19 +97,17 @@ namespace CauldronOfChance
                     "-1000 -1000",
                     "farmer 8 24 0 Wizard 3 19 2",
                     "skippable",
-                    //Add same day conversation topic
                     "showFrame Wizard 20",
                     "viewport 8 18 true",
+                    "playSound doorClose",
                     "move farmer 0 -2 0",
+                    "playSound bubbles",
                     "emote Wizard 56",
                     "pause 1000",
                     "animate Wizard false false 100 20 21 22 0",
                     "move Wizard 0 0 2 false",
-                    //"playSound dwop",
-                    //"pause 1000",
                     "pause 500",
                     "stopAnimation Wizard",
-                    //Change Wizard sprite there (or skip the animation there?)
                     "emote Wizard 8",
                     "pause 1000",
                     "speak Wizard \"Young @...\"",
@@ -128,13 +125,15 @@ namespace CauldronOfChance
                     "pause 500",
                     "speak Wizard \"Its really simple, on a basic level.\"",
                     "speak Wizard \"Just throw a few ingredients into the cauldron and see what happens.\"",
+                    "pause 500",
                     "speak Wizard \"Experimenting is the key...\"",
                     "pause 500",
                     "quickQuestion #\"I'll try it out!\"#\"I don't think this kinda stuff is for me...\""
                     + "(break)emote Wizard 56\\pause 500\\emote farmer 56\\pause 500\\move Wizard 0 -1 0\\move Wizard -3 0 2\\speak Wizard \"I'm curious to see what you will discover...\""
-                    //Add days-after conversation topic (What have you found?)?(something something arcane?)
+                    //Add days-after conversation topic (What arcane discoveries did you make?)
                     + "(break)emote Wizard 28\\pause 500\\speak Wizard \"Well, if you ever change your mind...\"\\move Wizard 0 -1 0\\move Wizard -3 0 2",
-                    //Add days-after conversation topic (So did you come around?)
+                    //Add days-after conversation topic (So did you come around to try out the magic of the cauldron?)
+                    "playSound bubbles",
                     "globalFade .008",
                     "viewport -1000 -1000",
                     "playMusic none",
@@ -142,7 +141,7 @@ namespace CauldronOfChance
                     "playSound reward",
                     "pause 300",
                     "message \"You can now use the wizards cauldron.\"",
-                    "end",
+                    "end dialogue Wizard \"Feel free to use my cauldron whenever you like.\"",
                 });
             }
         }

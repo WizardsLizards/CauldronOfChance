@@ -198,7 +198,7 @@ namespace CauldronOfChance
             else if (effectType == 6)
             {
                 Game1.player.canMove = false;
-                ObjectPatches.IModHelper.Reflection.GetMethod(Game1.player, "performDrinkAnimation").Invoke(new StardewValley.Object()); //TODO: Check that this works
+                ObjectPatches.IModHelper.Reflection.GetMethod(Game1.player, "performDrinkAnimation").Invoke(new StardewValley.Object());
 
                 DelayedAction.delayedBehavior onDrink = delegate
                 {
@@ -306,7 +306,6 @@ namespace CauldronOfChance
 
             int defaultBuff = -1;
 
-            //int minutesDuration = 20 * 60; //20 hours //TODO: Random duration? (5-20 min?)
             int randomDuration = randomGenerator.Next(5, 20);
             int minutesDuration = (int)(randomDuration * getDuration() * 60);
             string source = "CauldronOfChance";
@@ -613,22 +612,22 @@ namespace CauldronOfChance
                                 value = 3;
                                 luck = 3;
                                 break;
-                            case (int)Cauldron.buffs.magneticRadiusBuff1: //TODO: TOO MUCH?
-                                description += "(Magnetic Radius +32)";
+                            case (int)Cauldron.buffs.magneticRadiusBuff1:
+                                description += "(Magnetic Radius +16)";
                                 deBuff = "magnetic";
                                 type = 2;
                                 value = 1;
                                 magneticRadius = 1;
                                 break;
                             case (int)Cauldron.buffs.magneticRadiusBuff2:
-                                description += "(Magnetic Radius +64)";
+                                description += "(Magnetic Radius +32)";
                                 deBuff = "magnetic";
                                 type = 2;
                                 value = 2;
                                 magneticRadius = 2;
                                 break;
                             case (int)Cauldron.buffs.magneticRadiusBuff3:
-                                description += "(Magnetic Radius + 96)";
+                                description += "(Magnetic Radius + 48)";
                                 deBuff = "magnetic";
                                 type = 2;
                                 value = 3;
@@ -980,7 +979,7 @@ namespace CauldronOfChance
             }
 
             #region create buff
-            Buff buff = new Buff(farming, fishing, mining, digging, luck, foraging, crafting, maxStamina * 10, magneticRadius * 32, speed, defense, attack, minutesDuration, source, displaySource)
+            Buff buff = new Buff(farming, fishing, mining, digging, luck, foraging, crafting, maxStamina * 10, magneticRadius * 16, speed, defense, attack, minutesDuration, source, displaySource)
             {
                 sheetIndex = 17,
                 //millisecondsDuration = < here you set the actual duration >,
@@ -1128,6 +1127,29 @@ namespace CauldronOfChance
                     }
                 }
             }
+            foreach ((List<string> Result, List<string> Items) multipleItemCombination in Cauldron.multipleItemCombinations)
+            {
+                int matches = ingredients.Intersect(multipleItemCombination.Items).Count();
+
+                if(matches == 2)
+                {
+                    match2.AddRange(multipleItemCombination.Result);
+
+                    if(chance < 0.05)
+                    {
+                        chance = 0.05;
+                    }
+                }
+                else if (matches >= 3)
+                {
+                    match3.AddRange(multipleItemCombination.Result);
+
+                    if(chance < 0.1)
+                    {
+                        chance = 0.1;
+                    }
+                }
+            }
 
             List<string> possibilities = new List<string>();
 
@@ -1178,7 +1200,7 @@ namespace CauldronOfChance
                             matchIndexes.Add(index);
                         }
                     }
-                    for(int index = 0; index < cookingRecipes.Items.Count; index++)
+                    for(int index = 0; index < cookingRecipes.Categories.Count; index++)
                     {
                         if(ingredient.Category == cookingRecipes.Categories[index])
                         {

@@ -115,8 +115,9 @@ namespace CauldronOfChance
         //List 1: Holds all the combinations. Tuple: Result - Resulting item, Items - 3 Items needed to create this recipe (at full chance)(Not Distinct)
         public List<(string Result, List<string> Items)> recipes { get; set; }
 
-        //List 1: Holds all item combinatins. Tuple: Result - Resulting item, Items - List of possible match items (Distinct)
+        //List 1: Holds all item combinatins. Tuple: Result - Resulting item(s), Items - List of possible match items (Distinct)
         public List<(string Result, List<string> Items)> itemCombinations { get; set; }
+        public List<(List<string> Result, List<string> Items)> multipleItemCombinations { get; set; }
 
         //List 1: Holds all cooking recipes. Tuple: Result - Resulting item, Items - List of possible match items, Categories - List of possible match categories
         public List<(string Result, List<int> Items, List<int> Categories)> cookingRecipes { get; set; }
@@ -277,23 +278,9 @@ namespace CauldronOfChance
             }
         }
 
-        public void initializeBuffCombinations()
-        {
-            buffCombinations = new List<(string Type, int Match2, int Match3, List<string> Items)>();
-
-            //TODO: => Add combinations here (e.g. all fish. Boni apply for: 2 matches, 3 matches. 3 matches give bigger boni)
-        }
-
-        public void initializeRecipes()
-        {
-            recipes = new List<(string Result, List<string> Items)>;
-
-            //TODO: Add recipes here. 1 part recipe: 1% chance, 2 part recipe: 25% chance, full recipe: 75% chance? -> Set flag so only one check regardless of all possible recipes (decide if event happens)
-        }
-
         public void initializeCookingRecipes()
         {
-            cookingRecipes = new List<(string Result, List<int> Items, List<int> Categories)>(); //TODO: Or add recipes with lower match3 (higher match1 tho) chance but more ingredients? => Combinations for items? Or handle that in a third list?
+            cookingRecipes = new List<(string Result, List<int> Items, List<int> Categories)>();
 
             Dictionary<string, string> cookingRecipeDict = Game1.content.Load<Dictionary<string, string>>("Data\\CookingRecipes");
 
@@ -304,13 +291,13 @@ namespace CauldronOfChance
 
                 List<string> ingredients = recipe.Value.Split('/')[0].Split(' ').ToList();
 
-                foreach(string ingredient in ingredients)
+                foreach (string ingredient in ingredients)
                 {
                     int id;
 
-                    if(Int32.TryParse(ingredient, out id))
+                    if (Int32.TryParse(ingredient, out id))
                     {
-                        if(id >= 0)
+                        if (id >= 0)
                         {
                             Items.Add(id);
                         }
@@ -325,11 +312,25 @@ namespace CauldronOfChance
             }
         }
 
-        //TODO: Multiple results? => choose 1 by random then?
+        public void initializeBuffCombinations()
+        {
+            buffCombinations = new List<(string Type, int Match2, int Match3, List<string> Items)>();
+
+            //TODO: => Add combinations here (e.g. all fish. Boni apply for: 2 matches, 3 matches. 3 matches give bigger boni)
+        }
+
+        public void initializeRecipes()
+        {
+            recipes = new List<(string Result, List<string> Items)>();
+
+            //TODO: Add recipes here. 1 part recipe: 1% chance, 2 part recipe: 25% chance, full recipe: 75% chance? -> Set flag so only one check regardless of all possible recipes (decide if event happens)
+        }
+
         //Prio 1 (After Other checks): Recipes. Prio 2: These Combinations (Same check as in recipes? Prolly its own tho). Check 3: Combinations => Drink Buff / Debuff
         public void initializeItemCombinations()
         {
             itemCombinations = new List<(string Result, List<string> Items)>();
+            multipleItemCombinations = new List<(List<string> Result, List<string> Items)>();
 
             //TODO: Add item combinations here. 2 matches: 5% chance. 3 matches: 10% chance?
         }
