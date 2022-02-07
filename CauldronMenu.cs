@@ -82,7 +82,8 @@ namespace CauldronOfChance
             highlightMethod = highlightCauldronItems;
 
             this.ItemsToGrabMenu = new InventoryMenu(xPositionOnScreen, yPositionOnScreen, playerInventory: false, null, highlightMethod);
-            ItemsToGrabMenu.highlightMethod = this.highlightMethod; //TODO: Why this not working? (Also not working for highlight non -> error in my draw method?)
+            ItemsToGrabMenu.highlightMethod = this.highlightMethod;
+            base.inventory = this.ItemsToGrabMenu;
 
             this.cauldronSlot1 = new ClickableTextureComponent("", new Rectangle(base.xPositionOnScreen + base.width / 2 - 48 - 92, base.yPositionOnScreen + base.height / 2 - 80 - 64, 96, 96), "", "", Game1.mouseCursors, new Rectangle(293, 360, 24, 24), 4f)
             {
@@ -435,6 +436,13 @@ namespace CauldronOfChance
                 return false;
             }
             return true;
+        }
+
+        public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds) //TODO: This right?
+        {
+            base.gameWindowSizeChanged(oldBounds, newBounds);
+            int yPositionForInventory = base.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + IClickableMenu.borderWidth + 192 - 16 + 128 + 4;
+            base.inventory = new InventoryMenu(base.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + IClickableMenu.borderWidth / 2 + 12, yPositionForInventory, playerInventory: false, null, base.inventory.highlightMethod);
         }
     }
 }

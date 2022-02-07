@@ -128,8 +128,9 @@ namespace CauldronOfChance
             this.Caller = caller;
 
             initializeBuffCombinations();
-            initializeRecipes();
+            initializeCookingRecipes();
             initializeItemCombinations();
+            initializeRecipes();
         }
 
         public void addToCauldron(string name, int value)
@@ -285,9 +286,15 @@ namespace CauldronOfChance
 
         public void initializeRecipes()
         {
-            cookingRecipes = new List<(string Result, List<int> Items, List<int> Categories)>(); //TODO: Or add recipes with lower match3 (higher match1 tho) chance but more ingredients? => Combinations for items? Or handle that in a third list?
+            recipes = new List<(string Result, List<string> Items)>;
 
             //TODO: Add recipes here. 1 part recipe: 1% chance, 2 part recipe: 25% chance, full recipe: 75% chance? -> Set flag so only one check regardless of all possible recipes (decide if event happens)
+        }
+
+        public void initializeCookingRecipes()
+        {
+            cookingRecipes = new List<(string Result, List<int> Items, List<int> Categories)>(); //TODO: Or add recipes with lower match3 (higher match1 tho) chance but more ingredients? => Combinations for items? Or handle that in a third list?
+
             Dictionary<string, string> cookingRecipeDict = Game1.content.Load<Dictionary<string, string>>("Data\\CookingRecipes");
 
             foreach (KeyValuePair<string, string> recipe in cookingRecipeDict)
