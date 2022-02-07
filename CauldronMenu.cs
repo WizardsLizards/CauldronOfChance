@@ -107,49 +107,49 @@ namespace CauldronOfChance
             };
         }
 
-        public override void draw(SpriteBatch b) //TODO: Rename
+        public override void draw(SpriteBatch spriteBatch)
         {
             if (this.drawBackGround)
             {
-                b.Draw(Game1.fadeToBlackRect, new Rectangle(0, 0, Game1.uiViewport.Width, Game1.uiViewport.Height), Color.Black * 0.5f);
+                spriteBatch.Draw(Game1.fadeToBlackRect, new Rectangle(0, 0, Game1.uiViewport.Width, Game1.uiViewport.Height), Color.Black * 0.5f);
             }
-            base.draw(b, drawUpperPortion: false, drawDescriptionArea: false);
+            base.draw(spriteBatch, drawUpperPortion: false, drawDescriptionArea: false);
             Game1.drawDialogueBox(Game1.uiViewport.Width / 2, this.ItemsToGrabMenu.yPositionOnScreen + this.ItemsToGrabMenu.height / 2, speaker: false, drawOnlyBox: false, this.message);
 
-            this.cauldronSlot1.draw(b);
-            b.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot1.bounds.X + -8, this.cauldronSlot1.bounds.Bottom - 100), new Rectangle(325, 448, 5, 14), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
-            b.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot1.bounds.X + 84, this.cauldronSlot1.bounds.Bottom - 100), new Rectangle(325, 448, 5, 14), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
-            b.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot1.bounds.X + -8, this.cauldronSlot1.bounds.Bottom - 44), new Rectangle(325, 452, 5, 13), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
-            b.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot1.bounds.X + 84, this.cauldronSlot1.bounds.Bottom - 44), new Rectangle(325, 452, 5, 13), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+            this.cauldronSlot1.draw(spriteBatch);
+            spriteBatch.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot1.bounds.X + -8, this.cauldronSlot1.bounds.Bottom - 100), new Rectangle(325, 448, 5, 14), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+            spriteBatch.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot1.bounds.X + 84, this.cauldronSlot1.bounds.Bottom - 100), new Rectangle(325, 448, 5, 14), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+            spriteBatch.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot1.bounds.X + -8, this.cauldronSlot1.bounds.Bottom - 44), new Rectangle(325, 452, 5, 13), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+            spriteBatch.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot1.bounds.X + 84, this.cauldronSlot1.bounds.Bottom - 44), new Rectangle(325, 452, 5, 13), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
             if (ingredient1 != null)
             {
-                ingredient1.drawInMenu(b, new Vector2(this.cauldronSlot1.bounds.X + 16, this.cauldronSlot1.bounds.Y + 16), 1f);
+                ingredient1.drawInMenu(spriteBatch, new Vector2(this.cauldronSlot1.bounds.X + 16, this.cauldronSlot1.bounds.Y + 16), 1f);
             }
 
-            this.cauldronSlot2.draw(b);
-            b.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot2.bounds.X + -8, this.cauldronSlot2.bounds.Bottom - 100), new Rectangle(325, 448, 5, 14), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
-            b.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot2.bounds.X + 84, this.cauldronSlot2.bounds.Bottom - 100), new Rectangle(325, 448, 5, 14), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
-            b.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot2.bounds.X + -8, this.cauldronSlot2.bounds.Bottom - 44), new Rectangle(325, 452, 5, 13), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
-            b.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot2.bounds.X + 84, this.cauldronSlot2.bounds.Bottom - 44), new Rectangle(325, 452, 5, 13), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+            this.cauldronSlot2.draw(spriteBatch);
+            spriteBatch.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot2.bounds.X + -8, this.cauldronSlot2.bounds.Bottom - 100), new Rectangle(325, 448, 5, 14), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+            spriteBatch.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot2.bounds.X + 84, this.cauldronSlot2.bounds.Bottom - 100), new Rectangle(325, 448, 5, 14), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+            spriteBatch.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot2.bounds.X + -8, this.cauldronSlot2.bounds.Bottom - 44), new Rectangle(325, 452, 5, 13), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+            spriteBatch.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot2.bounds.X + 84, this.cauldronSlot2.bounds.Bottom - 44), new Rectangle(325, 452, 5, 13), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
             if (ingredient2 != null)
             {
-                ingredient2.drawInMenu(b, new Vector2(this.cauldronSlot2.bounds.X + 16, this.cauldronSlot2.bounds.Y + 16), 1f);
+                ingredient2.drawInMenu(spriteBatch, new Vector2(this.cauldronSlot2.bounds.X + 16, this.cauldronSlot2.bounds.Y + 16), 1f);
             }
 
-            this.cauldronSlot3.draw(b);
-            b.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot3.bounds.X + -8, this.cauldronSlot3.bounds.Bottom - 100), new Rectangle(325, 448, 5, 14), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
-            b.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot3.bounds.X + 84, this.cauldronSlot3.bounds.Bottom - 100), new Rectangle(325, 448, 5, 14), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
-            b.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot3.bounds.X + -8, this.cauldronSlot3.bounds.Bottom - 44), new Rectangle(325, 452, 5, 13), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
-            b.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot3.bounds.X + 84, this.cauldronSlot3.bounds.Bottom - 44), new Rectangle(325, 452, 5, 13), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+            this.cauldronSlot3.draw(spriteBatch);
+            spriteBatch.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot3.bounds.X + -8, this.cauldronSlot3.bounds.Bottom - 100), new Rectangle(325, 448, 5, 14), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+            spriteBatch.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot3.bounds.X + 84, this.cauldronSlot3.bounds.Bottom - 100), new Rectangle(325, 448, 5, 14), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+            spriteBatch.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot3.bounds.X + -8, this.cauldronSlot3.bounds.Bottom - 44), new Rectangle(325, 452, 5, 13), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+            spriteBatch.Draw(Game1.mouseCursors, new Vector2(this.cauldronSlot3.bounds.X + 84, this.cauldronSlot3.bounds.Bottom - 44), new Rectangle(325, 452, 5, 13), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
             if (ingredient3 != null)
             {
-                ingredient3.drawInMenu(b, new Vector2(this.cauldronSlot3.bounds.X + 16, this.cauldronSlot3.bounds.Y + 16), 1f);
+                ingredient3.drawInMenu(spriteBatch, new Vector2(this.cauldronSlot3.bounds.X + 16, this.cauldronSlot3.bounds.Y + 16), 1f);
             }
 
             //Hover item stuff?
 
             Game1.mouseCursorTransparency = 1f;
-            base.drawMouse(b);
+            base.drawMouse(spriteBatch);
         }
 
         public override void receiveLeftClick(int x, int y, bool playSound = true)

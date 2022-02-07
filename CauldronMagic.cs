@@ -1,4 +1,5 @@
-﻿using StardewValley;
+﻿using StardewModdingAPI;
+using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
 using System;
@@ -11,7 +12,8 @@ namespace CauldronOfChance
 {
     public class CauldronMagic
     {
-        public static int effectType = 0;
+        public static string errorMessageStats = "";
+        public static string errorMessageProgress = "";
 
         #region properties
         #region setup
@@ -34,6 +36,7 @@ namespace CauldronOfChance
         public double boom { get; set; } = 0;
         public double cauldronLuck { get; set; } = 0;
         public double duration { get; set; } = 1;
+        public int effectType { get; set; } = 0;
         #endregion
 
         public List<int> buffList;
@@ -44,31 +47,54 @@ namespace CauldronOfChance
         #region constructors
         public CauldronMagic(Item ingredient1, Item ingredient2, Item ingredient3)
         {
-            using (Cauldron Cauldron = new Cauldron(this))
+            try
             {
-                this.ingredient1 = Cauldron.getIngredient(ingredient1);
-                this.ingredient2 = Cauldron.getIngredient(ingredient2);
-                this.ingredient3 = Cauldron.getIngredient(ingredient3);
+                errorMessageStats += "Daily Luck: " + Game1.player.DailyLuck + ", ";
+                errorMessageStats += "Has special Charm: " + Game1.player.hasSpecialCharm + ", ";
+                errorMessageStats += "Ingredient 1: " + ingredient1.Name + ", ";
+                errorMessageStats += "Ingredient 2: " + ingredient2.Name + ", ";
+                errorMessageStats += "Ingredient 3: " + ingredient3.Name + ", ";
 
-                WizardHouse = Game1.locations.Where(x => x.Name.Equals("WizardHouse")).First();
-                Wizard = Game1.getCharacterFromName("Wizard");
-                resultingItem = new StardewValley.Object();
-                randomGenerator = new Random();
+                errorMessageProgress = "Started Algorithm, ";
 
-                buffList = new List<int>();
-                foreach (int buffIndex in Enum.GetValues(typeof(Cauldron.buffs)))
+                using (Cauldron Cauldron = new Cauldron(this))
                 {
-                    buffList.Add(0);
-                }
-                debuffList = new List<int>();
-                foreach (int debuffIndex in Enum.GetValues(typeof(Cauldron.debuffs)))
-                {
-                    debuffList.Add(0);
-                }
+                    this.ingredient1 = Cauldron.getIngredient(ingredient1);
+                    errorMessageProgress = "Added Ingredient1";
+                    this.ingredient2 = Cauldron.getIngredient(ingredient2);
+                    errorMessageProgress = "Added Ingredient2";
+                    this.ingredient3 = Cauldron.getIngredient(ingredient3);
+                    errorMessageProgress = "Added Ingredient3";
 
-                UseCauldron(Cauldron);
+                    WizardHouse = Game1.locations.Where(x => x.Name.Equals("WizardHouse")).First();
+                    errorMessageProgress = "Got WizardHouse";
+                    Wizard = Game1.getCharacterFromName("Wizard");
+                    errorMessageProgress = "Got Wizard";
+                    resultingItem = new StardewValley.Object();
+                    randomGenerator = new Random();
 
-                ModEntry.userIds.Add(Game1.player.UniqueMultiplayerID);
+                    buffList = new List<int>();
+                    foreach (int buffIndex in Enum.GetValues(typeof(Cauldron.buffs)))
+                    {
+                        buffList.Add(0);
+                    }
+                    debuffList = new List<int>();
+                    foreach (int debuffIndex in Enum.GetValues(typeof(Cauldron.debuffs)))
+                    {
+                        debuffList.Add(0);
+                    }
+
+                    errorMessageProgress = "Before UseCauldron";
+                    UseCauldron(Cauldron);
+                    errorMessageProgress = "After UseCauldron";
+
+                    errorMessageStats += "Unique MultiplayerID: " + Game1.player.UniqueMultiplayerID + ", ";
+                    ModEntry.userIds.Add(Game1.player.UniqueMultiplayerID);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjectPatches.IMonitor.Log($"Failed in Cauldron Magic with Error Code:\n {ex}\n; Progress:\n {errorMessageProgress}\n; Values\n {errorMessageStats}", LogLevel.Error);
             }
         }
         #endregion constructors
@@ -78,10 +104,12 @@ namespace CauldronOfChance
         {
             #region determine effects
             findCombinations(Cauldron);
+            errorMessageProgress = "After findCombinations";
             #endregion determine effects
 
             #region determine actual effect
             determineResult(Cauldron);
+            errorMessageProgress = "after determineResult";
             #endregion determine actual effect
 
             #region take effect
@@ -156,7 +184,6 @@ namespace CauldronOfChance
             //Get item
             else if (effectType == 5)
             {
-                resultingItem = new StardewValley.Object(373, 1);
                 Game1.player.currentLocation.debris.Add(new Debris(resultingItem, new Microsoft.Xna.Framework.Vector2(3 * 64f, 20 * 64f)));
 
                 Game1.player.canMove = false;
@@ -181,24 +208,11 @@ namespace CauldronOfChance
 
                 DelayedAction.functionAfterDelay(onDrink, 1000);
             }
+            errorMessageProgress = "";
             #endregion take effect
-
-            //set player as "has used today"
         }
 
         #region helper
-        #region recipes
-        //public Item getRecipe()
-        //{
-
-        //}
-
-        //public bool isRecipe()
-        //{
-        //    return getRecipe() != null;
-        //}
-        #endregion recipes
-
         #region chance values
         public void findCombinations(Cauldron Cauldron)
         {
@@ -235,12 +249,14 @@ namespace CauldronOfChance
             if (butterboomChance > 1 - getButterflies() - (getButterflies() * playerLuck))
             {
                 effectType = 3;
+                errorMessageStats += $"Effecttype: {effectType}, ";
                 return;
             }
             //Chance for boom
             if (butterboomChance < getBoom() - (getBoom() * playerLuck))
             {
                 effectType = 4;
+                errorMessageStats += $"Effecttype: {effectType}, ";
                 return;
             }
 
@@ -250,6 +266,7 @@ namespace CauldronOfChance
             if (randomRecipeChance < recipeChance + (recipeChance * playerLuck))
             {
                 effectType = 5;
+                errorMessageStats += $"Effecttype: {effectType}, ";
                 return;
             }
 
@@ -259,6 +276,7 @@ namespace CauldronOfChance
             if (randomItemChance < itemChance + (itemChance * playerLuck))
             {
                 effectType = 5;
+                errorMessageStats += $"Effecttype: {effectType}, ";
                 return;
             }
 
@@ -269,7 +287,9 @@ namespace CauldronOfChance
             {
                 //Other text in the end (other buff building too tho...?)
                 effectType = 6;
+                errorMessageStats += $"Effecttype: {effectType}, ";
             }
+            errorMessageStats += $"Effecttype: {effectType}, ";
 
             int farming = 0;
             int fishing = 0;
@@ -296,6 +316,7 @@ namespace CauldronOfChance
 
             if (effectType == 6)
             {
+                errorMessageProgress = "Getting cooking stats";
                 description = $"The taste of {resultingItem.DisplayName} still lingers in your mouth...";
 
                 if (resultingItem is StardewValley.Object)
@@ -319,7 +340,7 @@ namespace CauldronOfChance
 
                         csObject.ModifyItemBuffs(whatToBuff);
 
-                        //Buff buff = new Buff(Convert.ToInt32(whatToBuff[0]), Convert.ToInt32(whatToBuff[1]), Convert.ToInt32(whatToBuff[2]), Convert.ToInt32(whatToBuff[3]), Convert.ToInt32(whatToBuff[4]), Convert.ToInt32(whatToBuff[5]), Convert.ToInt32(whatToBuff[6]), Convert.ToInt32(whatToBuff[7]), Convert.ToInt32(whatToBuff[8]), Convert.ToInt32(whatToBuff[9]), Convert.ToInt32(whatToBuff[10]), (whatToBuff.Length > 11) ? Convert.ToInt32(whatToBuff[11]) : 0, duration, objectDescription[0], objectDescription[4]);
+                        errorMessageStats += $"Cooking Stats: {whatToBuff}, ";
 
                         farming = Convert.ToInt32(whatToBuff[0]);
                         mining = Convert.ToInt32(whatToBuff[2]);
@@ -333,9 +354,11 @@ namespace CauldronOfChance
                         speed = Convert.ToInt32(whatToBuff[9]);
                     }
                 }
+                errorMessageProgress = "Got cooking stats";
             }
             else
             {
+                errorMessageProgress = "Calculating stats";
                 //Check for other buffs (Drink)
                 int buffChance = (int)(getCombinedBuffChance() + (getCombinedBuffChance() * playerLuck));
                 int debuffChance = (int)(getCombinedDebuffChance() - (getCombinedDebuffChance() * playerLuck));
@@ -950,10 +973,11 @@ namespace CauldronOfChance
 
                     //description += $"You {debuffModifier}feel {modifier}{deBuff} today{modifierEnd}";
                     description = $"You {debuffModifier}feel {modifier}{deBuff} today{modifierEnd}";
+                    errorMessageStats += $"Buff description: {description}, ";
                 }
                 #endregion generate buff values
+                errorMessageProgress = "Calculated stats";
             }
-
 
             #region create buff
             Buff buff = new Buff(farming, fishing, mining, digging, luck, foraging, crafting, maxStamina * 10, magneticRadius * 32, speed, defense, attack, minutesDuration, source, displaySource)
@@ -1048,7 +1072,10 @@ namespace CauldronOfChance
                 //Get item
                 int index = randomGenerator.Next(0, fullMatches.Count - 1);
 
+                errorMessageProgress = "Searching Resulting Item";
+                errorMessageStats += $"Resulting Item: {fullMatches[index]}, ";
                 resultingItem = Utility.fuzzyItemSearch(fullMatches[index]);
+                errorMessageProgress = "Found Resulting Item";
 
                 return 0.75;
             }
@@ -1057,7 +1084,10 @@ namespace CauldronOfChance
                 //Get item
                 int index = randomGenerator.Next(0, halfMatches.Count - 1);
 
+                errorMessageProgress = "Searching Resulting Item";
+                errorMessageStats += $"Resulting Item: {halfMatches[index]}, ";
                 resultingItem = Utility.fuzzyItemSearch(halfMatches[index]);
+                errorMessageProgress = "Found Resulting Item";
 
                 return 0.25;
             }
@@ -1116,7 +1146,10 @@ namespace CauldronOfChance
             {
                 int index = randomGenerator.Next(0, possibilities.Count() - 1);
 
+                errorMessageProgress = "Searching Resulting Item";
+                errorMessageStats += $"Resulting Item: {possibilities[index]}, ";
                 resultingItem = Utility.fuzzyItemSearch(possibilities[index]);
+                errorMessageProgress = "Found Resulting Item";
             }
 
             return 0;
@@ -1207,7 +1240,10 @@ namespace CauldronOfChance
             {
                 int index = randomGenerator.Next(0, possibilities.Count() - 1);
 
+                errorMessageProgress = "Searching Resulting Item";
+                errorMessageStats += $"Resulting Item: {possibilities[index]}, ";
                 resultingItem = Utility.fuzzyItemSearch(possibilities[index]);
+                errorMessageProgress = "Found Resulting Item";
             }
 
             return 0;

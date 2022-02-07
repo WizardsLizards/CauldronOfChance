@@ -32,17 +32,20 @@ namespace CauldronOfChance
                     {
                         if (Game1.player.eventsSeen.Contains(ModEntry.eventId) == false)
                         {
+                            CauldronMagic.errorMessageProgress = "Event not seen";
                             Game1.activeClickableMenu = new DialogueBox("A gigantic cauldron. It smells like the forest after a rainy day.");
                             return false;
                         }
                         //TODO: Check that player hasnt already used cauldron today (and reset list at each new day)
                         else if (ModEntry.userIds.Contains(Game1.player.UniqueMultiplayerID))
                         {
+                            CauldronMagic.errorMessageProgress = "Event already seen today";
                             Game1.activeClickableMenu = new DialogueBox("The cauldron is bubbling with the ingredients you added today.");
                             return false;
                         }
                         else
                         {
+                            CauldronMagic.errorMessageProgress = "Opening menu";
                             Game1.activeClickableMenu = new CauldronMenu();
                             return false;
                         }
@@ -52,7 +55,7 @@ namespace CauldronOfChance
             }
             catch (Exception ex)
             {
-                IMonitor.Log($"Failed in {nameof(checkAction_Prefix)}:\n{ex}", LogLevel.Error);
+                IMonitor.Log($"Failed in {nameof(checkAction_Prefix)}:\n{ex}\nProgress: {CauldronMagic.errorMessageProgress}", LogLevel.Error);
                 return true;
             }
         }
