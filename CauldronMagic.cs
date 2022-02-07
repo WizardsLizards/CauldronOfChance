@@ -66,6 +66,8 @@ namespace CauldronOfChance
                 }
 
                 UseCauldron(Cauldron);
+
+                ModEntry.userIds.Add(Game1.player.UniqueMultiplayerID);
             }
         }
         #endregion constructors
@@ -164,6 +166,19 @@ namespace CauldronOfChance
                 };
                 DelayedAction.functionAfterDelay(onDrop, 100);
             }
+            else if (effectType == 6)
+            {
+                Game1.player.canMove = false;
+                ObjectPatches.IModHelper.Reflection.GetMethod(Game1.player, "performDrinkAnimation").Invoke(resultingItem); //TODO: Check that this works
+
+                DelayedAction.delayedBehavior onDrink = delegate
+                {
+                    Game1.player.canMove = true;
+                    Game1.activeClickableMenu = new DialogueBox($"The taste reminds you of {resultingItem.DisplayName}...");
+                };
+
+                DelayedAction.functionAfterDelay(onDrink, 1000);
+            }
             #endregion take effect
 
             //set player as "has used today"
@@ -245,12 +260,13 @@ namespace CauldronOfChance
                 return;
             }
 
-            //TODO
             //Check for cooking recipes (Drink)
-            if (false)
+            double cookingChance = CheckForCookingRecipes(Cauldron);
+            double randomCookingChance = randomGenerator.NextDouble();
+            if (randomCookingChance < cookingChance + (cookingChance * playerLuck))
             {
                 //Other text in the end (other buff building too tho...?)
-                effectType = 1;
+                effectType = 6;
                 return;
             }
 
@@ -1045,6 +1061,97 @@ namespace CauldronOfChance
             }
 
             if(possibilities.Count() > 0)
+            {
+                int index = randomGenerator.Next(0, possibilities.Count() - 1);
+
+                resultingItem = Utility.fuzzyItemSearch(possibilities[index]);
+            }
+
+            return 0;
+        }
+
+        public double CheckForCookingRecipes(Cauldron Cauldron)
+        {
+            double chance = 0;
+
+            List<string> match1 = new List<string>();
+            List<string> match2 = new List<string>();
+            List<string> match3 = new List<string>();
+
+            List<Item> ingredients = new List<Item>() { ingredient1.item, ingredient2.item, ingredient3.item }.ToList();
+
+            foreach ((string Result, List<int> Items, List<int> Categories) cookingRecipes in Cauldron.cookingRecipes)
+            {
+                List<int> matchIndexes = new List<int>();
+
+                foreach(Item ingredient in ingredients)
+                {
+                    for(int index = 0; index < cookingRecipes.Items.Count; index++)
+                    {
+                        if(ingredient.ParentSheetIndex == cookingRecipes.Items[index])
+                        {
+                            matchIndexes.Add(index);
+                        }
+                    }
+                    for(int index = 0; index < cookingRecipes.Items.Count; index++)
+                    {
+                        if(ingredient.Category == cookingRecipes.Categories[index])
+                        {
+                            matchIndexes.Add(-index);
+                        }
+                    }
+                }
+
+                matchIndexes = matchIndexes.Distinct().ToList();
+
+                if (matchIndexes.Count == 1)
+                {
+                    match1.Add(cookingRecipes.Result);
+
+                    if (chance < 0.05)
+                    {
+                        chance = 0.05;
+                    }
+                }
+                if (matchIndexes.Count == 2)
+                {
+                    match2.Add(cookingRecipes.Result);
+
+                    if (chance < 0.10)
+                    {
+                        chance = 0.10;
+                    }
+                }
+                else if (matchIndexes.Count >= 3)
+                {
+                    match3.Add(cookingRecipes.Result);
+
+                    if (chance < 0.15)
+                    {
+                        chance = 0.15;
+                    }
+                }
+            }
+
+            List<string> possibilities = new List<string>();
+
+            foreach (string match in match1)
+            {
+                possibilities.Add(match);
+            }
+            foreach (string match in match2)
+            {
+                possibilities.Add(match);
+                possibilities.Add(match);
+            }
+            foreach (string match in match3)
+            {
+                possibilities.Add(match);
+                possibilities.Add(match);
+                possibilities.Add(match);
+            }
+
+            if (possibilities.Count() > 0)
             {
                 int index = randomGenerator.Next(0, possibilities.Count() - 1);
 

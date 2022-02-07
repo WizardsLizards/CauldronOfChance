@@ -43,7 +43,6 @@ namespace CauldronOfChance
                         }
                         else
                         {
-                            ModEntry.userIds.Add(Game1.player.UniqueMultiplayerID);
                             Game1.activeClickableMenu = new CauldronMenu();
                             return false;
                         }

@@ -116,6 +116,9 @@ namespace CauldronOfChance
         //List 1: Holds all item combinatins. Tuple: Result - Resulting item, Items - List of possible match items (Distinct)
         public List<(string Result, List<string> Items)> itemCombinations { get; set; }
 
+        //List 1: Holds all cooking recipes. Tuple: Result - Resulting item, Items - List of possible match items, Categories - List of possible match categories
+        public List<(string Result, List<int> Items, List<int> Categories)> cookingRecipes { get; set; }
+
         object Caller { get; set; }
 
         public Cauldron(object caller)
@@ -280,9 +283,37 @@ namespace CauldronOfChance
 
         public void initializeRecipes()
         {
-            recipes = new List<(string Result, List<string> Items)>(); //TODO: Or add recipes with lower match3 (higher match1 tho) chance but more ingredients? => Combinations for items? Or handle that in a third list?
+            cookingRecipes = new List<(string Result, List<int> Items, List<int> Categories)>(); //TODO: Or add recipes with lower match3 (higher match1 tho) chance but more ingredients? => Combinations for items? Or handle that in a third list?
 
             //TODO: Add recipes here. 1 part recipe: 1% chance, 2 part recipe: 25% chance, full recipe: 75% chance? -> Set flag so only one check regardless of all possible recipes (decide if event happens)
+            Dictionary<string, string> cookingRecipeDict = Game1.content.Load<Dictionary<string, string>>("Data\\CookingRecipes");
+
+            foreach (KeyValuePair<string, string> recipe in cookingRecipeDict)
+            {
+                List<int> Items = new List<int>();
+                List<int> Categories = new List<int>();
+
+                List<string> ingredients = recipe.Value.Split('/')[0].Split(' ').ToList();
+
+                foreach(string ingredient in ingredients)
+                {
+                    int id;
+
+                    if(Int32.TryParse(ingredient, out id))
+                    {
+                        if(id >= 0)
+                        {
+                            Items.Add(id);
+                        }
+                        else
+                        {
+                            Categories.Add(id);
+                        }
+                    }
+                }
+
+                cookingRecipes.Add((recipe.Key, Items, Categories));
+            }
         }
 
         //TODO: Multiple results? => choose 1 by random then?
