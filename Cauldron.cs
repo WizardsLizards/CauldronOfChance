@@ -12,8 +12,10 @@ namespace CauldronOfChance
     /// </summary>
     public class Cauldron : IDisposable
     {
-        public const double multiplierConst = 0.1;
-
+        public const double butterfliesConst = 0.1;
+        public const double boomConst = 0.1;
+        public const double cauldronLuckConst = 0.1;
+        public const double durationConst = 0.5;
         public enum buffs
         {
             garlicOil1,

@@ -33,6 +33,7 @@ namespace CauldronOfChance
         public double butterflies { get; set; } = 0;
         public double boom { get; set; } = 0;
         public double cauldronLuck { get; set; } = 0;
+        public double duration { get; set; } = 1;
         #endregion
 
         public List<int> buffList;
@@ -88,7 +89,7 @@ namespace CauldronOfChance
             if (effectType == 1)
             {
                 Game1.player.canMove = false;
-                ObjectPatches.IModHelper.Reflection.GetMethod(Game1.player, "performDrinkAnimation").Invoke(resultingItem);
+                ObjectPatches.IModHelper.Reflection.GetMethod(Game1.player, "performDrinkAnimation").Invoke(new StardewValley.Object());
 
                 DelayedAction.delayedBehavior onDrink = delegate
                 {
@@ -102,7 +103,7 @@ namespace CauldronOfChance
             else if (effectType == 2)
             {
                 Game1.player.canMove = false;
-                ObjectPatches.IModHelper.Reflection.GetMethod(Game1.player, "performDrinkAnimation").Invoke(resultingItem);
+                ObjectPatches.IModHelper.Reflection.GetMethod(Game1.player, "performDrinkAnimation").Invoke(new StardewValley.Object());
 
                 DelayedAction.delayedBehavior afterDrink = delegate
                 {
@@ -166,10 +167,11 @@ namespace CauldronOfChance
                 };
                 DelayedAction.functionAfterDelay(onDrop, 100);
             }
+            //Item effect same as a food
             else if (effectType == 6)
             {
                 Game1.player.canMove = false;
-                ObjectPatches.IModHelper.Reflection.GetMethod(Game1.player, "performDrinkAnimation").Invoke(resultingItem); //TODO: Check that this works
+                ObjectPatches.IModHelper.Reflection.GetMethod(Game1.player, "performDrinkAnimation").Invoke(new StardewValley.Object()); //TODO: Check that this works
 
                 DelayedAction.delayedBehavior onDrink = delegate
                 {
@@ -267,23 +269,7 @@ namespace CauldronOfChance
             {
                 //Other text in the end (other buff building too tho...?)
                 effectType = 6;
-                return;
             }
-
-            //Check for other buffs (Drink)
-            int buffChance = (int)(getCombinedBuffChance() + (getCombinedBuffChance() * playerLuck));
-            int debuffChance = (int)(getCombinedDebuffChance() - (getCombinedDebuffChance() * playerLuck));
-
-            if(buffChance < 1)
-            {
-                buffChance = 1;
-            }
-            if(debuffChance < 1)
-            {
-                debuffChance = 1;
-            }
-
-            int buffRandom = randomGenerator.Next(1, buffChance + debuffChance);
 
             int farming = 0;
             int fishing = 0;
@@ -300,613 +286,676 @@ namespace CauldronOfChance
 
             int defaultBuff = -1;
 
-            int minutesDuration = 20 * 60; //20 hours //TODO: Random duration? (5-20 min?)
+            //int minutesDuration = 20 * 60; //20 hours //TODO: Random duration? (5-20 min?)
+            int randomDuration = randomGenerator.Next(5, 20);
+            int minutesDuration = (int)(randomDuration * getDuration() * 60);
             string source = "CauldronOfChance";
             string displaySource = "Cauldron";
 
-            string deBuff = "";
-            int value = -1;
-            int type = 0;
-
             string description = "";
 
-            if (buffRandom <= buffChance)
+            if (effectType == 6)
             {
-                //Buff
-                effectType = 1;
+                description = $"The taste of {resultingItem.DisplayName} still lingers in your mouth...";
 
-                int maxBuffs = getCombinedBuffChance();
-
-                if (getCombinedDebuffChance() < 5)
+                if (resultingItem is StardewValley.Object)
                 {
-                    maxBuffs += Enum.GetValues(typeof(Cauldron.buffs)).Length;
-                }
+                    StardewValley.Object csObject = resultingItem as StardewValley.Object;
 
-                int buffRandomCounter = randomGenerator.Next(1, maxBuffs);
-
-                List<int> buffs = getAllBuffs();
-
-                int finalBuffIndex = -1;
-
-                foreach (int buffIndex in Enum.GetValues(typeof(Cauldron.buffs)))
-                {
-                    if (buffs[buffIndex] > 0)
+                    if (csObject.Name.Equals("Squid Ink Ravioli"))
                     {
-                        buffRandomCounter -= buffs[buffIndex];
-
-                        if(buffRandomCounter < 0)
-                        {
-                            finalBuffIndex = buffIndex;
-                            break;
-                        }
+                        defaultBuff = 28;
                     }
-                }
 
-                if(finalBuffIndex != -1)
-                {
-                    switch (finalBuffIndex)
+                    string[] objectDescription = Game1.objectInformation[csObject.ParentSheetIndex].Split('/');
+
+                    if (Convert.ToInt32(objectDescription[2]) > 0)
                     {
-                        case (int)Cauldron.buffs.garlicOil1:
-                            description += "(Garlic Oil)";
-                            deBuff = "You've started to smell like... garlic?";
-                            defaultBuff = 23;
-                            break;
-                        case (int)Cauldron.buffs.garlicOil2:
-                            description += "(Garlic Oil)";
-                            deBuff = "You've started to smell like... garlic?";
-                            defaultBuff = 23;
-                            break;
-                        case (int)Cauldron.buffs.garlicOil3:
-                            description += "(Garlic Oil)";
-                            deBuff = "You've started to smell like... garlic?";
-                            defaultBuff = 23;
-                            break;
-                        case (int)Cauldron.buffs.debuffImmunity1:
-                            description += "(Debuff Immunity)";
-                            deBuff = "You feel like nothing can slow you down today!";
-                            defaultBuff = 28;
-                            break;
-                        case (int)Cauldron.buffs.debuffImmunity2:
-                            description += "(Debuff Immunity)";
-                            deBuff = "You feel like nothing can slow you down today!";
-                            defaultBuff = 28;
-                            break;
-                        case (int)Cauldron.buffs.debuffImmunity3:
-                            description += "(Debuff Immunity)";
-                            deBuff = "You feel like nothing can slow you down today!";
-                            defaultBuff = 28;
-                            break;
-                        case (int)Cauldron.buffs.farmingBuff1:
-                            description += "(Farming +1)";
-                            deBuff = "farming";
-                            type = 1;
-                            value = 1;
-                            farming = 1;
-                            break;
-                        case (int)Cauldron.buffs.farmingBuff2:
-                            description += "(Farming +2)";
-                            deBuff = "farming";
-                            type = 1;
-                            value = 2;
-                            farming = 2;
-                            break;
-                        case (int)Cauldron.buffs.farmingBuff3:
-                            description += "(Farming +3)";
-                            deBuff = "farming";
-                            type = 1;
-                            value = 3;
-                            farming = 3;
-                            break;
-                        case (int)Cauldron.buffs.miningBuff1:
-                            description += "(Mining +1)";
-                            deBuff = "mining";
-                            type = 1;
-                            value = 1;
-                            mining = 1;
-                            break;
-                        case (int)Cauldron.buffs.miningBuff2:
-                            description += "(Mining +2)";
-                            deBuff = "mining";
-                            type = 1;
-                            value = 2;
-                            mining = 2;
-                            break;
-                        case (int)Cauldron.buffs.miningBuff3:
-                            description += "(Mining +3)";
-                            deBuff = "mining";
-                            type = 1;
-                            value = 3;
-                            mining = 3;
-                            break;
-                        case (int)Cauldron.buffs.fishingBuff1:
-                            description += "(Fishing +1)";
-                            deBuff = "fishing";
-                            type = 1;
-                            value = 1;
-                            fishing = 1;
-                            break;
-                        case (int)Cauldron.buffs.fishingBuff2:
-                            description += "(Fishing +2)";
-                            deBuff = "fishing";
-                            type = 1;
-                            value = 2;
-                            fishing = 2;
-                            break;
-                        case (int)Cauldron.buffs.fishingBuff3:
-                            description += "(Fishing +3)";
-                            deBuff = "fishing";
-                            type = 1;
-                            value = 3;
-                            fishing = 3;
-                            break;
-                        case (int)Cauldron.buffs.foragingBuff1:
-                            description += "(Foraging +1)";
-                            deBuff = "foraging";
-                            type = 1;
-                            value = 1;
-                            foraging = 1;
-                            break;
-                        case (int)Cauldron.buffs.foragingBuff2:
-                            description += "(Foraging +2)";
-                            deBuff = "foraging";
-                            type = 1;
-                            value = 2;
-                            foraging = 2;
-                            break;
-                        case (int)Cauldron.buffs.foragingBuff3:
-                            description += "(Foraging +3)";
-                            deBuff = "foraging";
-                            type = 1;
-                            value = 3;
-                            foraging = 3;
-                            break;
-                        case (int)Cauldron.buffs.attackBuff1:
-                            description += "(Attack +1)";
-                            deBuff = "strong";
-                            type = 2;
-                            value = 1;
-                            attack = 1;
-                            break;
-                        case (int)Cauldron.buffs.attackBuff2:
-                            description += "(Attack +2)";
-                            deBuff = "strong";
-                            type = 2;
-                            value = 2;
-                            attack = 2;
-                            break;
-                        case (int)Cauldron.buffs.attackBuff3:
-                            description += "(Attack +3)";
-                            deBuff = "strong";
-                            type = 2;
-                            value = 3;
-                            attack = 3;
-                            break;
-                        case (int)Cauldron.buffs.defenseBuff1:
-                            description += "(Defense +1)";
-                            deBuff = "resilient";
-                            type = 2;
-                            value = 1;
-                            defense = 1;
-                            break;
-                        case (int)Cauldron.buffs.defenseBuff2:
-                            description += "(Defense +2)";
-                            deBuff = "resilient";
-                            type = 2;
-                            value = 2;
-                            defense = 2;
-                            break;
-                        case (int)Cauldron.buffs.defenseBuff3:
-                            description += "(Defense +3)";
-                            deBuff = "resilient";
-                            type = 2;
-                            value = 3;
-                            defense = 3;
-                            break;
-                        case (int)Cauldron.buffs.maxEnergyBuff1:
-                            description += "(Max Stamina +10)";
-                            deBuff = "vigorous";
-                            type = 2;
-                            value = 1;
-                            maxStamina = 1;
-                            break;
-                        case (int)Cauldron.buffs.maxEnergyBuff2:
-                            description += "(Max Stamina +20)";
-                            deBuff = "vigorous";
-                            type = 2;
-                            value = 2;
-                            maxStamina = 2;
-                            break;
-                        case (int)Cauldron.buffs.maxEnergyBuff3:
-                            description += "(Max Stamina +30)";
-                            deBuff = "vigorous";
-                            type = 2;
-                            value = 3;
-                            maxStamina = 3;
-                            break;
-                        case (int)Cauldron.buffs.luckBuff1:
-                            description += "(Luck +1)";
-                            deBuff = "lucky";
-                            type = 2;
-                            value = 1;
-                            luck = 1;
-                            break;
-                        case (int)Cauldron.buffs.luckBuff2:
-                            description += "(Luck +2)";
-                            deBuff = "lucky";
-                            type = 2;
-                            value = 2;
-                            luck = 2;
-                            break;
-                        case (int)Cauldron.buffs.luckBuff3:
-                            description += "(Luck +3)";
-                            deBuff = "lucky";
-                            type = 2;
-                            value = 3;
-                            luck = 3;
-                            break;
-                        case (int)Cauldron.buffs.magneticRadiusBuff1: //TODO: TOO MUCH?
-                            description += "(Magnetic Radius +32)";
-                            deBuff = "magnetic";
-                            type = 2;
-                            value = 1;
-                            magneticRadius = 1;
-                            break;
-                        case (int)Cauldron.buffs.magneticRadiusBuff2:
-                            description += "(Magnetic Radius +64)";
-                            deBuff = "magnetic";
-                            type = 2;
-                            value = 2;
-                            magneticRadius = 2;
-                            break;
-                        case (int)Cauldron.buffs.magneticRadiusBuff3:
-                            description += "(Magnetic Radius + 96)";
-                            deBuff = "magnetic";
-                            type = 2;
-                            value = 3;
-                            magneticRadius = 3;
-                            break;
-                        case (int)Cauldron.buffs.speedBuff1:
-                            description += "(Speed +1)";
-                            deBuff = "fast";
-                            type = 2;
-                            value = 1;
-                            speed = 1;
-                            break;
-                        case (int)Cauldron.buffs.speedBuff2:
-                            description += "(Speed +2)";
-                            deBuff = "fast";
-                            type = 2;
-                            value = 2;
-                            speed = 2;
-                            break;
-                        case (int)Cauldron.buffs.speedBuff3:
-                            description += "(Speed +3)";
-                            deBuff = "fast";
-                            type = 2;
-                            value = 3;
-                            speed = 3;
-                            break;
+                        string[] whatToBuff = (string[])((objectDescription.Length > 7) ? ((object)objectDescription[7].Split(' ')) : ((object)new string[12]
+                        {
+                        "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+                        "0", "0"
+                        }));
+
+                        csObject.ModifyItemBuffs(whatToBuff);
+
+                        //Buff buff = new Buff(Convert.ToInt32(whatToBuff[0]), Convert.ToInt32(whatToBuff[1]), Convert.ToInt32(whatToBuff[2]), Convert.ToInt32(whatToBuff[3]), Convert.ToInt32(whatToBuff[4]), Convert.ToInt32(whatToBuff[5]), Convert.ToInt32(whatToBuff[6]), Convert.ToInt32(whatToBuff[7]), Convert.ToInt32(whatToBuff[8]), Convert.ToInt32(whatToBuff[9]), Convert.ToInt32(whatToBuff[10]), (whatToBuff.Length > 11) ? Convert.ToInt32(whatToBuff[11]) : 0, duration, objectDescription[0], objectDescription[4]);
+
+                        farming = Convert.ToInt32(whatToBuff[0]);
+                        mining = Convert.ToInt32(whatToBuff[2]);
+                        fishing = Convert.ToInt32(whatToBuff[1]);
+                        foraging = Convert.ToInt32(whatToBuff[5]);
+                        attack = (whatToBuff.Length > 11) ? Convert.ToInt32(whatToBuff[11]) : 0;
+                        defense = Convert.ToInt32(whatToBuff[10]);
+                        maxStamina = Convert.ToInt32(whatToBuff[7]) / 10;
+                        luck = Convert.ToInt32(whatToBuff[4]);
+                        magneticRadius = Convert.ToInt32(whatToBuff[8]) / 32;
+                        speed = Convert.ToInt32(whatToBuff[9]);
                     }
                 }
             }
             else
             {
-                //Debuff
-                effectType = 2;
+                //Check for other buffs (Drink)
+                int buffChance = (int)(getCombinedBuffChance() + (getCombinedBuffChance() * playerLuck));
+                int debuffChance = (int)(getCombinedDebuffChance() - (getCombinedDebuffChance() * playerLuck));
 
-                int maxDebuffs = getCombinedDebuffChance();
-
-                if(getCombinedBuffChance() < 5)
+                if (buffChance < 1)
                 {
-                    maxDebuffs += Enum.GetValues(typeof(Cauldron.debuffs)).Length;
+                    buffChance = 1;
+                }
+                if (debuffChance < 1)
+                {
+                    debuffChance = 1;
                 }
 
-                int debuffRandomCounter = randomGenerator.Next(1, maxDebuffs);
+                int buffRandom = randomGenerator.Next(1, buffChance + debuffChance);
 
-                List<int> debuffs = getAllDebuffs();
+                #region generate buff values
+                string deBuff = "";
+                int value = -1;
+                int type = 0;
 
-                int finalDebuffIndex = -1;
-
-                foreach (int debuffIndex in Enum.GetValues(typeof(Cauldron.debuffs)))
+                if (buffRandom <= buffChance)
                 {
-                    if (debuffs[debuffIndex] > 0)
-                    {
-                        debuffRandomCounter -= debuffs[debuffIndex];
+                    //Buff
+                    effectType = 1;
 
-                        if (debuffRandomCounter < 0)
+                    int maxBuffs = getCombinedBuffChance();
+
+                    if (getCombinedDebuffChance() < 5)
+                    {
+                        maxBuffs += Enum.GetValues(typeof(Cauldron.buffs)).Length;
+                    }
+
+                    int buffRandomCounter = randomGenerator.Next(1, maxBuffs);
+
+                    List<int> buffs = getAllBuffs();
+
+                    int finalBuffIndex = -1;
+
+                    foreach (int buffIndex in Enum.GetValues(typeof(Cauldron.buffs)))
+                    {
+                        if (buffs[buffIndex] > 0)
                         {
-                            finalDebuffIndex = debuffIndex;
-                            break;
+                            buffRandomCounter -= buffs[buffIndex];
+
+                            if (buffRandomCounter < 0)
+                            {
+                                finalBuffIndex = buffIndex;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (finalBuffIndex != -1)
+                    {
+                        switch (finalBuffIndex)
+                        {
+                            case (int)Cauldron.buffs.garlicOil1:
+                                description += "(Garlic Oil)";
+                                deBuff = "You've started to smell like... garlic?";
+                                defaultBuff = 23;
+                                break;
+                            case (int)Cauldron.buffs.garlicOil2:
+                                description += "(Garlic Oil)";
+                                deBuff = "You've started to smell like... garlic?";
+                                defaultBuff = 23;
+                                break;
+                            case (int)Cauldron.buffs.garlicOil3:
+                                description += "(Garlic Oil)";
+                                deBuff = "You've started to smell like... garlic?";
+                                defaultBuff = 23;
+                                break;
+                            case (int)Cauldron.buffs.debuffImmunity1:
+                                description += "(Debuff Immunity)";
+                                deBuff = "You feel like nothing can slow you down today!";
+                                defaultBuff = 28;
+                                break;
+                            case (int)Cauldron.buffs.debuffImmunity2:
+                                description += "(Debuff Immunity)";
+                                deBuff = "You feel like nothing can slow you down today!";
+                                defaultBuff = 28;
+                                break;
+                            case (int)Cauldron.buffs.debuffImmunity3:
+                                description += "(Debuff Immunity)";
+                                deBuff = "You feel like nothing can slow you down today!";
+                                defaultBuff = 28;
+                                break;
+                            case (int)Cauldron.buffs.farmingBuff1:
+                                description += "(Farming +1)";
+                                deBuff = "farming";
+                                type = 1;
+                                value = 1;
+                                farming = 1;
+                                break;
+                            case (int)Cauldron.buffs.farmingBuff2:
+                                description += "(Farming +2)";
+                                deBuff = "farming";
+                                type = 1;
+                                value = 2;
+                                farming = 2;
+                                break;
+                            case (int)Cauldron.buffs.farmingBuff3:
+                                description += "(Farming +3)";
+                                deBuff = "farming";
+                                type = 1;
+                                value = 3;
+                                farming = 3;
+                                break;
+                            case (int)Cauldron.buffs.miningBuff1:
+                                description += "(Mining +1)";
+                                deBuff = "mining";
+                                type = 1;
+                                value = 1;
+                                mining = 1;
+                                break;
+                            case (int)Cauldron.buffs.miningBuff2:
+                                description += "(Mining +2)";
+                                deBuff = "mining";
+                                type = 1;
+                                value = 2;
+                                mining = 2;
+                                break;
+                            case (int)Cauldron.buffs.miningBuff3:
+                                description += "(Mining +3)";
+                                deBuff = "mining";
+                                type = 1;
+                                value = 3;
+                                mining = 3;
+                                break;
+                            case (int)Cauldron.buffs.fishingBuff1:
+                                description += "(Fishing +1)";
+                                deBuff = "fishing";
+                                type = 1;
+                                value = 1;
+                                fishing = 1;
+                                break;
+                            case (int)Cauldron.buffs.fishingBuff2:
+                                description += "(Fishing +2)";
+                                deBuff = "fishing";
+                                type = 1;
+                                value = 2;
+                                fishing = 2;
+                                break;
+                            case (int)Cauldron.buffs.fishingBuff3:
+                                description += "(Fishing +3)";
+                                deBuff = "fishing";
+                                type = 1;
+                                value = 3;
+                                fishing = 3;
+                                break;
+                            case (int)Cauldron.buffs.foragingBuff1:
+                                description += "(Foraging +1)";
+                                deBuff = "foraging";
+                                type = 1;
+                                value = 1;
+                                foraging = 1;
+                                break;
+                            case (int)Cauldron.buffs.foragingBuff2:
+                                description += "(Foraging +2)";
+                                deBuff = "foraging";
+                                type = 1;
+                                value = 2;
+                                foraging = 2;
+                                break;
+                            case (int)Cauldron.buffs.foragingBuff3:
+                                description += "(Foraging +3)";
+                                deBuff = "foraging";
+                                type = 1;
+                                value = 3;
+                                foraging = 3;
+                                break;
+                            case (int)Cauldron.buffs.attackBuff1:
+                                description += "(Attack +1)";
+                                deBuff = "strong";
+                                type = 2;
+                                value = 1;
+                                attack = 1;
+                                break;
+                            case (int)Cauldron.buffs.attackBuff2:
+                                description += "(Attack +2)";
+                                deBuff = "strong";
+                                type = 2;
+                                value = 2;
+                                attack = 2;
+                                break;
+                            case (int)Cauldron.buffs.attackBuff3:
+                                description += "(Attack +3)";
+                                deBuff = "strong";
+                                type = 2;
+                                value = 3;
+                                attack = 3;
+                                break;
+                            case (int)Cauldron.buffs.defenseBuff1:
+                                description += "(Defense +1)";
+                                deBuff = "resilient";
+                                type = 2;
+                                value = 1;
+                                defense = 1;
+                                break;
+                            case (int)Cauldron.buffs.defenseBuff2:
+                                description += "(Defense +2)";
+                                deBuff = "resilient";
+                                type = 2;
+                                value = 2;
+                                defense = 2;
+                                break;
+                            case (int)Cauldron.buffs.defenseBuff3:
+                                description += "(Defense +3)";
+                                deBuff = "resilient";
+                                type = 2;
+                                value = 3;
+                                defense = 3;
+                                break;
+                            case (int)Cauldron.buffs.maxEnergyBuff1:
+                                description += "(Max Stamina +10)";
+                                deBuff = "vigorous";
+                                type = 2;
+                                value = 1;
+                                maxStamina = 1;
+                                break;
+                            case (int)Cauldron.buffs.maxEnergyBuff2:
+                                description += "(Max Stamina +20)";
+                                deBuff = "vigorous";
+                                type = 2;
+                                value = 2;
+                                maxStamina = 2;
+                                break;
+                            case (int)Cauldron.buffs.maxEnergyBuff3:
+                                description += "(Max Stamina +30)";
+                                deBuff = "vigorous";
+                                type = 2;
+                                value = 3;
+                                maxStamina = 3;
+                                break;
+                            case (int)Cauldron.buffs.luckBuff1:
+                                description += "(Luck +1)";
+                                deBuff = "lucky";
+                                type = 2;
+                                value = 1;
+                                luck = 1;
+                                break;
+                            case (int)Cauldron.buffs.luckBuff2:
+                                description += "(Luck +2)";
+                                deBuff = "lucky";
+                                type = 2;
+                                value = 2;
+                                luck = 2;
+                                break;
+                            case (int)Cauldron.buffs.luckBuff3:
+                                description += "(Luck +3)";
+                                deBuff = "lucky";
+                                type = 2;
+                                value = 3;
+                                luck = 3;
+                                break;
+                            case (int)Cauldron.buffs.magneticRadiusBuff1: //TODO: TOO MUCH?
+                                description += "(Magnetic Radius +32)";
+                                deBuff = "magnetic";
+                                type = 2;
+                                value = 1;
+                                magneticRadius = 1;
+                                break;
+                            case (int)Cauldron.buffs.magneticRadiusBuff2:
+                                description += "(Magnetic Radius +64)";
+                                deBuff = "magnetic";
+                                type = 2;
+                                value = 2;
+                                magneticRadius = 2;
+                                break;
+                            case (int)Cauldron.buffs.magneticRadiusBuff3:
+                                description += "(Magnetic Radius + 96)";
+                                deBuff = "magnetic";
+                                type = 2;
+                                value = 3;
+                                magneticRadius = 3;
+                                break;
+                            case (int)Cauldron.buffs.speedBuff1:
+                                description += "(Speed +1)";
+                                deBuff = "fast";
+                                type = 2;
+                                value = 1;
+                                speed = 1;
+                                break;
+                            case (int)Cauldron.buffs.speedBuff2:
+                                description += "(Speed +2)";
+                                deBuff = "fast";
+                                type = 2;
+                                value = 2;
+                                speed = 2;
+                                break;
+                            case (int)Cauldron.buffs.speedBuff3:
+                                description += "(Speed +3)";
+                                deBuff = "fast";
+                                type = 2;
+                                value = 3;
+                                speed = 3;
+                                break;
+                        }
+                    }
+                }
+                else
+                {
+                    //Debuff
+                    effectType = 2;
+
+                    int maxDebuffs = getCombinedDebuffChance();
+
+                    if (getCombinedBuffChance() < 5)
+                    {
+                        maxDebuffs += Enum.GetValues(typeof(Cauldron.debuffs)).Length;
+                    }
+
+                    int debuffRandomCounter = randomGenerator.Next(1, maxDebuffs);
+
+                    List<int> debuffs = getAllDebuffs();
+
+                    int finalDebuffIndex = -1;
+
+                    foreach (int debuffIndex in Enum.GetValues(typeof(Cauldron.debuffs)))
+                    {
+                        if (debuffs[debuffIndex] > 0)
+                        {
+                            debuffRandomCounter -= debuffs[debuffIndex];
+
+                            if (debuffRandomCounter < 0)
+                            {
+                                finalDebuffIndex = debuffIndex;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (finalDebuffIndex != -1)
+                    {
+                        switch (finalDebuffIndex)
+                        {
+                            case (int)Cauldron.debuffs.monsterMusk1:
+                                description += "(Monster Musk)";
+                                deBuff = "A sweet stench emnates from you...";
+                                defaultBuff = 24;
+                                break;
+                            case (int)Cauldron.debuffs.monsterMusk2:
+                                description += "(Monster Musk)";
+                                deBuff = "A sweet stench emnates from you...";
+                                defaultBuff = 24;
+                                break;
+                            case (int)Cauldron.debuffs.monsterMusk3:
+                                description += "(Monster Musk)";
+                                deBuff = "A sweet stench emnates from you...";
+                                defaultBuff = 24;
+                                break;
+                            case (int)Cauldron.debuffs.farmingDebuff1:
+                                description += "(Farming -1)";
+                                deBuff = "farming";
+                                type = 1;
+                                value = 1;
+                                farming = -1;
+                                break;
+                            case (int)Cauldron.debuffs.farmingDebuff2:
+                                description += "(Farming -2)";
+                                deBuff = "farming";
+                                type = 1;
+                                value = 2;
+                                farming = -2;
+                                break;
+                            case (int)Cauldron.debuffs.farmingDebuff3:
+                                description += "(Farming -3)";
+                                deBuff = "farming";
+                                type = 1;
+                                value = 3;
+                                farming = -3;
+                                break;
+                            case (int)Cauldron.debuffs.miningDebuff1:
+                                description += "(Mining -1)";
+                                deBuff = "mining";
+                                type = 1;
+                                value = 1;
+                                mining = -1;
+                                break;
+                            case (int)Cauldron.debuffs.miningDebuff2:
+                                description += "(Mining -2)";
+                                deBuff = "mining";
+                                type = 1;
+                                value = 2;
+                                mining = -2;
+                                break;
+                            case (int)Cauldron.debuffs.miningDebuff3:
+                                description += "(Mining -3)";
+                                deBuff = "mining";
+                                type = 1;
+                                value = 3;
+                                mining = -3;
+                                break;
+                            case (int)Cauldron.debuffs.fishingDebuff1:
+                                description += "(Fishing -1)";
+                                deBuff = "fishing";
+                                type = 1;
+                                value = 1;
+                                fishing = -1;
+                                break;
+                            case (int)Cauldron.debuffs.fishingDebuff2:
+                                description += "(Fishing -2)";
+                                deBuff = "fishing";
+                                type = 1;
+                                value = 2;
+                                fishing = -2;
+                                break;
+                            case (int)Cauldron.debuffs.fishingDebuff3:
+                                description += "(Fishing -3)";
+                                deBuff = "fishing";
+                                type = 1;
+                                value = 3;
+                                fishing = -3;
+                                break;
+                            case (int)Cauldron.debuffs.foragingDebuff1:
+                                description += "(Foraging -1)";
+                                deBuff = "foraging";
+                                type = 1;
+                                value = 1;
+                                foraging = -1;
+                                break;
+                            case (int)Cauldron.debuffs.foragingDebuff2:
+                                description += "(Foraging -2)";
+                                deBuff = "foraging";
+                                type = 1;
+                                value = 2;
+                                foraging = -2;
+                                break;
+                            case (int)Cauldron.debuffs.foragingDebuff3:
+                                description += "(Foraging -3)";
+                                deBuff = "foraging";
+                                type = 1;
+                                value = 3;
+                                foraging = -3;
+                                break;
+                            case (int)Cauldron.debuffs.attackDebuff1:
+                                description += "(Attack -1)";
+                                deBuff = "strong";
+                                type = 2;
+                                value = 1;
+                                attack = -1;
+                                break;
+                            case (int)Cauldron.debuffs.attackDebuff2:
+                                description += "(Attack -2)";
+                                deBuff = "strong";
+                                type = 2;
+                                value = 2;
+                                attack = -2;
+                                break;
+                            case (int)Cauldron.debuffs.attackDebuff3:
+                                description += "(Attack -3)";
+                                deBuff = "strong";
+                                type = 2;
+                                value = 3;
+                                attack = -3;
+                                break;
+                            case (int)Cauldron.debuffs.defenseDebuff1:
+                                description += "(Defense -1)";
+                                deBuff = "resilient";
+                                type = 2;
+                                value = 1;
+                                defense = -1;
+                                break;
+                            case (int)Cauldron.debuffs.defenseDebuff2:
+                                description += "(Defense -2)";
+                                deBuff = "resilient";
+                                type = 2;
+                                value = 2;
+                                defense = -2;
+                                break;
+                            case (int)Cauldron.debuffs.defenseDebuff3:
+                                description += "(Defense -3)";
+                                deBuff = "resilient";
+                                type = 2;
+                                value = 3;
+                                defense = -3;
+                                break;
+                            case (int)Cauldron.debuffs.maxEnergyDebuff1:
+                                description += "(Max Stamina -10)";
+                                deBuff = "vigorous";
+                                type = 2;
+                                value = 1;
+                                maxStamina = -1 * 10;
+                                break;
+                            case (int)Cauldron.debuffs.maxEnergyDebuff2:
+                                description += "(Max Stamina -20)";
+                                deBuff = "vigorous";
+                                type = 2;
+                                value = 2;
+                                maxStamina = -2 * 10;
+                                break;
+                            case (int)Cauldron.debuffs.maxEnergyDebuff3:
+                                description += "(Max Stamina -30)";
+                                deBuff = "vigorous";
+                                type = 2;
+                                value = 3;
+                                maxStamina = -3 * 10;
+                                break;
+                            case (int)Cauldron.debuffs.luckDebuff1:
+                                description += "(Luck -1)";
+                                deBuff = "lucky";
+                                type = 2;
+                                value = 1;
+                                luck = -1;
+                                break;
+                            case (int)Cauldron.debuffs.luckDebuff2:
+                                description += "(Luck -2)";
+                                deBuff = "lucky";
+                                type = 2;
+                                value = 2;
+                                luck = -2;
+                                break;
+                            case (int)Cauldron.debuffs.luckDebuff3:
+                                description += "(Luck -3)";
+                                deBuff = "lucky";
+                                type = 2;
+                                value = 3;
+                                luck = -3;
+                                break;
+                            case (int)Cauldron.debuffs.speedDebuff1:
+                                description += "(Speed -1)";
+                                deBuff = "fast";
+                                type = 2;
+                                value = 1;
+                                speed = -1;
+                                break;
+                            case (int)Cauldron.debuffs.speedDebuff2:
+                                description += "(Speed -2)";
+                                deBuff = "fast";
+                                type = 2;
+                                value = 2;
+                                speed = -2;
+                                break;
+                            case (int)Cauldron.debuffs.speedDebuff3:
+                                description += "(Speed -3)";
+                                deBuff = "fast";
+                                type = 2;
+                                value = 3;
+                                speed = -3;
+                                break;
                         }
                     }
                 }
 
-                if(finalDebuffIndex != -1)
+                #region template
+                //Game1.buffsDisplay.addOtherBuff(
+                //    new(0,
+                //        0,
+                //        0,
+                //        0,
+                //        0,
+                //        0,
+                //        0,
+                //        0,
+                //        0,
+                //        0,
+                //        0,
+                //        0,
+                //        minutesDuration: 1,
+                //        source: "<internal buff name>",
+                //        displaySource: ModEntry.ModHelper.Translation.Get("<what should appear in game as the source>"))
+                //    {
+                //        which = myBuffId,
+                //        sheetIndex = < index of the buff icon >,
+                //        glow = <if player should glow set to something other than Color.White >,
+                //        millisecondsDuration = < here you set the actual duration >,
+                //        description = ModEntry.ModHelper.Translation.Get("<should appear in game as the description>")
+                //    }
+                //);
+                #endregion template
+
+                string modifier = "";
+                string modifierEnd = ".";
+                string debuffModifier = "";
+
+                if (effectType == 2)
                 {
-                    switch (finalDebuffIndex)
-                    {
-                        case (int)Cauldron.debuffs.monsterMusk1:
-                            description += "(Monster Musk)";
-                            deBuff = "A sweet stench emnates from you...";
-                            defaultBuff = 24;
-                            break;
-                        case (int)Cauldron.debuffs.monsterMusk2:
-                            description += "(Monster Musk)";
-                            deBuff = "A sweet stench emnates from you...";
-                            defaultBuff = 24;
-                            break;
-                        case (int)Cauldron.debuffs.monsterMusk3:
-                            description += "(Monster Musk)";
-                            deBuff = "A sweet stench emnates from you...";
-                            defaultBuff = 24;
-                            break;
-                        case (int)Cauldron.debuffs.farmingDebuff1:
-                            description += "(Farming -1)";
-                            deBuff = "farming";
-                            type = 1;
-                            value = 1;
-                            farming = -1;
-                            break;
-                        case (int)Cauldron.debuffs.farmingDebuff2:
-                            description += "(Farming -2)";
-                            deBuff = "farming";
-                            type = 1;
-                            value = 2;
-                            farming = -2;
-                            break;
-                        case (int)Cauldron.debuffs.farmingDebuff3:
-                            description += "(Farming -3)";
-                            deBuff = "farming";
-                            type = 1;
-                            value = 3;
-                            farming = -3;
-                            break;
-                        case (int)Cauldron.debuffs.miningDebuff1:
-                            description += "(Mining -1)";
-                            deBuff = "mining";
-                            type = 1;
-                            value = 1;
-                            mining = -1;
-                            break;
-                        case (int)Cauldron.debuffs.miningDebuff2:
-                            description += "(Mining -2)";
-                            deBuff = "mining";
-                            type = 1;
-                            value = 2;
-                            mining = -2;
-                            break;
-                        case (int)Cauldron.debuffs.miningDebuff3:
-                            description += "(Mining -3)";
-                            deBuff = "mining";
-                            type = 1;
-                            value = 3;
-                            mining = -3;
-                            break;
-                        case (int)Cauldron.debuffs.fishingDebuff1:
-                            description += "(Fishing -1)";
-                            deBuff = "fishing";
-                            type = 1;
-                            value = 1;
-                            fishing = -1;
-                            break;
-                        case (int)Cauldron.debuffs.fishingDebuff2:
-                            description += "(Fishing -2)";
-                            deBuff = "fishing";
-                            type = 1;
-                            value = 2;
-                            fishing = -2;
-                            break;
-                        case (int)Cauldron.debuffs.fishingDebuff3:
-                            description += "(Fishing -3)";
-                            deBuff = "fishing";
-                            type = 1;
-                            value = 3;
-                            fishing = -3;
-                            break;
-                        case (int)Cauldron.debuffs.foragingDebuff1:
-                            description += "(Foraging -1)";
-                            deBuff = "foraging";
-                            type = 1;
-                            value = 1;
-                            foraging = -1;
-                            break;
-                        case (int)Cauldron.debuffs.foragingDebuff2:
-                            description += "(Foraging -2)";
-                            deBuff = "foraging";
-                            type = 1;
-                            value = 2;
-                            foraging = -2;
-                            break;
-                        case (int)Cauldron.debuffs.foragingDebuff3:
-                            description += "(Foraging -3)";
-                            deBuff = "foraging";
-                            type = 1;
-                            value = 3;
-                            foraging = -3;
-                            break;
-                        case (int)Cauldron.debuffs.attackDebuff1:
-                            description += "(Attack -1)";
-                            deBuff = "strong";
-                            type = 2;
-                            value = 1;
-                            attack = -1;
-                            break;
-                        case (int)Cauldron.debuffs.attackDebuff2:
-                            description += "(Attack -2)";
-                            deBuff = "strong";
-                            type = 2;
-                            value = 2;
-                            attack = -2;
-                            break;
-                        case (int)Cauldron.debuffs.attackDebuff3:
-                            description += "(Attack -3)";
-                            deBuff = "strong";
-                            type = 2;
-                            value = 3;
-                            attack = -3;
-                            break;
-                        case (int)Cauldron.debuffs.defenseDebuff1:
-                            description += "(Defense -1)";
-                            deBuff = "resilient";
-                            type = 2;
-                            value = 1;
-                            defense = -1;
-                            break;
-                        case (int)Cauldron.debuffs.defenseDebuff2:
-                            description += "(Defense -2)";
-                            deBuff = "resilient";
-                            type = 2;
-                            value = 2;
-                            defense = -2;
-                            break;
-                        case (int)Cauldron.debuffs.defenseDebuff3:
-                            description += "(Defense -3)";
-                            deBuff = "resilient";
-                            type = 2;
-                            value = 3;
-                            defense = -3;
-                            break;
-                        case (int)Cauldron.debuffs.maxEnergyDebuff1:
-                            description += "(Max Stamina -10)";
-                            deBuff = "vigorous";
-                            type = 2;
-                            value = 1;
-                            maxStamina = -1 * 10;
-                            break;
-                        case (int)Cauldron.debuffs.maxEnergyDebuff2:
-                            description += "(Max Stamina -20)";
-                            deBuff = "vigorous";
-                            type = 2;
-                            value = 2;
-                            maxStamina = -2 * 10;
-                            break;
-                        case (int)Cauldron.debuffs.maxEnergyDebuff3:
-                            description += "(Max Stamina -30)";
-                            deBuff = "vigorous";
-                            type = 2;
-                            value = 3;
-                            maxStamina = -3 * 10;
-                            break;
-                        case (int)Cauldron.debuffs.luckDebuff1:
-                            description += "(Luck -1)";
-                            deBuff = "lucky";
-                            type = 2;
-                            value = 1;
-                            luck = -1;
-                            break;
-                        case (int)Cauldron.debuffs.luckDebuff2:
-                            description += "(Luck -2)";
-                            deBuff = "lucky";
-                            type = 2;
-                            value = 2;
-                            luck = -2;
-                            break;
-                        case (int)Cauldron.debuffs.luckDebuff3:
-                            description += "(Luck -3)";
-                            deBuff = "lucky";
-                            type = 2;
-                            value = 3;
-                            luck = -3;
-                            break;
-                        case (int)Cauldron.debuffs.speedDebuff1:
-                            description += "(Speed -1)";
-                            deBuff = "fast";
-                            type = 2;
-                            value = 1;
-                            speed = -1;
-                            break;
-                        case (int)Cauldron.debuffs.speedDebuff2:
-                            description += "(Speed -2)";
-                            deBuff = "fast";
-                            type = 2;
-                            value = 2;
-                            speed = -2;
-                            break;
-                        case (int)Cauldron.debuffs.speedDebuff3:
-                            description += "(Speed -3)";
-                            deBuff = "fast";
-                            type = 2;
-                            value = 3;
-                            speed = -3;
-                            break;
-                    }
+                    debuffModifier = "don't ";
                 }
+
+                if (type == 0)
+                {
+                    description = $"{deBuff}";
+                }
+                else if (type == 1)
+                {
+                    if (value == 2)
+                    {
+                        modifier = "quite ";
+                        modifierEnd = "...";
+                    }
+                    else if (value == 3)
+                    {
+                        modifier = "really ";
+                        modifierEnd = "!!";
+                    }
+
+                    //description += $"You {debuffModifier}{modifier}feel like {deBuff} today{modifierEnd}";
+                    description = $"You {debuffModifier}{modifier}feel like {deBuff} today{modifierEnd}";
+                }
+                else if (type == 2)
+                {
+                    if (value == 2)
+                    {
+                        modifier = "quite ";
+                        modifierEnd = "...";
+                    }
+                    else if (value == 3)
+                    {
+                        modifier = "very ";
+                        modifierEnd = "!!";
+                    }
+
+                    //description += $"You {debuffModifier}feel {modifier}{deBuff} today{modifierEnd}";
+                    description = $"You {debuffModifier}feel {modifier}{deBuff} today{modifierEnd}";
+                }
+                #endregion generate buff values
             }
 
-            #region template
-            //Game1.buffsDisplay.addOtherBuff(
-            //    new(0,
-            //        0,
-            //        0,
-            //        0,
-            //        0,
-            //        0,
-            //        0,
-            //        0,
-            //        0,
-            //        0,
-            //        0,
-            //        0,
-            //        minutesDuration: 1,
-            //        source: "<internal buff name>",
-            //        displaySource: ModEntry.ModHelper.Translation.Get("<what should appear in game as the source>"))
-            //    {
-            //        which = myBuffId,
-            //        sheetIndex = < index of the buff icon >,
-            //        glow = <if player should glow set to something other than Color.White >,
-            //        millisecondsDuration = < here you set the actual duration >,
-            //        description = ModEntry.ModHelper.Translation.Get("<should appear in game as the description>")
-            //    }
-            //);
-            #endregion template
 
             #region create buff
-            string modifier = "";
-            string modifierEnd = ".";
-            string debuffModifier = "";
-
-            if (effectType == 2)
-            {
-                debuffModifier = "don't ";
-            }
-
-            if (type == 0)
-            {
-                description = $"{deBuff}";
-            }
-            else if (type == 1)
-            {
-                if (value == 2)
-                {
-                    modifier = "quite ";
-                    modifierEnd = "...";
-                }
-                else if (value == 3)
-                {
-                    modifier = "really ";
-                    modifierEnd = "!!";
-                }
-
-                //description += $"You {debuffModifier}{modifier}feel like {deBuff} today{modifierEnd}";
-                description = $"You {debuffModifier}{modifier}feel like {deBuff} today{modifierEnd}";
-            }
-            else if (type == 2)
-            {
-                if (value == 2)
-                {
-                    modifier = "quite ";
-                    modifierEnd = "...";
-                }
-                else if (value == 3)
-                {
-                    modifier = "very ";
-                    modifierEnd = "!!";
-                }
-
-                //description += $"You {debuffModifier}feel {modifier}{deBuff} today{modifierEnd}";
-                description = $"You {debuffModifier}feel {modifier}{deBuff} today{modifierEnd}";
-            }
-
             Buff buff = new Buff(farming, fishing, mining, digging, luck, foraging, crafting, maxStamina * 10, magneticRadius * 32, speed, defense, attack, minutesDuration, source, displaySource)
             {
                 sheetIndex = 17,
@@ -946,13 +995,16 @@ namespace CauldronOfChance
                 switch (buffCombination.Type)
                 {
                     case "bufferfliesChance":
-                        butterflies += value * Cauldron.multiplierConst;
+                        butterflies += value * Cauldron.butterfliesConst;
                         break;
                     case "boomChance":
-                        boom += value * Cauldron.multiplierConst;
+                        boom += value * Cauldron.boomConst;
                         break;
                     case "cauldronLuck":
-                        cauldronLuck += value * Cauldron.multiplierConst;
+                        cauldronLuck += value * Cauldron.cauldronLuckConst;
+                        break;
+                    case "duration":
+                        duration += value * Cauldron.durationConst;
                         break;
                     default:
                         Cauldron.addToCauldron(buffCombination.Type, value);
@@ -1202,6 +1254,11 @@ namespace CauldronOfChance
         public double getBoom()
         {
             return ingredient1.boom + ingredient2.boom + ingredient3.boom + this.boom + 0.01;
+        }
+
+        public double getDuration()
+        {
+            return ingredient1.duration * ingredient2.duration * ingredient3.duration * this.duration;
         }
 
         public List<int> getAllBuffs()

@@ -16,13 +16,15 @@ namespace CauldronOfChance
         public double boom { get; set; } = 0;
         public int cooking { get; set; } = 0;
         public double cauldronLuck { get; set; } = 0;
+        public double duration { get; set; } = 1;
         #endregion special events
 
         public List<int> buffList;
         public List<int> debuffList;
 
         public Ingredient (Item item, int bufferfliesChance = 0, int boomChance = 0, int garlicOil = 0, int monsterMusk = 0, int debuffImmunity = 0,
-            int farming = 0, int mining = 0, int fishing = 0, int foraging = 0, int attack = 0, int defense = 0, int maxEnergy = 0, int luck = 0, int magneticRadius = 0, int speed = 0, int cauldronLuck = 0)
+            int farming = 0, int mining = 0, int fishing = 0, int foraging = 0, int attack = 0, int defense = 0,
+            int maxEnergy = 0, int luck = 0, int magneticRadius = 0, int speed = 0, int cauldronLuck = 0, int duration = 0)
         {
             buffList = new List<int>();
             foreach (int buffIndex in Enum.GetValues(typeof(Cauldron.buffs)))
@@ -39,14 +41,15 @@ namespace CauldronOfChance
 
             if (bufferfliesChance > 0)
             {
-                this.butterflies += bufferfliesChance * Cauldron.multiplierConst;
+                this.butterflies += bufferfliesChance * Cauldron.butterfliesConst;
             }
             if (boomChance > 0)
             {
-                this.boom += boomChance * Cauldron.multiplierConst;
+                this.boom += boomChance * Cauldron.boomConst;
             }
 
-            this.cauldronLuck += cauldronLuck * Cauldron.multiplierConst;
+            this.cauldronLuck += cauldronLuck * Cauldron.cauldronLuckConst;
+            this.duration += duration * Cauldron.durationConst;
 
             using (Cauldron Cauldron = new Cauldron(this))
             {
