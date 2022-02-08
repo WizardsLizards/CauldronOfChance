@@ -22,7 +22,7 @@ namespace CauldronOfChance
         public List<int> buffList;
         public List<int> debuffList;
 
-        public Ingredient (Item item, int bufferfliesChance = 0, int boomChance = 0, int garlicOil = 0, int monsterMusk = 0, int debuffImmunity = 0,
+        public Ingredient (Item item, int butterfliesChance = 0, int boomChance = 0, int garlicOil = 0, int monsterMusk = 0, int debuffImmunity = 0,
             int farming = 0, int mining = 0, int fishing = 0, int foraging = 0, int attack = 0, int defense = 0,
             int maxEnergy = 0, int luck = 0, int magneticRadius = 0, int speed = 0, int cauldronLuck = 0, int duration = 0)
         {
@@ -39,9 +39,9 @@ namespace CauldronOfChance
 
             this.item = item;
 
-            if (bufferfliesChance > 0)
+            if (butterfliesChance > 0)
             {
-                this.butterflies += bufferfliesChance * Cauldron.butterfliesConst;
+                this.butterflies += butterfliesChance * Cauldron.butterfliesConst;
             }
             if (boomChance > 0)
             {

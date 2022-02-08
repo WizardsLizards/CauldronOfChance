@@ -138,7 +138,7 @@ namespace CauldronOfChance
             "Potato Seeds",
             "Rhubarb Seeds",
             "Strawberry Seeds",
-            "Tulip Seeds",
+            "Tulip Bulb",
             "Rice Shoot",
             "Blueberry Seeds",
             "Corn Seeds",
@@ -487,10 +487,6 @@ namespace CauldronOfChance
             "Taro Root",
             "Sweet Gem Berry",
             "Tea Leaves",
-            "Spring Seeds",
-            "Summer Seeds",
-            "Fall Seeds",
-            "Winter Seeds",
         };
         public List<string> artisanGoods { get; } = new List<string>()
         {
@@ -857,7 +853,7 @@ namespace CauldronOfChance
             buffCombinations.Add(("boom", 1, 2, bombs));
             buffCombinations.Add(("attack", 1, 2, bombs));
 
-            List<string> boom1 = new List<string>() { "Sap", "Weeds" };
+            List<string> boom1 = new List<string>() { "Sap", "Weeds", "Fiber" };
             boom1.AddRange(trash);
             buffCombinations.Add(("boom", 1, 2, boom1));
             buffCombinations.Add(("cauldronLuck", -1, -2, boom1));
@@ -866,6 +862,10 @@ namespace CauldronOfChance
             buffCombinations.Add(("farming", 1, 2, crops));
             buffCombinations.Add(("speed", 1, 2, artisanGoods));
             #endregion category combinations
+
+            #region fluff combinations
+            buffCombinations.Add(("butterflies", 1, 2, new List<string>() { "Daffodil", "Dandelion", "Sweet Pea", "Crocus", "Tulip", "Blue Jazz", "Summer Spangle", "Poppy", "Sunflower", "Fairy Rose" }));
+            #endregion fluff combinations
 
             #region bundle combinations
             //TODO: Add effects. For easy bundles: 0,1 values. for hard bundles: 2,3. for superhard: 3,3? (e.g. ancient fruit + gem berry)
@@ -948,152 +948,152 @@ namespace CauldronOfChance
         public Ingredient getIngredient(Item item)
         {
             Ingredient Item;
-
+            
             switch (item.Name)
             {
                 case "Weeds":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, farming: -1);
                     break;
                 case "Stone":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, defense: 1);
                     break;
                 case "Wild Horseradish":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, foraging: 1);
                     break;
                 case "Daffodil":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, butterfliesChance: 1);
                     break;
                 case "Leek":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, foraging: 1, maxEnergy: 1);
                     break;
                 case "Dandelion":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, butterfliesChance: 1);
                     break;
                 case "Parsnip":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, farming: 1, defense: 1);
                     break;
                 case "Lumber":
                     Item = new Ingredient(item);
                     break;
                 case "Emerald":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, foraging: 2);
                     break;
                 case "Aquamarine":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2);
                     break;
                 case "Ruby":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, attack: 2);
                     break;
                 case "Amethyst":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, debuffImmunity: 2);
                     break;
                 case "Topaz":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, farming: 2);
                     break;
                 case "Jade":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, defense: 2);
                     break;
                 case "Diamond":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, luck: 2);
                     break;
                 case "Prismatic Shard":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, luck: 3, cauldronLuck: 3);
                     break;
                 case "Cave Carrot":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, mining: 1, maxEnergy: 2);
                     break;
                 case "Quartz":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, mining: 1);
                     break;
                 case "Fire Quartz":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, attack: 1);
                     break;
                 case "Frozen Tear":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, defense: 1);
                     break;
                 case "Earth Crystal":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, mining: 1);
                     break;
                 case "Coconut":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, defense: 1);
                     break;
                 case "Cactus Fruit":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, foraging: 2, speed: 1);
                     break;
                 case "Sap":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, boomChance: 1, maxEnergy: -1);
                     break;
                 case "Torch":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, boomChance: 1, speed: 1);
                     break;
                 case "Spirit Torch":
                     Item = new Ingredient(item);
                     break;
                 case "Dwarf Scroll I":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, mining: 1);
                     break;
                 case "Dwarf Scroll II":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, mining: 2);
                     break;
                 case "Dwarf Scroll III":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, mining: 3);
                     break;
                 case "Dwarf Scroll IV":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, mining: 3, cauldronLuck: 1);
                     break;
                 case "Chipped Amphora":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, defense: -1);
                     break;
                 case "Arrowhead":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, attack: 2);
                     break;
                 case "Ancient Doll":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, boomChance: 3, defense: -1);
                     break;
                 case "Elvish Jewelry":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, cauldronLuck: 2, speed: 2);
                     break;
                 case "Chewing Stick":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, attack: -1);
                     break;
                 case "Ornamental Fan":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, speed: 3);
                     break;
                 case "Dinosaur Egg":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, duration: 2, defense: 1);
                     break;
                 case "Rare Disc":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, boomChance: 3, cauldronLuck: 3);
                     break;
                 case "Ancient Sword":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, attack: 3);
                     break;
                 case "Rusty Spoon":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, defense: -2);
                     break;
                 case "Rusty Spur":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, defense: -2);
                     break;
                 case "Rusty Cog":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, defense: -2);
                     break;
                 case "Chicken Statue":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, farming: 3, speed: 2);
                     break;
                 case "Ancient Seed":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, farming: 3, cauldronLuck: 1);
                     break;
                 case "Prehistoric Tool":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, farming: 1, mining: 1);
                     break;
                 case "Dried Starfish":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2);
                     break;
                 case "Anchor":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2);
                     break;
                 case "Glass Shards":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, defense: -3);
                     break;
                 case "Bone Flute":
                     Item = new Ingredient(item);
@@ -1117,7 +1117,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Strange Doll":
-                    Item = new Ingredient(item); //BOOM and Butterflies high?
+                    Item = new Ingredient(item, boomChance: 3, butterfliesChance: 3);
                     break;
                 case "Pufferfish":
                     Item = new Ingredient(item);
@@ -1687,7 +1687,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Poppy":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, butterfliesChance: 1);
                     break;
                 case "Copper Ore":
                     Item = new Ingredient(item);
@@ -1735,7 +1735,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Sweet Pea":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, butterfliesChance: 1);
                     break;
                 case "Field Snack":
                     Item = new Ingredient(item);
@@ -1783,7 +1783,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Crocus":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, butterfliesChance: 1);
                     break;
                 case "Vinegar":
                     Item = new Ingredient(item);
@@ -1792,7 +1792,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Sunflower":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, butterfliesChance: 1);
                     break;
                 case "Purple Mushroom":
                     Item = new Ingredient(item);
@@ -2161,16 +2161,16 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Tulip":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, butterfliesChance: 1);
                     break;
                 case "Summer Spangle":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, butterfliesChance: 1);
                     break;
                 case "Fairy Rose":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, butterfliesChance: 1);
                     break;
                 case "Blue Jazz":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, butterfliesChance: 1);
                     break;
                 case "Sprinkler":
                     Item = new Ingredient(item);
@@ -2431,7 +2431,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Fiber":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, farming: -1);
                     break;
                 case "Oil of Garlic":
                     Item = new Ingredient(item);

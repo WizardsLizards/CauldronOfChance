@@ -1030,6 +1030,7 @@ namespace CauldronOfChance
                         duration += value * Cauldron.durationConst;
                         break;
                     default:
+                        //Add combinations double cuz players got more choice in adding it?
                         Cauldron.addToCauldron(buffCombination.Type, value);
                         break;
                 }
