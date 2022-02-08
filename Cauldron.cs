@@ -443,7 +443,7 @@ namespace CauldronOfChance
         };
         public List<string> relics { get; } = new List<string>()
         {
-
+            //TODO
         };
         public List<string> crops { get; } = new List<string>()
         {
@@ -634,13 +634,14 @@ namespace CauldronOfChance
 
         public void addToCauldron(string name, int value)
         {
-            if (name.Equals("garlicOil"))
+            if (value == 0)
             {
-                addToCauldron(name, "monsterMusk", value);
+                return;
             }
-            else if (name.Equals("monsterMusk"))
+
+            if (name.Equals("garlicOil") || name.Equals("monsterMusk"))
             {
-                addToCauldron("garlicOil", name, value);
+                addToCauldron("garlicOil", "monsterMusk", value);
             }
             else if (name.Equals("debuffImmunity"))
             {
@@ -983,7 +984,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item, farming: -1);
                     break;
                 case "Stone":
-                    Item = new Ingredient(item, defense: 1);
+                    Item = new Ingredient(item, defense: 1, speed: -1);
                     break;
                 case "Wild Horseradish":
                     Item = new Ingredient(item, foraging: 1);

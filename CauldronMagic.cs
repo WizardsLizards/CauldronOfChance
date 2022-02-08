@@ -39,8 +39,8 @@ namespace CauldronOfChance
         public int effectType { get; set; } = 0;
         #endregion
 
-        public List<int> buffList;
-        public List<int> debuffList;
+        public List<int> buffList { get; set; }
+        public List<int> debuffList { get; set; }
         #endregion chances
         #endregion properties
 
@@ -216,25 +216,44 @@ namespace CauldronOfChance
         #region chance values
         public void findCombinations(Cauldron Cauldron)
         {
-            List<string> itemNames = new List<string>()
-            {
-                ingredient1.item.Name,
-                ingredient2.item.Name,
-                ingredient3.item.Name
-            }
-            .Distinct().ToList();
+            List<string> ingredients = new List<string>() { ingredient1.item.Name, ingredient2.item.Name, ingredient3.item.Name }.Distinct().ToList();
 
-            foreach((string Type, int Match2, int Match3, List<string> Items) tuple in Cauldron.buffCombinations)
+            foreach ((string Type, int Match2, int Match3, List<string> Items) buffCombination in Cauldron.buffCombinations)
             {
-                int matches = itemNames.Intersect(tuple.Items).Count();
+                int matches = ingredients.Intersect(buffCombination.Items).Count();
 
-                if(matches == 2)
+                int value = 0;
+
+                if (matches == 2)
                 {
-                    Cauldron.addToCauldron(tuple.Type, tuple.Match2);
+                    value = buffCombination.Match2;
                 }
                 else if (matches >= 3)
                 {
-                    Cauldron.addToCauldron(tuple.Type, tuple.Match3);
+                    value = buffCombination.Match3;
+                }
+
+                if(value > 0)
+                {
+                    switch (buffCombination.Type)
+                    {
+                        case "butterflies":
+                            butterflies += value * Cauldron.butterfliesConst;
+                            break;
+                        case "boom":
+                            boom += value * Cauldron.boomConst;
+                            break;
+                        case "cauldronLuck":
+                            cauldronLuck += value * Cauldron.cauldronLuckConst;
+                            break;
+                        case "duration":
+                            duration += value * Cauldron.durationConst;
+                            break;
+                        default:
+                            //Add combinations double cuz players got more choice in adding it?
+                            Cauldron.addToCauldron(buffCombination.Type, value);
+                            break;
+                    }
                 }
             }
         }
@@ -243,7 +262,6 @@ namespace CauldronOfChance
         #region chance determination
         public void determineResult(Cauldron Cauldron)
         {
-            CheckForBuffCombinations(Cauldron);
             double butterboomChance = randomGenerator.NextDouble();
             //Chance for butterflies
             if (butterboomChance > 1 - getButterflies() - (getButterflies() * playerLuck))
@@ -383,12 +401,24 @@ namespace CauldronOfChance
                     //Buff
                     effectType = 1;
 
-                    int maxBuffs = getCombinedBuffChance();
-
-                    if (getCombinedDebuffChance() < 5)
+                    //if (getCombinedDebuffChance() < 3)
+                    if (getCombinedBuffChance() == 0)
                     {
-                        maxBuffs += Enum.GetValues(typeof(Cauldron.buffs)).Length;
+                        buffList[(int)Cauldron.buffs.attackBuff1] += 1;
+                        //buffList[(int)Cauldron.buffs.debuffImmunity1] += 1;
+                        buffList[(int)Cauldron.buffs.defenseBuff1] += 1;
+                        buffList[(int)Cauldron.buffs.farmingBuff1] += 1;
+                        buffList[(int)Cauldron.buffs.fishingBuff1] += 1;
+                        buffList[(int)Cauldron.buffs.foragingBuff1] += 1;
+                        //buffList[(int)Cauldron.buffs.garlicOil1] += 1;
+                        buffList[(int)Cauldron.buffs.luckBuff1] += 1;
+                        buffList[(int)Cauldron.buffs.magneticRadiusBuff1] += 1;
+                        buffList[(int)Cauldron.buffs.maxEnergyBuff1] += 1;
+                        buffList[(int)Cauldron.buffs.miningBuff1] += 1;
+                        buffList[(int)Cauldron.buffs.speedBuff1] += 1;
                     }
+
+                    int maxBuffs = getCombinedBuffChance();
 
                     int buffRandomCounter = randomGenerator.Next(1, maxBuffs);
 
@@ -402,7 +432,7 @@ namespace CauldronOfChance
                         {
                             buffRandomCounter -= buffs[buffIndex];
 
-                            if (buffRandomCounter < 0)
+                            if (buffRandomCounter <= 0)
                             {
                                 finalBuffIndex = buffIndex;
                                 break;
@@ -662,12 +692,22 @@ namespace CauldronOfChance
                     //Debuff
                     effectType = 2;
 
-                    int maxDebuffs = getCombinedDebuffChance();
-
-                    if (getCombinedBuffChance() < 5)
+                    //if (getCombinedBuffChance() < 3)
+                    if (getCombinedDebuffChance() == 0)
                     {
-                        maxDebuffs += Enum.GetValues(typeof(Cauldron.debuffs)).Length;
+                        debuffList[(int)Cauldron.debuffs.attackDebuff1] += 1;
+                        debuffList[(int)Cauldron.debuffs.defenseDebuff1] += 1;
+                        debuffList[(int)Cauldron.debuffs.farmingDebuff1] += 1;
+                        debuffList[(int)Cauldron.debuffs.fishingDebuff1] += 1;
+                        debuffList[(int)Cauldron.debuffs.foragingDebuff1] += 1;
+                        debuffList[(int)Cauldron.debuffs.luckDebuff1] += 1;
+                        debuffList[(int)Cauldron.debuffs.maxEnergyDebuff1] += 1;
+                        debuffList[(int)Cauldron.debuffs.miningDebuff1] += 1;
+                        //debuffList[(int)Cauldron.debuffs.monsterMusk1] += 1;
+                        debuffList[(int)Cauldron.debuffs.speedDebuff1] += 1;
                     }
+
+                    int maxDebuffs = getCombinedDebuffChance();
 
                     int debuffRandomCounter = randomGenerator.Next(1, maxDebuffs);
 
@@ -681,7 +721,7 @@ namespace CauldronOfChance
                         {
                             debuffRandomCounter -= debuffs[debuffIndex];
 
-                            if (debuffRandomCounter < 0)
+                            if (debuffRandomCounter <= 0)
                             {
                                 finalDebuffIndex = debuffIndex;
                                 break;
@@ -996,47 +1036,6 @@ namespace CauldronOfChance
             #endregion create buff
         }
 
-        public void CheckForBuffCombinations(Cauldron Cauldron)
-        {
-            List<string> ingredients = new List<string>() { ingredient1.item.Name, ingredient2.item.Name, ingredient3.item.Name }.Distinct().ToList();
-
-            foreach ((string Type, int Match2, int Match3, List<string> Items) buffCombination in Cauldron.buffCombinations)
-            {
-                int matches = ingredients.Intersect(buffCombination.Items).Count();
-
-                int value = 0;
-
-                if(matches == 2)
-                {
-                    value = buffCombination.Match2;
-                }
-                else if (matches >= 3)
-                {
-                    value = buffCombination.Match3;
-                }
-
-                switch (buffCombination.Type)
-                {
-                    case "bufferfliesChance":
-                        butterflies += value * Cauldron.butterfliesConst;
-                        break;
-                    case "boomChance":
-                        boom += value * Cauldron.boomConst;
-                        break;
-                    case "cauldronLuck":
-                        cauldronLuck += value * Cauldron.cauldronLuckConst;
-                        break;
-                    case "duration":
-                        duration += value * Cauldron.durationConst;
-                        break;
-                    default:
-                        //Add combinations double cuz players got more choice in adding it?
-                        Cauldron.addToCauldron(buffCombination.Type, value);
-                        break;
-                }
-            }
-        }
-
         public double CheckForRecipes(Cauldron Cauldron)
         {
             //0-1/3 Parts: 0% Chance. 2/3 Parts: 25% Chance. 3/3 Parts: 75% Chance (Always top down. If full match always that. if no full match but multiple 25%: Same chance for everything)
@@ -1279,7 +1278,7 @@ namespace CauldronOfChance
 
         public int getCombinedDebuffChance()
         {
-            return ingredient1.getDebuffChance() + ingredient2.getDebuffChance() + ingredient3.getDebuffChance() + this.getBuffChance();
+            return ingredient1.getDebuffChance() + ingredient2.getDebuffChance() + ingredient3.getDebuffChance() + this.getDebuffChance();
         }
         public int getBuffChance()
         {
@@ -1322,36 +1321,22 @@ namespace CauldronOfChance
 
         public List<int> getAllBuffs()
         {
-            int defaultAdder = 0;
-
-            if(getCombinedDebuffChance() < 5)
-            {
-                defaultAdder = 1;
-            }
-
-            List<int> buffList = new List<int>();
+            List<int> buffAccumulator = new List<int>();
             foreach (int buffIndex in Enum.GetValues(typeof(Cauldron.buffs)))
             {
-                buffList.Add(ingredient1.buffList[buffIndex] + ingredient2.buffList[buffIndex] + ingredient3.buffList[buffIndex] + defaultAdder);
+                buffAccumulator.Add(ingredient1.buffList[buffIndex] + ingredient2.buffList[buffIndex] + ingredient3.buffList[buffIndex] + this.buffList[buffIndex]);
             }
-            return buffList;
+            return buffAccumulator;
         }
 
         public List<int> getAllDebuffs()
         {
-            int defaultAdder = 0;
-
-            if (getCombinedBuffChance() < 5)
-            {
-                defaultAdder = 1;
-            }
-
-            List<int> debuffList = new List<int>();
+            List<int> debuffAccumulator = new List<int>();
             foreach (int debuffIndex in Enum.GetValues(typeof(Cauldron.debuffs)))
             {
-                debuffList.Add(ingredient1.debuffList[debuffIndex] + ingredient2.debuffList[debuffIndex] + ingredient3.debuffList[debuffIndex] + defaultAdder);
+                debuffAccumulator.Add(ingredient1.debuffList[debuffIndex] + ingredient2.debuffList[debuffIndex] + ingredient3.debuffList[debuffIndex] + this.debuffList[debuffIndex]);
             }
-            return debuffList;
+            return debuffAccumulator;
         }
         #endregion chance determination
         #endregion helper
