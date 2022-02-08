@@ -10,6 +10,7 @@ namespace CauldronOfChance
 {
     public class ModEntry : StardewModdingAPI.Mod, IAssetEditor
     {
+        //TODO: Set eventId after mod Id
         public const int eventId = 21474836;
 
         public static List<long> userIds { get; set; }
