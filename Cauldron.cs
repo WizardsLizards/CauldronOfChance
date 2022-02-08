@@ -1,4 +1,5 @@
-﻿using StardewValley;
+﻿using StardewModdingAPI;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -783,29 +784,56 @@ namespace CauldronOfChance
 
             foreach (KeyValuePair<string, string> recipe in cookingRecipeDict)
             {
-                List<int> Items = new List<int>();
-                List<int> Categories = new List<int>();
-
-                List<string> ingredients = recipe.Value.Split('/')[0].Split(' ').ToList();
-
-                foreach (string ingredient in ingredients)
+                try
                 {
-                    int id;
+                    Item csItem = Utility.fuzzyItemSearch(recipe.Key);
 
-                    if (Int32.TryParse(ingredient, out id))
+                    if(csItem is StardewValley.Object)
                     {
-                        if (id >= 0)
+                        StardewValley.Object csObject = csItem as StardewValley.Object;
+
+                        string[] objectDescription = Game1.objectInformation[csObject.ParentSheetIndex].Split('/');
+
+                        string[] whatToBuff = (string[])((objectDescription.Length > 7) ? ((object)objectDescription[7].Split(' ')) : ((object)new string[12]
                         {
-                            Items.Add(id);
-                        }
-                        else
+                        "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+                        "0", "0"
+                        }));
+
+                        csObject.ModifyItemBuffs(whatToBuff);
+
+                        if(whatToBuff.Select(x => Int32.Parse(x)).Sum() > 0)
                         {
-                            Categories.Add(id);
+                            List<int> Items = new List<int>();
+                            List<int> Categories = new List<int>();
+
+                            List<string> ingredients = recipe.Value.Split('/')[0].Split(' ').ToList();
+
+                            foreach (string ingredient in ingredients)
+                            {
+                                int id;
+
+                                if (Int32.TryParse(ingredient, out id))
+                                {
+                                    if (id >= 0)
+                                    {
+                                        Items.Add(id);
+                                    }
+                                    else
+                                    {
+                                        Categories.Add(id);
+                                    }
+                                }
+                            }
+
+                            cookingRecipes.Add((recipe.Key, Items, Categories));
                         }
                     }
                 }
-
-                cookingRecipes.Add((recipe.Key, Items, Categories));
+                catch (Exception ex)
+                {
+                    ObjectPatches.IMonitor.Log($"Could not add the recipe for {recipe.Key}:\n{ex}", LogLevel.Error);
+                }
             }
         }
 
