@@ -254,6 +254,7 @@ namespace CauldronOfChance
             "Bat Wing",
             "Solar Essence",
             "Void Essence",
+            "Bone Fragment",
         };
         public List<string> metalbars { get; } = new List<string>()
         {
@@ -817,6 +818,8 @@ namespace CauldronOfChance
             buffCombinations = new List<(string Type, int Match2, int Match3, List<string> Items)>();
 
             //buffCombinations.Add(("", , , new List<string>() { }));
+
+            #region category combinations
             List<string> fishing1 = new List<string>() { "Driftwood", };
             fishing1.AddRange(fishes);
             fishing1.AddRange(shells);
@@ -861,48 +864,51 @@ namespace CauldronOfChance
 
             buffCombinations.Add(("luck", 1, 2, relics));
             buffCombinations.Add(("farming", 1, 2, crops));
-            buffCombinations.Add(("", 1, 2, artisanGoods)); //TODO
+            buffCombinations.Add(("speed", 1, 2, artisanGoods));
+            #endregion category combinations
 
+            #region bundle combinations
             //TODO: Add effects. For easy bundles: 0,1 values. for hard bundles: 2,3. for superhard: 3,3? (e.g. ancient fruit + gem berry)
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Wild Horseradish", "Daffodil", "Leek", "Dandelion", "Spring Onion", "Spring Seeds", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Grape", "Spice Berry", "Sweet Pea", "Summer Seeds", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Common Mushroom", "Wild Plum", "Hazelnut", "Blackberry", "Fall Seeds", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Winter Root", "Crystal Fruit", "Snow Yam", "Crocus", "Winter Seeds", }));
-            buffCombinations.Add(("", 0, 1, new List<string>() { "Wood", "Stone", "Hardwood", "Sap", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Coconut", "Cactus Fruit", "Cave Carrot", "Red Mushroom", "Purple Mushroom", "Maple Syrup", "Oak Resin", "Pine Tar", "Morel", "Autumn's Bounty", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Purple Mushroom", "Fiddlehead Fern", "White Algae", "Hops", "Cookout Kit", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Parsnip", "Green Bean", "Cauliflower", "Potato", "Speed-Gro", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Tomato", "Hot Pepper", "Blueberry", "Melon", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Corn", "Eggplant", "Pumpkin", "Yam", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Parsnip", "Melon", "Pumpkin", "Corn", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Ancient Fruit", "Sweet Gem Berry", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Large Milk", "Large Egg", "Large Goat Milk", "Wool", "Duck Egg", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Roe", "Aged Roe", "Squid Ink", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Tulip", "Blue Jazz", "Summer Spangle", "Sunflower", "Fairy Rose", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Truffle Oil", "Cloth", "Goat Cheese", "Cheese", "Honey", "Jelly", "Apple", "Apricot", "Orange", "Peach", "Pomegranate", "Cherry", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Mead", "Pale Ale", "Wine", "Juice", "Green Tea", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Sunfish", "Catfish", "Shad", "Tiger Trout", "Bait", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Largemouth Bass", "Carp", "Bullhead", "Sturgeon", "Dressed Spinner", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Sardine", "Tuna", "Red Snapper", "Tilapia", "Warp Totem: Beach ", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Walleye", "Bream", "Eel", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Lobster", "Crayfish", "Crab", "Cockle", "Mussel", "Shrimp", "Snail", "Periwinkle", "Oyster", "Clam", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Pufferfish", "Ghostfish", "Sandfish", "Woodskip", "Dish O' The Sea", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Largemouth Bass", "Shad", "Tuna", "Walleye", "Dish O' The Sea", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Lava Eel", "Scorpion Carp", "Octopus", "Blobfish", "Dish O' The Sea", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Copper Bar", "Iron Bar", "Gold Bar", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Quartz", "Earth Crystal", "Frozen Tear", "Fire Quartz", "Omni Geode", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Slime", "Bat Wing", "Solar Essence", "Void Essence", "Bone Fragment", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Amethyst", "Aquamarine", "Diamond", "Emerald", "Ruby", "Topaz", "Lucky Lunch", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Iridium Ore", "Battery Pack", "Refined Quartz", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Maple Syrup", "Fiddlehead Fern", "Truffle", "Poppy", "Maki Roll", "Fried Egg", "Pink Cake", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Red Mushroom", "Sea Urchin", "Sunflower", "Duck Feather", "Aquamarine", "Red Cabbage", "Beet", "Amaranth", "Starfruit", "Cactus Fruit", "Blueberry", "Iridium Bar", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Purple Mushroom", "Nautilus Shell", "Chub", "Frozen Geode", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Salmonberry", "Cookie", "Ancient Doll", "Ice Cream", "Battery Pack", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Salmonberry", "Blackberry", "Wild Plum", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Egg", "Milk", "Wheat Flour", "Complete Breakfast", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Wheat", "Hay", "Apple", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Oak Resin", "Wine", "Rabbit's Foot", "Pomegranate", "Gold Bar", }));
-            buffCombinations.Add(("", 1, 2, new List<string>() { "Wine", "Dinosaur Mayonnaise", "Prismatic Shard", "Ancient Fruit", "Void Salmon", "Caviar", }));
+            buffCombinations.Add(("foraging", 1, 2, new List<string>() { "Wild Horseradish", "Daffodil", "Leek", "Dandelion", "Spring Onion", "Spring Seeds", }));
+            buffCombinations.Add(("foraging", 1, 2, new List<string>() { "Grape", "Spice Berry", "Sweet Pea", "Summer Seeds", }));
+            buffCombinations.Add(("foraging", 1, 2, new List<string>() { "Common Mushroom", "Wild Plum", "Hazelnut", "Blackberry", "Fall Seeds", }));
+            buffCombinations.Add(("foraging", 1, 2, new List<string>() { "Winter Root", "Crystal Fruit", "Snow Yam", "Crocus", "Winter Seeds", }));
+            buffCombinations.Add(("foraging", 0, 1, new List<string>() { "Wood", "Stone", "Hardwood", "Sap", }));
+            buffCombinations.Add(("foraging", 2, 3, new List<string>() { "Coconut", "Cactus Fruit", "Cave Carrot", "Red Mushroom", "Purple Mushroom", "Maple Syrup", "Oak Resin", "Pine Tar", "Morel", "Autumn's Bounty", }));
+            buffCombinations.Add(("foraging", 2, 3, new List<string>() { "Purple Mushroom", "Fiddlehead Fern", "White Algae", "Hops", "Cookout Kit", }));
+            buffCombinations.Add(("farming", 1, 2, new List<string>() { "Parsnip", "Green Bean", "Cauliflower", "Potato", "Speed-Gro", }));
+            buffCombinations.Add(("farming", 1, 2, new List<string>() { "Tomato", "Hot Pepper", "Blueberry", "Melon", }));
+            buffCombinations.Add(("farming", 1, 2, new List<string>() { "Corn", "Eggplant", "Pumpkin", "Yam", }));
+            buffCombinations.Add(("farming", 1, 2, new List<string>() { "Parsnip", "Melon", "Pumpkin", "Corn", }));
+            buffCombinations.Add(("cauldronLuck", 3, 3, new List<string>() { "Ancient Fruit", "Sweet Gem Berry", }));
+            buffCombinations.Add(("farming", 1, 2, new List<string>() { "Large Milk", "Large Egg", "Large Goat Milk", "Wool", "Duck Egg", }));
+            buffCombinations.Add(("fishing", 1, 2, new List<string>() { "Roe", "Aged Roe", "Squid Ink", }));
+            buffCombinations.Add(("farming", 1, 2, new List<string>() { "Tulip", "Blue Jazz", "Summer Spangle", "Sunflower", "Fairy Rose", }));
+            buffCombinations.Add(("farming", 1, 2, new List<string>() { "Truffle Oil", "Cloth", "Goat Cheese", "Cheese", "Honey", "Jelly", "Apple", "Apricot", "Orange", "Peach", "Pomegranate", "Cherry", }));
+            buffCombinations.Add(("luck", 1, 2, new List<string>() { "Mead", "Pale Ale", "Wine", "Juice", "Green Tea", }));
+            buffCombinations.Add(("fishing", 1, 2, new List<string>() { "Sunfish", "Catfish", "Shad", "Tiger Trout", "Bait", }));
+            buffCombinations.Add(("fishing", 1, 2, new List<string>() { "Largemouth Bass", "Carp", "Bullhead", "Sturgeon", "Dressed Spinner", }));
+            buffCombinations.Add(("fishing", 1, 2, new List<string>() { "Sardine", "Tuna", "Red Snapper", "Tilapia", "Warp Totem: Beach ", }));
+            buffCombinations.Add(("fishing", 1, 2, new List<string>() { "Walleye", "Bream", "Eel", }));
+            buffCombinations.Add(("fishing", 1, 2, new List<string>() { "Lobster", "Crayfish", "Crab", "Cockle", "Mussel", "Shrimp", "Snail", "Periwinkle", "Oyster", "Clam", }));
+            buffCombinations.Add(("fishing", 1, 2, new List<string>() { "Pufferfish", "Ghostfish", "Sandfish", "Woodskip", "Dish O' The Sea", }));
+            buffCombinations.Add(("fishing", 1, 2, new List<string>() { "Largemouth Bass", "Shad", "Tuna", "Walleye", "Dish O' The Sea", }));
+            buffCombinations.Add(("fishing", 2, 3, new List<string>() { "Lava Eel", "Scorpion Carp", "Octopus", "Blobfish", "Dish O' The Sea", }));
+            buffCombinations.Add(("attack", 1, 2, new List<string>() { "Copper Bar", "Iron Bar", "Gold Bar", }));
+            buffCombinations.Add(("cauldronLuck", 1, 2, new List<string>() { "Quartz", "Earth Crystal", "Frozen Tear", "Fire Quartz", "Omni Geode", }));
+            buffCombinations.Add(("attack", 1, 2, new List<string>() { "Slime", "Bat Wing", "Solar Essence", "Void Essence", "Bone Fragment", }));
+            buffCombinations.Add(("cauldronLuck", 1, 2, new List<string>() { "Amethyst", "Aquamarine", "Diamond", "Emerald", "Ruby", "Topaz", "Lucky Lunch", }));
+            buffCombinations.Add(("speed", 2, 3, new List<string>() { "Iridium Ore", "Battery Pack", "Refined Quartz", }));
+            buffCombinations.Add(("maxEnergy", 2, 3, new List<string>() { "Maple Syrup", "Fiddlehead Fern", "Truffle", "Poppy", "Maki Roll", "Fried Egg", "Pink Cake", }));
+            buffCombinations.Add(("speed", 1, 2, new List<string>() { "Red Mushroom", "Sea Urchin", "Sunflower", "Duck Feather", "Aquamarine", "Red Cabbage", "Beet", "Amaranth", "Starfruit", "Cactus Fruit", "Blueberry", "Iridium Bar", }));
+            buffCombinations.Add(("butterflies", 1, 2, new List<string>() { "Purple Mushroom", "Nautilus Shell", "Chub", "Frozen Geode", }));
+            buffCombinations.Add(("magneticRadius", 1, 2, new List<string>() { "Salmonberry", "Cookie", "Ancient Doll", "Ice Cream", "Battery Pack", }));
+            buffCombinations.Add(("foraging", 1, 2, new List<string>() { "Salmonberry", "Blackberry", "Wild Plum", }));
+            buffCombinations.Add(("maxEnergy", 1, 2, new List<string>() { "Egg", "Milk", "Wheat Flour", "Complete Breakfast", }));
+            buffCombinations.Add(("farming", 1, 2, new List<string>() { "Wheat", "Hay", "Apple", }));
+            buffCombinations.Add(("luck", 1, 2, new List<string>() { "Oak Resin", "Wine", "Rabbit's Foot", "Pomegranate", "Gold Bar", }));
+            buffCombinations.Add(("luck", 2, 3, new List<string>() { "Wine", "Dinosaur Mayonnaise", "Prismatic Shard", "Ancient Fruit", "Void Salmon", "Caviar", }));
+            #endregion bundle combinations
         }
 
         public void initializeRecipes()
@@ -910,6 +916,7 @@ namespace CauldronOfChance
             recipes = new List<(string Result, List<string> Items)>();
 
             //recipes.Add(("", new List<string>() { }));
+
             recipes.Add(("Golden Pumpkin", new List<string>() { "Gold Bar", "Gold Bar", "Pumpkin" }));
             recipes.Add(("Golden Mask", new List<string>() { "Gold Bar", "Gold Bar", "Amethyst" }));
             recipes.Add(("Dwarf Scroll I", new List<string>() { "Dwarf Scroll II", "Dwarf Scroll III", "Dwarf Scroll IV" }));
@@ -924,12 +931,14 @@ namespace CauldronOfChance
             multipleItemCombinations = new List<(List<string> Result, List<string> Items)>();
 
             //itemCombinations.Add(("", new List<string>() { }));
+
             List<string> omniGeode = new List<string>() { };
             omniGeode.AddRange(minerals);
             omniGeode.AddRange(gems);
             itemCombinations.Add(("Omni Geode", omniGeode));
 
             //multipleItemCombinations.Add((new List<string>() { }, new List<string>() { }));
+
             List<string> boneCombination = new List<string>() { };
             boneCombination.AddRange(bones);
             boneCombination.AddRange(fossils);
