@@ -441,9 +441,39 @@ namespace CauldronOfChance
             "Joja Cola",
             "Rotten Plant",
         };
-        public List<string> relics { get; } = new List<string>()
+        public List<string> artifacts { get; } = new List<string>()
         {
-            //TODO
+            "Dwarf Scroll I",
+            "Dwarf Scroll II",
+            "Dwarf Scroll III",
+            "Dwarf Scroll IV",
+            "Chipped Amphora",
+            "Arrowhead",
+            "Ancient Doll",
+            "Elvish Jewelry",
+            "Chewing Stick",
+            "Ornamental Fan",
+            "Dinosaur Egg",
+            "Rare Disc",
+            "Ancient Sword",
+            "Rusty Spoon",
+            "Rusty Spur",
+            "Rusty Cog",
+            "Chicken Statue",
+            "Ancient Seed",
+            "Prehistoric Tool",
+            "Dried Starfish",
+            "Anchor",
+            "Glass Shards",
+            "Bone Flute",
+            "Prehistoric Handaxe",
+            "Dwarvish Helm",
+            "Dwarf Gadget",
+            "Ancient Drum",
+            "Golden Mask",
+            "Golden Relic",
+            "Strange Doll",
+            "Strange Doll",
         };
         public List<string> crops { get; } = new List<string>()
         {
@@ -887,13 +917,18 @@ namespace CauldronOfChance
             buffCombinations.Add(("boom", 1, 2, boom1));
             buffCombinations.Add(("cauldronLuck", -1, -2, boom1));
 
-            buffCombinations.Add(("luck", 1, 2, relics));
+            buffCombinations.Add(("luck", 1, 2, artifacts));
             buffCombinations.Add(("farming", 1, 2, crops));
             buffCombinations.Add(("speed", 1, 2, artisanGoods));
             #endregion category combinations
 
             #region fluff combinations
             buffCombinations.Add(("butterflies", 1, 2, new List<string>() { "Daffodil", "Dandelion", "Sweet Pea", "Crocus", "Tulip", "Blue Jazz", "Summer Spangle", "Poppy", "Sunflower", "Fairy Rose" }));
+            buffCombinations.Add(("butterflies", 2, 3, new List<string>() { "Purple Mushroom", "Solar Essence", "Super Cucumber", "Void Essence", "Quartz" }));
+            buffCombinations.Add(("butterflies", 2, 3, new List<string>() { "Fire Quartz", "Frozen Tear", "Jade", "Purple Mushroom" }));
+            buffCombinations.Add(("cauldronLuck", 2, 3, new List<string>() { "Fire Quartz", "Frozen Tear", "Jade", "Purple Mushroom" }));
+            buffCombinations.Add(("luck", 2, 3, new List<string>() { "Fire Quartz", "Frozen Tear", "Jade", "Purple Mushroom" }));
+            buffCombinations.Add(("butterflies", 2, 3, new List<string>() { "Golden Pumpkin", "Magic Rock Candy", "Pearl", "Prismatic Shard", "Rabbit's Foot" }));
             #endregion fluff combinations
 
             #region bundle combinations
@@ -964,6 +999,9 @@ namespace CauldronOfChance
             List<string> omniGeode = new List<string>() { };
             omniGeode.AddRange(minerals);
             omniGeode.AddRange(gems);
+            omniGeode.Add("Geode");
+            omniGeode.Add("Frozen Geode");
+            omniGeode.Add("Magma Geode");
             itemCombinations.Add(("Omni Geode", omniGeode));
 
             //multipleItemCombinations.Add((new List<string>() { }, new List<string>() { }));
@@ -1020,7 +1058,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item, farming: 2);
                     break;
                 case "Jade":
-                    Item = new Ingredient(item, defense: 2);
+                    Item = new Ingredient(item, defense: 2, cauldronLuck: 3);
                     break;
                 case "Diamond":
                     Item = new Ingredient(item, luck: 2);
@@ -1032,13 +1070,13 @@ namespace CauldronOfChance
                     Item = new Ingredient(item, mining: 1, maxEnergy: 2);
                     break;
                 case "Quartz":
-                    Item = new Ingredient(item, mining: 1);
+                    Item = new Ingredient(item, mining: 1, butterfliesChance: 3);
                     break;
                 case "Fire Quartz":
-                    Item = new Ingredient(item, attack: 1);
+                    Item = new Ingredient(item, attack: 1, cauldronLuck: 3);
                     break;
                 case "Frozen Tear":
-                    Item = new Ingredient(item, defense: 1);
+                    Item = new Ingredient(item, defense: 1, cauldronLuck: 3);
                     break;
                 case "Earth Crystal":
                     Item = new Ingredient(item, mining: 1);
@@ -1125,31 +1163,31 @@ namespace CauldronOfChance
                     Item = new Ingredient(item, defense: -3);
                     break;
                 case "Bone Flute":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, monsterMusk: 2, speed: 2);
                     break;
                 case "Prehistoric Handaxe":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, attack: 2);
                     break;
                 case "Dwarvish Helm":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, defense: 3);
                     break;
                 case "Dwarf Gadget":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, boomChance: 1, magneticRadius: 3, speed: 2);
                     break;
                 case "Ancient Drum":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, monsterMusk: 2, attack: 2);
                     break;
                 case "Golden Mask":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, cauldronLuck: 2, defense: 2, magneticRadius: 1);
                     break;
                 case "Golden Relic":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, cauldronLuck: 1, luck: 2, farming: 1);
                     break;
                 case "Strange Doll":
                     Item = new Ingredient(item, boomChance: 3, butterfliesChance: 3);
                     break;
                 case "Pufferfish":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, defense: 3, boomChance: 3, speed: -1);
                     break;
                 case "Anchovy":
                     Item = new Ingredient(item);
@@ -1164,7 +1202,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Largemouth Bass":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2);
                     break;
                 case "Smallmouth Bass":
                     Item = new Ingredient(item);
@@ -1176,7 +1214,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Walleye":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2);
                     break;
                 case "Perch":
                     Item = new Ingredient(item);
@@ -1185,7 +1223,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Catfish":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2);
                     break;
                 case "Pike":
                     Item = new Ingredient(item);
@@ -1200,10 +1238,10 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Eel":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2);
                     break;
                 case "Octopus":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2);
                     break;
                 case "Red Snapper":
                     Item = new Ingredient(item);
@@ -1221,7 +1259,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Super Cucumber":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2, cauldronLuck: 1, luck: 2, butterfliesChance: 3);
                     break;
                 case "Ghostfish":
                     Item = new Ingredient(item);
@@ -1230,34 +1268,43 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Stonefish":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 3, defense: 3, speed: -1);
                     break;
                 case "Crimsonfish":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, attack: 3, cauldronLuck: 3);
+                    break;
+                case "Son of Crimsonfish":
+                    Item = new Ingredient(item, attack: 3, cauldronLuck: 3);
                     break;
                 case "Angler":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 3, cauldronLuck: 3);
+                    break;
+                case "Ms. Angler":
+                    Item = new Ingredient(item, fishing: 3, cauldronLuck: 3);
                     break;
                 case "Ice Pip":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 3, speed: -1, defense: 1);
                     break;
                 case "Lava Eel":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 3, attack: 2);
                     break;
                 case "Legend":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, luck: 3, cauldronLuck: 3);
+                    break;
+                case "Legend II":
+                    Item = new Ingredient(item, luck: 3, cauldronLuck: 3);
                     break;
                 case "Sandfish":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2, mining: 1, defense: 2);
                     break;
                 case "Scorpion Carp":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2, attack: 2);
                     break;
                 case "Treasure Chest":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2, cauldronLuck: 3, luck: 3);
                     break;
                 case "Joja Cola":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, speed: 1, farming: -1);
                     break;
                 case "Trash":
                     Item = new Ingredient(item);
@@ -1275,27 +1322,24 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Large Egg":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, maxEnergy: 2);
                     break;
                 case "Egg":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, maxEnergy: 1);
                     break;
                 case "Hay":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, boomChance: 1, farming: 1);
                     break;
                 case "Milk":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, maxEnergy: 1);
                     break;
                 case "Large Milk":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, maxEnergy: 2);
                     break;
                 case "Green Bean":
                     Item = new Ingredient(item);
                     break;
                 case "Cauliflower":
-                    Item = new Ingredient(item);
-                    break;
-                case "Ornate Necklace":
                     Item = new Ingredient(item);
                     break;
                 case "Potato":
@@ -1329,7 +1373,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Strange Bun":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, cauldronLuck: 2, boomChance: 2);
                     break;
                 case "Lucky Lunch":
                     Item = new Ingredient(item);
@@ -1347,7 +1391,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Carp Surprise":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, butterfliesChance: 3, boomChance: 3, garlicOil: 3, monsterMusk: 3, debuffImmunity: 3, farming: 3, mining: 3, fishing: 3, foraging: 3, attack: 3, defense: 3, maxEnergy: 3, luck: 3, magneticRadius: 3, speed: 3);
                     break;
                 case "Hashbrowns":
                     Item = new Ingredient(item);
@@ -1377,10 +1421,10 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Chocolate Cake":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, speed: -1, cauldronLuck: 3);
                     break;
                 case "Pink Cake":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, speed: -1, cauldronLuck: 3);
                     break;
                 case "Rhubarb Pie":
                     Item = new Ingredient(item);
@@ -1440,7 +1484,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Survival Burger":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, defense: 3, debuffImmunity: 2);
                     break;
                 case "Dish O' The Sea":
                     Item = new Ingredient(item);
@@ -1452,7 +1496,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Sugar":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, speed: 2, butterfliesChance: 2, boomChance: 2, cauldronLuck: -1);
                     break;
                 case "Wheat Flour":
                     Item = new Ingredient(item);
@@ -1461,7 +1505,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Garlic":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, garlicOil: 2);
                     break;
                 case "Kale":
                     Item = new Ingredient(item);
@@ -1473,7 +1517,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Triple Shot Espresso":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, duration: 1);
                     break;
                 case "Melon":
                     Item = new Ingredient(item);
@@ -1494,7 +1538,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Warp Totem: Desert":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, attack: 2);
                     break;
                 case "Wheat":
                     Item = new Ingredient(item);
@@ -1509,13 +1553,13 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Flounder":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2);
                     break;
                 case "Starfruit":
                     Item = new Ingredient(item);
                     break;
                 case "Midnight Carp":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2);
                     break;
                 case "Corn":
                     Item = new Ingredient(item);
@@ -1533,7 +1577,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Artifact Trove":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, luck: 3, cauldronLuck: 1);
                     break;
                 case "Pumpkin":
                     Item = new Ingredient(item);
@@ -1653,19 +1697,19 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Copper Bar":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, defense: 1, duration: 1);
                     break;
                 case "Iron Bar":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, defense: 1, duration: 2);
                     break;
                 case "Gold Bar":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, defense: 2, duration: 2);
                     break;
                 case "Iridium Bar":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, defense: 3, duration: 3);
                     break;
                 case "Refined Quartz":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, luck: 1);
                     break;
                 case "Honey":
                     Item = new Ingredient(item);
@@ -1683,7 +1727,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Rare Seed":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, cauldronLuck: 3);
                     break;
                 case "Wine":
                     Item = new Ingredient(item);
@@ -1695,7 +1739,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Muscle Remedy":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, maxEnergy: 3);
                     break;
                 case "Basic Fertilizer":
                     Item = new Ingredient(item);
@@ -1713,7 +1757,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Golden Pumpkin":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, cauldronLuck: 3);
                     break;
                 case "Poppy":
                     Item = new Ingredient(item, butterfliesChance: 1);
@@ -1809,7 +1853,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Sweet Gem Berry":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, speed: 3, cauldronLuck: 3);
                     break;
                 case "Crocus":
                     Item = new Ingredient(item, butterfliesChance: 1);
@@ -1824,7 +1868,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item, butterfliesChance: 1);
                     break;
                 case "Purple Mushroom":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, cauldronLuck: 3, butterfliesChance: 3);
                     break;
                 case "Rice":
                     Item = new Ingredient(item);
@@ -1890,10 +1934,10 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Rabbit's Foot":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, luck: 3, cauldronLuck: 3);
                     break;
                 case "Aged Roe":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, duration: 3);
                     break;
                 case "Stone Base":
                     Item = new Ingredient(item);
@@ -1902,7 +1946,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Ancient Fruit":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, cauldronLuck: 3, luck: 3);
                     break;
                 case "Spangle Seeds":
                     Item = new Ingredient(item);
@@ -1917,9 +1961,6 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Mead":
-                    Item = new Ingredient(item);
-                    break;
-                case "Mermaid's Pendant":
                     Item = new Ingredient(item);
                     break;
                 case "Decorative Pot":
@@ -2046,7 +2087,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Dolomite":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2);
                     break;
                 case "Esperite":
                     Item = new Ingredient(item);
@@ -2088,16 +2129,16 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Petrified Slime":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, monsterMusk: 2);
                     break;
                 case "Thunder Egg":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, attack: 2);
                     break;
                 case "Pyrite":
                     Item = new Ingredient(item);
                     break;
                 case "Ocean Stone":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2);
                     break;
                 case "Ghost Crystal":
                     Item = new Ingredient(item);
@@ -2121,34 +2162,34 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Sandstone":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, mining: 2);
                     break;
                 case "Granite":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, mining: 2);
                     break;
                 case "Basalt":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, mining: 2);
                     break;
                 case "Limestone":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, mining: 2);
                     break;
                 case "Soapstone":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, mining: 2);
                     break;
                 case "Hematite":
                     Item = new Ingredient(item);
                     break;
                 case "Mudstone":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, mining: 2);
                     break;
                 case "Obsidian":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, mining: 2);
                     break;
                 case "Slate":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, mining: 2);
                     break;
                 case "Fairy Stone":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, luck: 3, cauldronLuck: 1);
                     break;
                 case "Star Shards":
                     Item = new Ingredient(item);
@@ -2178,7 +2219,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Amphibian Fossil":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2);
                     break;
                 case "Palm Fossil":
                     Item = new Ingredient(item);
@@ -2196,7 +2237,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item, butterfliesChance: 1);
                     break;
                 case "Fairy Rose":
-                    Item = new Ingredient(item, butterfliesChance: 1);
+                    Item = new Ingredient(item, butterfliesChance: 1, luck: 2, cauldronLuck: 1);
                     break;
                 case "Blue Jazz":
                     Item = new Ingredient(item, butterfliesChance: 1);
@@ -2292,10 +2333,13 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Rain Totem":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 3);
                     break;
                 case "Mutant Carp":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, boomChance: 3, cauldronLuck: 3, magneticRadius: 3);
+                    break;
+                case "Radioactive Carp":
+                    Item = new Ingredient(item, boomChance: 3, cauldronLuck: 3, magneticRadius: 3);
                     break;
                 case "Bug Meat":
                     Item = new Ingredient(item);
@@ -2310,13 +2354,13 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Warp Totem: Farm":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, farming: 2);
                     break;
                 case "Warp Totem: Mountains":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, mining: 2);
                     break;
                 case "Warp Totem: Beach":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2);
                     break;
                 case "Barbed Hook":
                     Item = new Ingredient(item);
@@ -2334,10 +2378,10 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Sturgeon":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2);
                     break;
                 case "Tiger Trout":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2);
                     break;
                 case "Bullhead":
                     Item = new Ingredient(item);
@@ -2352,7 +2396,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Dorado":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2);
                     break;
                 case "Albacore":
                     Item = new Ingredient(item);
@@ -2361,7 +2405,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Lingcod":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2);
                     break;
                 case "Halibut":
                     Item = new Ingredient(item);
@@ -2451,10 +2495,10 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Solar Essence":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, butterfliesChance: 3, cauldronLuck: 3);
                     break;
                 case "Void Essence":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, butterfliesChance: 3, cauldronLuck: 3);
                     break;
                 case "Mixed Seeds":
                     Item = new Ingredient(item);
@@ -2472,28 +2516,31 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Glacierfish":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, debuffImmunity: 3, cauldronLuck: 3);
+                    break;
+                case "Glacierfish Jr.":
+                    Item = new Ingredient(item, debuffImmunity: 3, cauldronLuck: 3);
                     break;
                 case "Battery Pack":
                     Item = new Ingredient(item);
                     break;
                 case "Void Salmon":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2);
                     break;
                 case "Slimejack":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2);
                     break;
                 case "Pearl":
                     Item = new Ingredient(item);
                     break;
                 case "Midnight Squid":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2);
                     break;
                 case "Spook Fish":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 2);
                     break;
                 case "Blobfish":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, fishing: 3);
                     break;
                 case "Cactus Seeds":
                     Item = new Ingredient(item);
@@ -2511,7 +2558,7 @@ namespace CauldronOfChance
                     Item = new Ingredient(item);
                     break;
                 case "Movie Ticket":
-                    Item = new Ingredient(item);
+                    Item = new Ingredient(item, luck: 3, cauldronLuck: 3, butterfliesChance: 3);
                     break;
                 case "Roe":
                     Item = new Ingredient(item);
@@ -2521,6 +2568,18 @@ namespace CauldronOfChance
                     break;
                 case "Tea Leaves":
                     Item = new Ingredient(item);
+                    break;
+                case "Monster Musk":
+                    Item = new Ingredient(item, monsterMusk: 3);
+                    break;
+                case "Garlic Oil":
+                    Item = new Ingredient(item, garlicOil: 3);
+                    break;
+                case "Blue Discus":
+                    Item = new Ingredient(item, fishing: 2);
+                    break;
+                case "Stingray":
+                    Item = new Ingredient(item, fishing: 2);
                     break;
 
                 default:
