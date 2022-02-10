@@ -1,7 +1,7 @@
 {
   "Name": "CauldronOfChance",
   "Author": "Expl0",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Throw stuff into the Wizards Cauldron and see what it does!!",
   "UniqueID": "Expl0.CauldronOfChance",
   "EntryDll": "CauldronOfChance.dll",
