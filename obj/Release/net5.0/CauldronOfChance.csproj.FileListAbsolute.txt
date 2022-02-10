@@ -1,0 +1,10 @@
+C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\bin\Release\net5.0\CauldronOfChance.deps.json
+C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\bin\Release\net5.0\CauldronOfChance.dll
+C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\bin\Release\net5.0\CauldronOfChance.pdb
+C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\obj\Release\net5.0\CauldronOfChance.csproj.AssemblyReference.cache
+C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\obj\Release\net5.0\CauldronOfChance.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\obj\Release\net5.0\CauldronOfChance.AssemblyInfoInputs.cache
+C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\obj\Release\net5.0\CauldronOfChance.AssemblyInfo.cs
+C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\obj\Release\net5.0\CauldronOfChance.csproj.CoreCompileInputs.cache
+C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\obj\Release\net5.0\CauldronOfChance.dll
+C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\obj\Release\net5.0\CauldronOfChance.pdb

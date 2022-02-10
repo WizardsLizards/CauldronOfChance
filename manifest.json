@@ -6,5 +6,5 @@
   "UniqueID": "Expl0.CauldronOfChance",
   "EntryDll": "CauldronOfChance.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": []
+  "UpdateKeys": [ "Nexus:10975" ]
 }

@@ -146,6 +146,7 @@ namespace CauldronOfChance
                 };
 
                 DelayedAction.functionAfterDelay(onDrink, 1500);
+                //DelayedAction.functionAfterDelay(afterDrink, 1500);
             }
             //Butterflies!!!
             else if (effectType == 3)

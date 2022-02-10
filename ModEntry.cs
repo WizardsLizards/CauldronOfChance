@@ -34,6 +34,7 @@ namespace CauldronOfChance
             #region Events
             //IHelper.Events.Input.ButtonPressed += onButtonPressed;
             IHelper.Events.GameLoop.SaveLoaded += onSaveLoaded;
+            IHelper.Events.GameLoop.DayEnding += onDayEnding;
             #endregion Events
         }
 
@@ -69,6 +70,11 @@ namespace CauldronOfChance
             {
                 this.Monitor.Log($"Could not add TileProperties to the Wizards Cauldron:\n{ex}", LogLevel.Error);
             }
+        }
+
+        private void onDayEnding(object sender, DayEndingEventArgs e)
+        {
+            userIds = new List<long>();
         }
 
         /// <summary>Get whether this instance can edit the given asset.</summary>
