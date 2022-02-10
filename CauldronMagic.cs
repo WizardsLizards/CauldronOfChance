@@ -116,11 +116,15 @@ namespace CauldronOfChance
             //Drink buff
             if (effectType == 1)
             {
+                //Game1.addHUDMessage(new HUDMessage("Buff"));
+
+                //ObjectPatches.IModHelper.Reflection.GetMethod(Game1.player, "performDrinkAnimation").Invoke(new StardewValley.Object());
+                Game1.player.eatObject(Utility.fuzzyItemSearch("Joja Cola") as StardewValley.Object);
                 Game1.player.canMove = false;
-                ObjectPatches.IModHelper.Reflection.GetMethod(Game1.player, "performDrinkAnimation").Invoke(new StardewValley.Object());
 
                 DelayedAction.delayedBehavior onDrink = delegate
                 {
+                    //Game1.addHUDMessage(new HUDMessage("OnDrinkBuff"));
                     Game1.player.canMove = true;
                     Game1.activeClickableMenu = new DialogueBox("The magic of the Cauldron flows through you...");
                 };
@@ -130,23 +134,27 @@ namespace CauldronOfChance
             //Drink debuff
             else if (effectType == 2)
             {
+                //Game1.addHUDMessage(new HUDMessage("Debuff"));
+
+                //ObjectPatches.IModHelper.Reflection.GetMethod(Game1.player, "performDrinkAnimation").Invoke(new StardewValley.Object());
+                Game1.player.eatObject(Utility.fuzzyItemSearch("Joja Cola") as StardewValley.Object);
                 Game1.player.canMove = false;
-                ObjectPatches.IModHelper.Reflection.GetMethod(Game1.player, "performDrinkAnimation").Invoke(new StardewValley.Object());
 
                 DelayedAction.delayedBehavior afterDrink = delegate
                 {
+                    //Game1.addHUDMessage(new HUDMessage("AfterDrinkDebuff"));
                     Game1.player.canMove = true;
                     Game1.activeClickableMenu = new DialogueBox("An aweful taste fills your mouth...");
                 };
 
                 DelayedAction.delayedBehavior onDrink = delegate
                 {
+                    //Game1.addHUDMessage(new HUDMessage("OnDrinkDebuff"));
                     Game1.player.performPlayerEmote("sick");
                     DelayedAction.functionAfterDelay(afterDrink, 1000);
                 };
 
-                DelayedAction.functionAfterDelay(onDrink, 1500);
-                //DelayedAction.functionAfterDelay(afterDrink, 1500);
+                DelayedAction.functionAfterDelay(onDrink, 2500);
             }
             //Butterflies!!!
             else if (effectType == 3)
