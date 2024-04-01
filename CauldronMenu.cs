@@ -260,7 +260,7 @@ namespace CauldronOfChance
                 }
                 else
                 {
-                    Game1.player.currentLocation.debris.Add(new Debris(ingredient1, Game1.player.position));
+                    Game1.player.currentLocation.debris.Add(new Debris(ingredient1, Game1.player.position.Value));
                 }
                 ingredient1 = null;
                 orderIngredients();
@@ -284,7 +284,7 @@ namespace CauldronOfChance
                 }
                 else
                 {
-                    Game1.player.currentLocation.debris.Add(new Debris(ingredient2, Game1.player.position));
+                    Game1.player.currentLocation.debris.Add(new Debris(ingredient2, Game1.player.position.Value));
                 }
                 ingredient2 = null;
                 orderIngredients();
@@ -308,7 +308,7 @@ namespace CauldronOfChance
                 }
                 else
                 {
-                    Game1.player.currentLocation.debris.Add(new Debris(ingredient3, Game1.player.position));
+                    Game1.player.currentLocation.debris.Add(new Debris(ingredient3, Game1.player.position.Value));
                 }
                 ingredient3 = null;
                 orderIngredients();
@@ -386,7 +386,7 @@ namespace CauldronOfChance
                 }
                 else
                 {
-                    Game1.player.currentLocation.debris.Add(new Debris(ingredient1, Game1.player.position));
+                    Game1.player.currentLocation.debris.Add(new Debris(ingredient1, Game1.player.position.Value));
                 }
                 ingredient1 = null;
             }
@@ -403,7 +403,7 @@ namespace CauldronOfChance
                 }
                 else
                 {
-                    Game1.player.currentLocation.debris.Add(new Debris(ingredient2, Game1.player.position));
+                    Game1.player.currentLocation.debris.Add(new Debris(ingredient2, Game1.player.position.Value));
                 }
                 ingredient2 = null;
             }
@@ -420,7 +420,7 @@ namespace CauldronOfChance
                 }
                 else
                 {
-                    Game1.player.currentLocation.debris.Add(new Debris(ingredient3, Game1.player.position));
+                    Game1.player.currentLocation.debris.Add(new Debris(ingredient3, Game1.player.position.Value));
                 }
                 ingredient3 = null;
             }
@@ -437,6 +437,7 @@ namespace CauldronOfChance
                 || item.isPlaceable()
                 || item.salePrice() < 0
                 || item.canBeGivenAsGift() == false
+                //canBeTrashed should suffice? => Sewing Machine does it this way
                 )
             {
                 return false;

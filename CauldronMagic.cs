@@ -122,7 +122,7 @@ namespace CauldronOfChance
                 Game1.player.eatObject(Utility.fuzzyItemSearch("Joja Cola") as StardewValley.Object);
                 Game1.player.canMove = false;
 
-                DelayedAction.delayedBehavior onDrink = delegate
+                Action onDrink = delegate
                 {
                     //Game1.addHUDMessage(new HUDMessage("OnDrinkBuff"));
                     Game1.player.canMove = true;
@@ -140,14 +140,14 @@ namespace CauldronOfChance
                 Game1.player.eatObject(Utility.fuzzyItemSearch("Joja Cola") as StardewValley.Object);
                 Game1.player.canMove = false;
 
-                DelayedAction.delayedBehavior afterDrink = delegate
+                Action afterDrink = delegate
                 {
                     //Game1.addHUDMessage(new HUDMessage("AfterDrinkDebuff"));
                     Game1.player.canMove = true;
                     Game1.activeClickableMenu = new DialogueBox("An aweful taste fills your mouth...");
                 };
 
-                DelayedAction.delayedBehavior onDrink = delegate
+                Action onDrink = delegate
                 {
                     //Game1.addHUDMessage(new HUDMessage("OnDrinkDebuff"));
                     Game1.player.performPlayerEmote("sick");
@@ -162,13 +162,13 @@ namespace CauldronOfChance
                 WizardHouse.critters = new List<Critter>();
                 for(int counter = 0; counter < 7; counter++)
                 {
-                    WizardHouse.critters.Add(new Butterfly(new Microsoft.Xna.Framework.Vector2(4, 20)));
+                    WizardHouse.critters.Add(new Butterfly(WizardHouse, new Microsoft.Xna.Framework.Vector2(4, 20)));
                 }
                 Game1.player.changeFriendship(222, Wizard);
                 Wizard.doEmote(NPC.heartEmote);
 
                 Game1.player.canMove = false;
-                DelayedAction.delayedBehavior onButterflies = delegate
+                Action onButterflies = delegate
                 {
                     Game1.player.canMove = true;
                     Game1.activeClickableMenu = new DialogueBox("A pleasent smell fills the air...");
@@ -183,7 +183,7 @@ namespace CauldronOfChance
                 Wizard.doEmote(NPC.angryEmote);
 
                 Game1.player.canMove = false;
-                DelayedAction.delayedBehavior onExplosion = delegate
+                Action onExplosion = delegate
                 {
                     Game1.player.canMove = true;
                     Game1.activeClickableMenu = new DialogueBox("A vile stench fills the air...");
@@ -196,7 +196,7 @@ namespace CauldronOfChance
                 Game1.player.currentLocation.debris.Add(new Debris(resultingItem, new Microsoft.Xna.Framework.Vector2(3 * 64f, 20 * 64f)));
 
                 Game1.player.canMove = false;
-                DelayedAction.delayedBehavior onDrop = delegate
+                Action onDrop = delegate
                 {
                     Game1.player.canMove = true;
                     Game1.activeClickableMenu = new DialogueBox($"A {resultingItem.DisplayName} emerges from the depths of the Cauldron.");

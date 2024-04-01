@@ -1,0 +1,6 @@
+C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\obj\Debug\net6.0\CauldronOfChance.csproj.AssemblyReference.cache
+C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\obj\Debug\net6.0\CauldronOfChance.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\obj\Debug\net6.0\CauldronOfChance.AssemblyInfoInputs.cache
+C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\obj\Debug\net6.0\CauldronOfChance.AssemblyInfo.cs
+C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\obj\Debug\net6.0\CauldronOfChance.csproj.CoreCompileInputs.cache
+C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\obj\Debug\net6.0\CauldronOfChance.sourcelink.json

@@ -41,7 +41,7 @@ namespace CauldronOfChance
                         else if (ModEntry.userIds.Contains(Game1.player.UniqueMultiplayerID))
                         {
                             CauldronMagic.errorMessageProgress = "Event already seen today";
-                            Game1.activeClickableMenu = new DialogueBox("The cauldron is bubbling with the ingredients you added today.");
+                            Game1.activeClickableMenu = new DialogueBox("The cauldron is bubbling with the ingredients you've added today.");
                             return false;
                         }
                         else
