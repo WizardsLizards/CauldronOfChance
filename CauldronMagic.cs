@@ -3,6 +3,7 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.GameData.Buffs;
+using StardewValley.GameData.Objects;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
@@ -334,18 +335,16 @@ namespace CauldronOfChance
             }
             errorMessageStats += $"Effecttype: {effectType}, ";
 
-            int farming = 0;
-            int fishing = 0;
-            int mining = 0;
-            int digging = 0;
-            int luck = 0;
-            int foraging = 0;
-            int crafting = 0;
-            int maxStamina = 0;
-            int magneticRadius = 0;
-            int speed = 0;
-            int defense = 0;
-            int attack = 0;
+            float farming = 0;
+            float fishing = 0;
+            float mining = 0;
+            float luck = 0;
+            float foraging = 0;
+            float maxStamina = 0;
+            float magneticRadius = 0;
+            float speed = 0;
+            float defense = 0;
+            float attack = 0;
 
             int defaultBuff = -1;
 
@@ -353,7 +352,7 @@ namespace CauldronOfChance
             int minutesDuration = (int)(randomDuration * getDuration() * 60);
             string buffId = ModEntry.UniqueId + "_CauldronBuff";
             string source = "CauldronOfChance";
-            string displaySource = "Wizard's Cauldron";
+            string displaySource = "Cauldron of Chance"; //TODO: Better name for immersion?
             string displayName = "Cauldron Magic";
 
             string description = "";
@@ -363,39 +362,34 @@ namespace CauldronOfChance
                 errorMessageProgress = "Getting cooking stats";
                 description = $"The taste of {resultingItem.DisplayName} still lingers in your mouth...";
 
-                if (resultingItem is StardewValley.Object)
+                if (resultingItem is StardewValley.Object csObject)
                 {
-                    StardewValley.Object csObject = resultingItem as StardewValley.Object;
-
                     if (csObject.Name.Equals("Squid Ink Ravioli"))
                     {
                         defaultBuff = 28;
                     }
 
-                    string[] objectDescription = Game1.objectInformation[csObject.ParentSheetIndex].Split('/');
-
-                    if (Convert.ToInt32(objectDescription[2]) > 0)
+                    if ((int)csObject.Edibility > -300 && Game1.objectData.TryGetValue(csObject.ItemId, out var data))
                     {
-                        string[] whatToBuff = (string[])((objectDescription.Length > 7) ? ((object)objectDescription[7].Split(' ')) : ((object)new string[12]
+                        List<ObjectBuffData> buffs = data.Buffs;
+
+                        if (buffs != null && buffs.Count > 0)
                         {
-                        "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-                        "0", "0"
-                        }));
-
-                        csObject.ModifyItemBuffs(whatToBuff);
-
-                        errorMessageStats += $"Cooking Stats: {whatToBuff}, ";
-
-                        farming = Convert.ToInt32(whatToBuff[0]);
-                        mining = Convert.ToInt32(whatToBuff[2]);
-                        fishing = Convert.ToInt32(whatToBuff[1]);
-                        foraging = Convert.ToInt32(whatToBuff[5]);
-                        attack = (whatToBuff.Length > 11) ? Convert.ToInt32(whatToBuff[11]) : 0;
-                        defense = Convert.ToInt32(whatToBuff[10]);
-                        maxStamina = Convert.ToInt32(whatToBuff[7]) / 10;
-                        luck = Convert.ToInt32(whatToBuff[4]);
-                        magneticRadius = Convert.ToInt32(whatToBuff[8]) / 32;
-                        speed = Convert.ToInt32(whatToBuff[9]);
+                            float durationMultiplier = ((csObject.Quality != 0) ? 1.5f : 1f);
+                            foreach (Buff item in StardewValley.Object.TryCreateBuffsFromData(data, csObject.Name, csObject.DisplayName, durationMultiplier, csObject.ModifyItemBuffs))
+                            {
+                                farming = item.effects.FarmingLevel.Value;
+                                mining = item.effects.MiningLevel.Value;
+                                fishing = item.effects.FishingLevel.Value;
+                                foraging = item.effects.ForagingLevel.Value;
+                                attack = item.effects.Attack.Value;
+                                defense = item.effects.Defense.Value;
+                                maxStamina = item.effects.MaxStamina.Value / 10;
+                                luck = item.effects.LuckLevel.Value;
+                                magneticRadius = item.effects.MagneticRadius.Value / 32;
+                                speed = item.effects.Speed.Value;
+                            }
+                        }
                     }
                 }
                 errorMessageProgress = "Got cooking stats";
@@ -968,33 +962,6 @@ namespace CauldronOfChance
                     }
                 }
 
-                #region template
-                //Game1.buffsDisplay.addOtherBuff(
-                //    new(0,
-                //        0,
-                //        0,
-                //        0,
-                //        0,
-                //        0,
-                //        0,
-                //        0,
-                //        0,
-                //        0,
-                //        0,
-                //        0,
-                //        minutesDuration: 1,
-                //        source: "<internal buff name>",
-                //        displaySource: ModEntry.ModHelper.Translation.Get("<what should appear in game as the source>"))
-                //    {
-                //        which = myBuffId,
-                //        sheetIndex = < index of the buff icon >,
-                //        glow = <if player should glow set to something other than Color.White >,
-                //        millisecondsDuration = < here you set the actual duration >,
-                //        description = ModEntry.ModHelper.Translation.Get("<should appear in game as the description>")
-                //    }
-                //);
-                #endregion template
-
                 string modifier = "";
                 string modifierEnd = ".";
                 string debuffModifier = "";
@@ -1063,6 +1030,12 @@ namespace CauldronOfChance
 
             Texture2D iconTexture = ObjectPatches.IModHelper.ModContent.Load<Texture2D>("assets/CoC_Icon.png");
 
+            // If applying an existing buff instead of a custom: ...
+            if (defaultBuff != -1)
+            {
+                buffId = defaultBuff.ToString();
+            }
+
             Buff buff = new Buff(
                 id: buffId,
                 source: source,
@@ -1073,14 +1046,6 @@ namespace CauldronOfChance
                 displayName: displayName,
                 description: description
                 );
-
-            // If applying an existing buff instead of a custom: ...
-            if(defaultBuff != -1)
-            {
-                buff.which = defaultBuff;
-
-                
-            }
             
             Game1.player.applyBuff(buff);
             #endregion create buff

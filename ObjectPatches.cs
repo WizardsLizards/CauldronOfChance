@@ -38,7 +38,9 @@ namespace CauldronOfChance
                             Game1.activeClickableMenu = new DialogueBox("A gigantic cauldron. It smells like the forest after a rainy day.");
                             return false;
                         }
-                        else if (ModEntry.userIds.Contains(Game1.player.UniqueMultiplayerID))
+                        else if (ModEntry.userIds.Contains(Game1.player.UniqueMultiplayerID)
+                            && false //TODO: REMOVE!!!!
+                            )
                         {
                             CauldronMagic.errorMessageProgress = "Event already seen today";
                             Game1.activeClickableMenu = new DialogueBox("The cauldron is bubbling with the ingredients you've added today.");

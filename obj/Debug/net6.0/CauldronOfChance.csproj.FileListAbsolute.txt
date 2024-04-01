@@ -4,3 +4,8 @@ C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\obj\Debug\net6.0\Cauld
 C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\obj\Debug\net6.0\CauldronOfChance.AssemblyInfo.cs
 C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\obj\Debug\net6.0\CauldronOfChance.csproj.CoreCompileInputs.cache
 C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\obj\Debug\net6.0\CauldronOfChance.sourcelink.json
+C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\bin\Debug\net6.0\CauldronOfChance.deps.json
+C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\bin\Debug\net6.0\CauldronOfChance.dll
+C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\bin\Debug\net6.0\CauldronOfChance.pdb
+C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\obj\Debug\net6.0\CauldronOfChance.dll
+C:\Users\focdo\OneDrive\Dokumente\GitHub\CauldronOfChance\obj\Debug\net6.0\CauldronOfChance.pdb
