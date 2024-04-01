@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CauldronOfChance")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8793bb8727401543208c4e2d96126568575cb5bc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4d880c5fb9d1486d965bd8a8971cef4cb2d590e6")]
 [assembly: System.Reflection.AssemblyProductAttribute("CauldronOfChance")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CauldronOfChance")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

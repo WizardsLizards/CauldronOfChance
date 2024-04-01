@@ -3,12 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\focdo\\OneDrive\\Dokumente\\GitHub\\CauldronOfChance\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{570E9B12-8FDE-4422-A1BC-18B475DDA71E}|CauldronOfChance.csproj|c:\\users\\focdo\\onedrive\\dokumente\\github\\cauldronofchance\\cauldronmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{570E9B12-8FDE-4422-A1BC-18B475DDA71E}|CauldronOfChance.csproj|solutionrelative:cauldronmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{570E9B12-8FDE-4422-A1BC-18B475DDA71E}|CauldronOfChance.csproj|c:\\users\\focdo\\onedrive\\dokumente\\github\\cauldronofchance\\cauldronmagic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{570E9B12-8FDE-4422-A1BC-18B475DDA71E}|CauldronOfChance.csproj|solutionrelative:cauldronmagic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{570E9B12-8FDE-4422-A1BC-18B475DDA71E}|CauldronOfChance.csproj|c:\\users\\focdo\\onedrive\\dokumente\\github\\cauldronofchance\\ingredient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{570E9B12-8FDE-4422-A1BC-18B475DDA71E}|CauldronOfChance.csproj|solutionrelative:ingredient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{570E9B12-8FDE-4422-A1BC-18B475DDA71E}|CauldronOfChance.csproj|c:\\users\\focdo\\onedrive\\dokumente\\github\\cauldronofchance\\modentry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{570E9B12-8FDE-4422-A1BC-18B475DDA71E}|CauldronOfChance.csproj|solutionrelative:modentry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{570E9B12-8FDE-4422-A1BC-18B475DDA71E}|CauldronOfChance.csproj|c:\\users\\focdo\\onedrive\\dokumente\\github\\cauldronofchance\\objectpatches.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{570E9B12-8FDE-4422-A1BC-18B475DDA71E}|CauldronOfChance.csproj|solutionrelative:objectpatches.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,30 +26,56 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "CauldronMenu.cs",
-              "DocumentMoniker": "C:\\Users\\focdo\\OneDrive\\Dokumente\\GitHub\\CauldronOfChance\\CauldronMenu.cs",
-              "RelativeDocumentMoniker": "CauldronMenu.cs",
-              "ToolTip": "C:\\Users\\focdo\\OneDrive\\Dokumente\\GitHub\\CauldronOfChance\\CauldronMenu.cs",
-              "RelativeToolTip": "CauldronMenu.cs",
-              "ViewState": "AQIAAI8BAAAAAAAAAAAWwJYBAAARAAAA",
+              "DocumentIndex": 3,
+              "Title": "ObjectPatches.cs",
+              "DocumentMoniker": "C:\\Users\\focdo\\OneDrive\\Dokumente\\GitHub\\CauldronOfChance\\ObjectPatches.cs",
+              "RelativeDocumentMoniker": "ObjectPatches.cs",
+              "ToolTip": "C:\\Users\\focdo\\OneDrive\\Dokumente\\GitHub\\CauldronOfChance\\ObjectPatches.cs",
+              "RelativeToolTip": "ObjectPatches.cs",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAmwA4AAAA9AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-01T11:48:43.531Z",
+              "WhenOpened": "2024-04-01T12:52:06.327Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ModEntry.cs",
+              "DocumentMoniker": "C:\\Users\\focdo\\OneDrive\\Dokumente\\GitHub\\CauldronOfChance\\ModEntry.cs",
+              "RelativeDocumentMoniker": "ModEntry.cs",
+              "ToolTip": "C:\\Users\\focdo\\OneDrive\\Dokumente\\GitHub\\CauldronOfChance\\ModEntry.cs",
+              "RelativeToolTip": "ModEntry.cs",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAAE0AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-01T12:18:16.313Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "Ingredient.cs",
+              "DocumentMoniker": "C:\\Users\\focdo\\OneDrive\\Dokumente\\GitHub\\CauldronOfChance\\Ingredient.cs",
+              "RelativeDocumentMoniker": "Ingredient.cs",
+              "ToolTip": "C:\\Users\\focdo\\OneDrive\\Dokumente\\GitHub\\CauldronOfChance\\Ingredient.cs",
+              "RelativeToolTip": "Ingredient.cs",
+              "ViewState": "AQIAAJ4AAAAAAAAAAAAAAJYAAABrAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-01T11:53:25.43Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "CauldronMagic.cs",
               "DocumentMoniker": "C:\\Users\\focdo\\OneDrive\\Dokumente\\GitHub\\CauldronOfChance\\CauldronMagic.cs",
               "RelativeDocumentMoniker": "CauldronMagic.cs",
               "ToolTip": "C:\\Users\\focdo\\OneDrive\\Dokumente\\GitHub\\CauldronOfChance\\CauldronMagic.cs",
               "RelativeToolTip": "CauldronMagic.cs",
-              "ViewState": "AQIAAKQAAAAAAAAAAAAAAKoAAAAQAAAA",
+              "ViewState": "AQIAAFgBAAAAAAAAAAAqwGEBAABAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-04-01T11:47:42.156Z",
               "EditorCaption": ""

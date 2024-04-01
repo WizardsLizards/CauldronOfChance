@@ -1,12 +1,15 @@
-﻿using StardewModdingAPI;
+﻿using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
+using StardewValley.GameData.Buffs;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static CauldronOfChance.CauldronMagic;
 
 namespace CauldronOfChance
 {
@@ -14,6 +17,19 @@ namespace CauldronOfChance
     {
         public static string errorMessageStats = "";
         public static string errorMessageProgress = "";
+
+        #region enums
+        public enum EffectTypes
+        {
+            None = 0,
+            Buff = 1,
+            Debuff = 2,
+            Butterflies = 3,
+            Boom = 4,
+            Item = 5,
+            CookingRecipe = 6
+        }
+        #endregion enums
 
         #region properties
         #region setup
@@ -36,7 +52,7 @@ namespace CauldronOfChance
         public double boom { get; set; } = 0;
         public double cauldronLuck { get; set; } = 0;
         public double duration { get; set; } = 1;
-        public int effectType { get; set; } = 0;
+        public EffectTypes effectType { get; set; } = EffectTypes.None;
         #endregion
 
         public List<int> buffList { get; set; }
@@ -114,7 +130,7 @@ namespace CauldronOfChance
 
             #region take effect
             //Drink buff
-            if (effectType == 1)
+            if (effectType == EffectTypes.Buff)
             {
                 //Game1.addHUDMessage(new HUDMessage("Buff"));
 
@@ -132,7 +148,7 @@ namespace CauldronOfChance
                 DelayedAction.functionAfterDelay(onDrink, 1000);
             }
             //Drink debuff
-            else if (effectType == 2)
+            else if (effectType == EffectTypes.Debuff)
             {
                 //Game1.addHUDMessage(new HUDMessage("Debuff"));
 
@@ -157,7 +173,7 @@ namespace CauldronOfChance
                 DelayedAction.functionAfterDelay(onDrink, 2500);
             }
             //Butterflies!!!
-            else if (effectType == 3)
+            else if (effectType == EffectTypes.Butterflies)
             {
                 WizardHouse.critters = new List<Critter>();
                 for(int counter = 0; counter < 7; counter++)
@@ -176,7 +192,7 @@ namespace CauldronOfChance
                 DelayedAction.functionAfterDelay(onButterflies, 100);
             }
             //BOOOM!!!!
-            else if (effectType == 4)
+            else if (effectType == EffectTypes.Boom)
             {
                 WizardHouse.explode(new Microsoft.Xna.Framework.Vector2(3, 20), 3, Game1.player);
                 Game1.player.changeFriendship(-222, Wizard);
@@ -191,7 +207,7 @@ namespace CauldronOfChance
                 DelayedAction.functionAfterDelay(onExplosion, 100);
             }
             //Get item
-            else if (effectType == 5)
+            else if (effectType == EffectTypes.Item)
             {
                 Game1.player.currentLocation.debris.Add(new Debris(resultingItem, new Microsoft.Xna.Framework.Vector2(3 * 64f, 20 * 64f)));
 
@@ -204,12 +220,12 @@ namespace CauldronOfChance
                 DelayedAction.functionAfterDelay(onDrop, 100);
             }
             //Item effect same as a food
-            else if (effectType == 6)
+            else if (effectType == EffectTypes.CookingRecipe)
             {
                 Game1.player.canMove = false;
                 ObjectPatches.IModHelper.Reflection.GetMethod(Game1.player, "performDrinkAnimation").Invoke(new StardewValley.Object());
 
-                DelayedAction.delayedBehavior onDrink = delegate
+                Action onDrink = delegate
                 {
                     Game1.player.canMove = true;
                     Game1.activeClickableMenu = new DialogueBox($"The taste reminds you of {resultingItem.DisplayName}...");
@@ -275,14 +291,14 @@ namespace CauldronOfChance
             //Chance for butterflies
             if (butterboomChance > 1 - getButterflies() - (getButterflies() * playerLuck))
             {
-                effectType = 3;
+                effectType = EffectTypes.Butterflies;
                 errorMessageStats += $"Effecttype: {effectType}, ";
                 return;
             }
             //Chance for boom
             if (butterboomChance < getBoom() - (getBoom() * playerLuck))
             {
-                effectType = 4;
+                effectType = EffectTypes.Boom;
                 errorMessageStats += $"Effecttype: {effectType}, ";
                 return;
             }
@@ -292,7 +308,7 @@ namespace CauldronOfChance
             double randomRecipeChance = randomGenerator.NextDouble();
             if (randomRecipeChance < recipeChance + (recipeChance * playerLuck))
             {
-                effectType = 5;
+                effectType = EffectTypes.Item;
                 errorMessageStats += $"Effecttype: {effectType}, ";
                 return;
             }
@@ -302,7 +318,7 @@ namespace CauldronOfChance
             double randomItemChance = randomGenerator.NextDouble();
             if (randomItemChance < itemChance + (itemChance * playerLuck))
             {
-                effectType = 5;
+                effectType = EffectTypes.Item;
                 errorMessageStats += $"Effecttype: {effectType}, ";
                 return;
             }
@@ -313,7 +329,7 @@ namespace CauldronOfChance
             if (randomCookingChance < cookingChance + (cookingChance * playerLuck))
             {
                 //Other text in the end (other buff building too tho...?)
-                effectType = 6;
+                effectType = EffectTypes.CookingRecipe;
                 errorMessageStats += $"Effecttype: {effectType}, ";
             }
             errorMessageStats += $"Effecttype: {effectType}, ";
@@ -335,12 +351,14 @@ namespace CauldronOfChance
 
             int randomDuration = randomGenerator.Next(5, 20);
             int minutesDuration = (int)(randomDuration * getDuration() * 60);
+            string buffId = ModEntry.UniqueId + "_CauldronBuff";
             string source = "CauldronOfChance";
-            string displaySource = "Cauldron";
+            string displaySource = "Wizard's Cauldron";
+            string displayName = "Cauldron Magic";
 
             string description = "";
 
-            if (effectType == 6)
+            if (effectType == EffectTypes.CookingRecipe)
             {
                 errorMessageProgress = "Getting cooking stats";
                 description = $"The taste of {resultingItem.DisplayName} still lingers in your mouth...";
@@ -408,7 +426,7 @@ namespace CauldronOfChance
                 if (buffRandom <= buffChance)
                 {
                     //Buff
-                    effectType = 1;
+                    effectType = EffectTypes.Buff;
 
                     //if (getCombinedDebuffChance() < 3)
                     if (getCombinedBuffChance() == 0)
@@ -699,7 +717,7 @@ namespace CauldronOfChance
                 else
                 {
                     //Debuff
-                    effectType = 2;
+                    effectType = EffectTypes.Debuff;
 
                     //if (getCombinedBuffChance() < 3)
                     if (getCombinedDebuffChance() == 0)
@@ -981,7 +999,7 @@ namespace CauldronOfChance
                 string modifierEnd = ".";
                 string debuffModifier = "";
 
-                if (effectType == 2)
+                if (effectType == EffectTypes.Debuff)
                 {
                     debuffModifier = "don't ";
                 }
@@ -1028,20 +1046,43 @@ namespace CauldronOfChance
             }
 
             #region create buff
-            Buff buff = new Buff(farming, fishing, mining, digging, luck, foraging, crafting, maxStamina * 10, magneticRadius * 16, speed, defense, attack, minutesDuration, source, displaySource)
+            StardewValley.Buffs.BuffEffects buffEffects = new StardewValley.Buffs.BuffEffects();
+            buffEffects.Add(new BuffAttributesData()
             {
-                sheetIndex = 17,
-                //millisecondsDuration = < here you set the actual duration >,
-                description = description
-            };
+                FarmingLevel = farming,
+                FishingLevel = fishing,
+                MiningLevel = mining,
+                LuckLevel = luck,
+                ForagingLevel = foraging,
+                MaxStamina = maxStamina*10,
+                MagneticRadius = magneticRadius*16,
+                Speed = speed,
+                Defense = defense,
+                Attack = attack,
+            });
 
+            Texture2D iconTexture = ObjectPatches.IModHelper.ModContent.Load<Texture2D>("assets/CoC_Icon.png");
+
+            Buff buff = new Buff(
+                id: buffId,
+                source: source,
+                displaySource: displaySource,
+                duration: Buff.ENDLESS,
+                iconTexture: iconTexture,
+                effects: buffEffects,
+                displayName: displayName,
+                description: description
+                );
+
+            // If applying an existing buff instead of a custom: ...
             if(defaultBuff != -1)
             {
                 buff.which = defaultBuff;
+
+                
             }
             
-
-            Game1.buffsDisplay.addOtherBuff(buff);
+            Game1.player.applyBuff(buff);
             #endregion create buff
         }
 

@@ -12,8 +12,8 @@ namespace CauldronOfChance
 {
     class ObjectPatches
     {
-        public static IMonitor IMonitor;
-        public static IModHelper IModHelper;
+        public static IMonitor IMonitor { get; private set; }
+        public static IModHelper IModHelper { get; private set; }
 
         public static void Initialize(IMonitor IMonitor, IModHelper IHelper)
         {

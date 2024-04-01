@@ -12,6 +12,7 @@ namespace CauldronOfChance
     public class ModEntry : StardewModdingAPI.Mod
     {
         public const string eventId = "10975001";
+        public const string UniqueId = "Expl0.CauldronOfChance";
 
         public static List<long> userIds { get; set; }
 
