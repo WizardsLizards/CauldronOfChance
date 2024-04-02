@@ -135,8 +135,8 @@ namespace CauldronOfChance
             {
                 //Game1.addHUDMessage(new HUDMessage("Buff"));
 
-                //ObjectPatches.IModHelper.Reflection.GetMethod(Game1.player, "performDrinkAnimation").Invoke(new StardewValley.Object());
-                Game1.player.eatObject(Utility.fuzzyItemSearch("Joja Cola") as StardewValley.Object);
+                //Play drink animation
+                Game1.player.FarmerSprite.animateOnce(294, 80f, 8);
                 Game1.player.canMove = false;
 
                 Action onDrink = delegate
@@ -153,8 +153,8 @@ namespace CauldronOfChance
             {
                 //Game1.addHUDMessage(new HUDMessage("Debuff"));
 
-                //ObjectPatches.IModHelper.Reflection.GetMethod(Game1.player, "performDrinkAnimation").Invoke(new StardewValley.Object());
-                Game1.player.eatObject(Utility.fuzzyItemSearch("Joja Cola") as StardewValley.Object);
+                //Play drink animation
+                Game1.player.FarmerSprite.animateOnce(294, 80f, 8);
                 Game1.player.canMove = false;
 
                 Action afterDrink = delegate
@@ -1189,7 +1189,7 @@ namespace CauldronOfChance
                 errorMessageProgress = "Found Resulting Item";
             }
 
-            return 0;
+            return chance;
         }
 
         public double CheckForCookingRecipes(Cauldron Cauldron)
@@ -1283,7 +1283,7 @@ namespace CauldronOfChance
                 errorMessageProgress = "Found Resulting Item";
             }
 
-            return 0;
+            return chance;
         }
 
         public int getCombinedBuffChance()

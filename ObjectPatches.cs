@@ -39,7 +39,7 @@ namespace CauldronOfChance
                             return false;
                         }
                         else if (ModEntry.userIds.Contains(Game1.player.UniqueMultiplayerID)
-                            && false //TODO: REMOVE!!!!
+                            //&& false //TODO: REMOVE!!!!
                             )
                         {
                             CauldronMagic.errorMessageProgress = "Event already seen today";

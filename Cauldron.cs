@@ -850,15 +850,24 @@ namespace CauldronOfChance
 
                                         List<string> ingredients = recipe.Value.Split('/')[0].Split(' ').ToList();
 
-                                        foreach (string ingredient in ingredients)
+                                        for (int counter = 0; counter < ingredients.Count/2; counter++)
                                         {
                                             int id;
 
-                                            if (Int32.TryParse(ingredient, out id))
+                                            if (Int32.TryParse(ingredients[counter * 2], out id))
                                             {
                                                 if (id >= 0)
                                                 {
-                                                    Items.Add(id);
+                                                    int amount;
+                                                    if (Int32.TryParse(ingredients[counter * 2 + 1], out amount) == false)
+                                                    {
+                                                        amount = 1;
+                                                    }
+
+                                                    for (int i = 0; i < amount; i++)
+                                                    {
+                                                        Items.Add(id);
+                                                    }
                                                 }
                                                 else
                                                 {
